@@ -4,12 +4,17 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { COUNTRIES } from "@/lib/countries";
+import { UNITS } from "@/lib/units";
+
+type Ingredient = { quantity: string; unit: string; name: string };
 
 export default function RecipeForm({ userId }: { userId: string }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [country, setCountry] = useState("");
-  const [ingredients, setIngredients] = useState("");
+  const [ingredients, setIngredients] = useState<Ingredient[]>([
+    { quantity: "", unit: "", name: "" },
+  ]);
   const [steps, setSteps] = useState([""]);
   const [tips, setTips] = useState("");
   const [language, setLanguage] = useState<"fi" | "en">("fi");
@@ -17,6 +22,26 @@ export default function RecipeForm({ userId }: { userId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  function updateIngredient(
+    index: number,
+    field: keyof Ingredient,
+    value: string
+  ) {
+    setIngredients((prev) =>
+      prev.map((ingredient, i) =>
+        i === index ? { ...ingredient, [field]: value } : ingredient
+      )
+    );
+  }
+
+  function addIngredient() {
+    setIngredients((prev) => [...prev, { quantity: "", unit: "", name: "" }]);
+  }
+
+  function removeIngredient(index: number) {
+    setIngredients((prev) => prev.filter((_, i) => i !== index));
+  }
 
   function updateStep(index: number, value: string) {
     setSteps((prev) => prev.map((step, i) => (i === index ? value : step)));
@@ -38,6 +63,13 @@ export default function RecipeForm({ userId }: { userId: string }) {
     const supabase = createClient();
 
     const instructions = steps.map((step) => step.trim()).filter(Boolean);
+    const ingredientList = ingredients
+      .map((ingredient) => ({
+        quantity: ingredient.quantity.trim().replace(",", "."),
+        unit: ingredient.unit,
+        name: ingredient.name.trim(),
+      }))
+      .filter((ingredient) => ingredient.name);
 
     const { data: recipe, error: insertError } = await supabase
       .from("recipes")
@@ -46,7 +78,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
         title,
         description,
         country,
-        ingredients,
+        ingredients: ingredientList,
         instructions,
         tips: tips.trim() || null,
         language,
@@ -122,14 +154,67 @@ export default function RecipeForm({ userId }: { userId: string }) {
         ))}
       </select>
 
-      <textarea
-        placeholder="Ingredients"
-        value={ingredients}
-        onChange={(e) => setIngredients(e.target.value)}
-        required
-        rows={4}
-        className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-      />
+      <div className="flex flex-col gap-2">
+        <label className="text-sm text-zinc-600 dark:text-zinc-400">
+          Ingredients
+        </label>
+        {ingredients.map((ingredient, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <input
+              type="text"
+              inputMode="decimal"
+              placeholder="Qty"
+              pattern="^\d+([.,]\d+)?$"
+              title="A number like 1 or 1,5"
+              value={ingredient.quantity}
+              onChange={(e) =>
+                updateIngredient(i, "quantity", e.target.value)
+              }
+              required
+              className="w-16 rounded-md border border-zinc-300 px-2 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            />
+            <select
+              value={ingredient.unit}
+              onChange={(e) => updateIngredient(i, "unit", e.target.value)}
+              required
+              className="w-24 rounded-md border border-zinc-300 px-2 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            >
+              <option value="" disabled>
+                Unit
+              </option>
+              {UNITS.map((unit) => (
+                <option key={unit} value={unit}>
+                  {unit}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              placeholder="Ingredient"
+              value={ingredient.name}
+              onChange={(e) => updateIngredient(i, "name", e.target.value)}
+              required
+              className="flex-1 rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            />
+            {ingredients.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removeIngredient(i)}
+                className="text-sm text-zinc-500 dark:text-zinc-400"
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={addIngredient}
+          className="self-start text-sm text-zinc-600 underline dark:text-zinc-400"
+        >
+          Add another ingredient
+        </button>
+      </div>
 
       <div className="flex flex-col gap-2">
         <label className="text-sm text-zinc-600 dark:text-zinc-400">
