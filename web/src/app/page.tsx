@@ -12,7 +12,7 @@ export default async function Home() {
 
   const { data: recipes, error } = await supabase
     .from("recipes")
-    .select("id, title, description, language, recipe_images(url)")
+    .select("id, title, description, country, language, recipe_images(url)")
     .order("created_at", { ascending: false });
 
   return (
@@ -84,6 +84,11 @@ export default async function Home() {
                     <h2 className="text-lg font-medium text-black dark:text-zinc-50">
                       {recipe.title}
                     </h2>
+                    {recipe.country && (
+                      <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+                        {recipe.country}
+                      </span>
+                    )}
                     <span className="rounded bg-zinc-200 px-1.5 py-0.5 text-xs uppercase text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                       {recipe.language}
                     </span>
