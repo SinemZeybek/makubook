@@ -21,7 +21,7 @@ export default async function RecipePage({
   const { data: recipe, error } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, language, ingredients, instructions, tips, recipe_images(url)"
+      "id, title, description, country, meal_type, language, ingredients, instructions, tips, recipe_images(url)"
     )
     .eq("id", id)
     .single();
@@ -70,6 +70,11 @@ export default async function RecipePage({
           {recipe.country && (
             <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800 dark:bg-amber-900 dark:text-amber-200">
               {recipe.country}
+            </span>
+          )}
+          {recipe.meal_type && (
+            <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-xs text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
+              {recipe.meal_type}
             </span>
           )}
           <span className="rounded bg-zinc-200 px-1.5 py-0.5 text-xs uppercase text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">

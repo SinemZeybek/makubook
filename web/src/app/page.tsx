@@ -2,18 +2,39 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import LogoutButton from "./logout-button";
+import RecipeFilters from "./recipe-filters";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    q?: string;
+    country?: string;
+    mealType?: string;
+    language?: string;
+  }>;
+}) {
+  const { q, country, mealType, language } = await searchParams;
   const supabase = await createClient();
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: recipes, error } = await supabase
+  let recipesQuery = supabase
     .from("recipes")
-    .select("id, title, description, country, language, recipe_images(url)")
+    .select(
+      "id, title, description, country, meal_type, language, recipe_images(url)"
+    )
     .order("created_at", { ascending: false });
+
+  if (q) recipesQuery = recipesQuery.ilike("title", `%${q}%`);
+  if (country) recipesQuery = recipesQuery.eq("country", country);
+  if (mealType) recipesQuery = recipesQuery.eq("meal_type", mealType);
+  if (language) recipesQuery = recipesQuery.eq("language", language);
+
+  const { data: recipes, error } = await recipesQuery;
+  const hasActiveFilters = Boolean(q || country || mealType || language);
 
   return (
     <main className="min-h-screen bg-zinc-50 px-6 py-16 dark:bg-black">
@@ -51,6 +72,8 @@ export default async function Home() {
           </Link>
         )}
 
+        <RecipeFilters />
+
         {error && (
           <p className="mt-8 text-red-600">
             Error loading recipes: {error.message}
@@ -59,7 +82,9 @@ export default async function Home() {
 
         {!error && recipes && recipes.length === 0 && (
           <p className="mt-8 text-zinc-600 dark:text-zinc-400">
-            No recipes yet — be the first to add one!
+            {hasActiveFilters
+              ? "No recipes match your filters."
+              : "No recipes yet — be the first to add one!"}
           </p>
         )}
 
@@ -88,6 +113,11 @@ export default async function Home() {
                       {recipe.country && (
                         <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800 dark:bg-amber-900 dark:text-amber-200">
                           {recipe.country}
+                        </span>
+                      )}
+                      {recipe.meal_type && (
+                        <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-xs text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
+                          {recipe.meal_type}
                         </span>
                       )}
                       <span className="rounded bg-zinc-200 px-1.5 py-0.5 text-xs uppercase text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { COUNTRIES } from "@/lib/countries";
 import { UNITS } from "@/lib/units";
+import { MEAL_TYPES } from "@/lib/mealTypes";
 
 type Ingredient = { quantity: string; unit: string; name: string };
 
@@ -12,6 +13,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [country, setCountry] = useState("");
+  const [mealType, setMealType] = useState("");
   const [ingredients, setIngredients] = useState<Ingredient[]>([
     { quantity: "", unit: "", name: "" },
   ]);
@@ -78,6 +80,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
         title,
         description,
         country,
+        meal_type: mealType,
         ingredients: ingredientList,
         instructions,
         tips: tips.trim() || null,
@@ -150,6 +153,22 @@ export default function RecipeForm({ userId }: { userId: string }) {
         {COUNTRIES.map((c) => (
           <option key={c} value={c}>
             {c}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={mealType}
+        onChange={(e) => setMealType(e.target.value)}
+        required
+        className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+      >
+        <option value="" disabled>
+          Meal type
+        </option>
+        {MEAL_TYPES.map((m) => (
+          <option key={m} value={m}>
+            {m}
           </option>
         ))}
       </select>
