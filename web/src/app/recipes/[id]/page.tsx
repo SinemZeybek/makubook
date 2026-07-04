@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import CommentForm from "./comment-form";
 
 type Ingredient = { quantity: string; unit: string; name: string };
 
@@ -12,6 +13,10 @@ export default async function RecipePage({
 }) {
   const { id } = await params;
   const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: recipe, error } = await supabase
     .from("recipes")
@@ -24,6 +29,12 @@ export default async function RecipePage({
   if (error || !recipe) {
     notFound();
   }
+
+  const { data: comments } = await supabase
+    .from("comments")
+    .select("id, body, rating, created_at, profiles(display_name, avatar_url)")
+    .eq("recipe_id", id)
+    .order("created_at", { ascending: false });
 
   const ingredients = Array.isArray(recipe.ingredients)
     ? (recipe.ingredients as Ingredient[])
@@ -106,6 +117,64 @@ export default async function RecipePage({
             </p>
           </section>
         )}
+
+        <section className="mt-8">
+          <h2 className="text-lg font-medium text-black dark:text-zinc-50">
+            Comments
+          </h2>
+
+          {user ? (
+            <CommentForm recipeId={recipe.id} />
+          ) : (
+            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+              <Link href="/login" className="underline">
+                Log in
+              </Link>{" "}
+              to leave a comment or rating.
+            </p>
+          )}
+
+          <ul className="mt-6 space-y-4">
+            {comments?.map((comment) => (
+              <li
+                key={comment.id}
+                className="rounded-lg border border-zinc-200 p-3 dark:border-zinc-800"
+              >
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="h-6 w-6 overflow-hidden rounded-full">
+                    <Image
+                      src={comment.profiles?.avatar_url || "/default-avatar.png"}
+                      alt=""
+                      width={24}
+                      height={24}
+                      className="h-full w-full object-cover"
+                      style={
+                        comment.profiles?.avatar_url
+                          ? undefined
+                          : { transform: "scale(1.2)" }
+                      }
+                    />
+                  </div>
+                  <span className="font-medium text-black dark:text-zinc-50">
+                    {comment.profiles?.display_name ?? "Anonymous"}
+                  </span>
+                  <span className="text-amber-500">
+                    {"★".repeat(comment.rating ?? 0)}
+                    {"☆".repeat(5 - (comment.rating ?? 0))}
+                  </span>
+                </div>
+                <p className="mt-1 text-zinc-700 dark:text-zinc-300">
+                  {comment.body}
+                </p>
+              </li>
+            ))}
+            {comments?.length === 0 && (
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                No comments yet.
+              </p>
+            )}
+          </ul>
+        </section>
       </div>
     </main>
   );

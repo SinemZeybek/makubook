@@ -8,6 +8,9 @@ export default function LoginPage() {
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [avatar, setAvatar] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -18,18 +21,54 @@ export default function LoginPage() {
     setLoading(true);
 
     const supabase = createClient();
-    const { error } =
-      mode === "sign-in"
-        ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password });
 
-    setLoading(false);
-
-    if (error) {
-      setError(error.message);
+    if (mode === "sign-in") {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      setLoading(false);
+      if (error) {
+        setError(error.message);
+        return;
+      }
+      router.push("/");
+      router.refresh();
       return;
     }
 
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { display_name: displayName, birthday } },
+    });
+
+    if (signUpError || !data.user) {
+      setError(signUpError?.message ?? "Could not create account");
+      setLoading(false);
+      return;
+    }
+
+    if (avatar) {
+      const extension = avatar.name.split(".").pop();
+      const path = `${data.user.id}/avatar.${extension}`;
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(path, avatar, { upsert: true });
+
+      if (!uploadError) {
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("avatars").getPublicUrl(path);
+
+        await supabase
+          .from("profiles")
+          .update({ avatar_url: publicUrl })
+          .eq("id", data.user.id);
+      }
+    }
+
+    setLoading(false);
     router.push("/");
     router.refresh();
   }
@@ -59,6 +98,37 @@ export default function LoginPage() {
             minLength={6}
             className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />
+
+          {mode === "sign-up" && (
+            <>
+              <input
+                type="text"
+                placeholder="Display name or nickname"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                required
+                className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              />
+              <label className="flex flex-col gap-1 text-sm text-zinc-600 dark:text-zinc-400">
+                Birthday
+                <input
+                  type="date"
+                  value={birthday}
+                  onChange={(e) => setBirthday(e.target.value)}
+                  required
+                  className="rounded-md border border-zinc-300 px-3 py-2 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                />
+              </label>
+              <label className="flex flex-col gap-1 text-sm text-zinc-600 dark:text-zinc-400">
+                Profile picture (optional)
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setAvatar(e.target.files?.[0] ?? null)}
+                />
+              </label>
+            </>
+          )}
 
           {error && <p className="text-sm text-red-600">{error}</p>}
 
