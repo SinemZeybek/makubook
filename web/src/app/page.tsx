@@ -66,39 +66,41 @@ export default async function Home() {
         {!error && recipes && recipes.length > 0 && (
           <ul className="mt-8 space-y-4">
             {recipes.map((recipe) => (
-              <li
-                key={recipe.id}
-                className="flex gap-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
-              >
-                {recipe.recipe_images?.[0]?.url && (
-                  <Image
-                    src={recipe.recipe_images[0].url}
-                    alt={recipe.title}
-                    width={80}
-                    height={80}
-                    className="h-20 w-20 rounded-md object-cover"
-                  />
-                )}
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-lg font-medium text-black dark:text-zinc-50">
-                      {recipe.title}
-                    </h2>
-                    {recipe.country && (
-                      <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800 dark:bg-amber-900 dark:text-amber-200">
-                        {recipe.country}
-                      </span>
-                    )}
-                    <span className="rounded bg-zinc-200 px-1.5 py-0.5 text-xs uppercase text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                      {recipe.language}
-                    </span>
-                  </div>
-                  {recipe.description && (
-                    <p className="mt-1 text-zinc-600 dark:text-zinc-400">
-                      {recipe.description}
-                    </p>
+              <li key={recipe.id}>
+                <Link
+                  href={`/recipes/${recipe.id}`}
+                  className="flex gap-4 rounded-lg border border-zinc-200 p-4 hover:border-zinc-300 dark:border-zinc-800 dark:hover:border-zinc-700"
+                >
+                  {recipe.recipe_images?.[0]?.url && (
+                    <Image
+                      src={recipe.recipe_images[0].url}
+                      alt={recipe.title}
+                      width={80}
+                      height={80}
+                      className="h-20 w-20 rounded-md object-cover"
+                    />
                   )}
-                </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-lg font-medium text-black dark:text-zinc-50">
+                        {recipe.title}
+                      </h2>
+                      {recipe.country && (
+                        <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+                          {recipe.country}
+                        </span>
+                      )}
+                      <span className="rounded bg-zinc-200 px-1.5 py-0.5 text-xs uppercase text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                        {recipe.language}
+                      </span>
+                    </div>
+                    {recipe.description && (
+                      <p className="mt-1 text-zinc-600 dark:text-zinc-400">
+                        {recipe.description}
+                      </p>
+                    )}
+                  </div>
+                </Link>
               </li>
             ))}
           </ul>
