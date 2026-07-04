@@ -6,20 +6,45 @@ import { createClient } from "@/lib/supabase/client";
 import { COUNTRIES } from "@/lib/countries";
 import { UNITS } from "@/lib/units";
 import { MEAL_TYPES } from "@/lib/mealTypes";
+import DeleteRecipeButton from "../delete-recipe-button";
 
 type Ingredient = { quantity: string; unit: string; name: string };
 
-export default function RecipeForm({ userId }: { userId: string }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [country, setCountry] = useState("");
-  const [mealType, setMealType] = useState("");
-  const [ingredients, setIngredients] = useState<Ingredient[]>([
-    { quantity: "", unit: "", name: "" },
-  ]);
-  const [steps, setSteps] = useState([""]);
-  const [tips, setTips] = useState("");
-  const [language, setLanguage] = useState<"fi" | "en">("en");
+type Recipe = {
+  id: string;
+  title: string;
+  description: string | null;
+  country: string | null;
+  meal_type: string | null;
+  language: "fi" | "en";
+  ingredients: unknown;
+  instructions: unknown;
+  tips: string | null;
+};
+
+export default function EditRecipeForm({
+  recipe,
+  userId,
+}: {
+  recipe: Recipe;
+  userId: string;
+}) {
+  const [title, setTitle] = useState(recipe.title);
+  const [description, setDescription] = useState(recipe.description ?? "");
+  const [country, setCountry] = useState(recipe.country ?? "");
+  const [mealType, setMealType] = useState(recipe.meal_type ?? "");
+  const [ingredients, setIngredients] = useState<Ingredient[]>(
+    Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0
+      ? (recipe.ingredients as Ingredient[])
+      : [{ quantity: "", unit: "", name: "" }]
+  );
+  const [steps, setSteps] = useState<string[]>(
+    Array.isArray(recipe.instructions) && recipe.instructions.length > 0
+      ? (recipe.instructions as string[])
+      : [""]
+  );
+  const [tips, setTips] = useState(recipe.tips ?? "");
+  const [language, setLanguage] = useState<"fi" | "en">(recipe.language);
   const [photo, setPhoto] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -73,10 +98,9 @@ export default function RecipeForm({ userId }: { userId: string }) {
       }))
       .filter((ingredient) => ingredient.name);
 
-    const { data: recipe, error: insertError } = await supabase
+    const { error: updateError } = await supabase
       .from("recipes")
-      .insert({
-        author_id: userId,
+      .update({
         title,
         description,
         country,
@@ -86,11 +110,10 @@ export default function RecipeForm({ userId }: { userId: string }) {
         tips: tips.trim() || null,
         language,
       })
-      .select()
-      .single();
+      .eq("id", recipe.id);
 
-    if (insertError || !recipe) {
-      setError(insertError?.message ?? "Could not create recipe");
+    if (updateError) {
+      setError(updateError.message);
       setLoading(false);
       return;
     }
@@ -99,7 +122,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
       const path = `${userId}/${recipe.id}/${photo.name}`;
       const { error: uploadError } = await supabase.storage
         .from("recipe-images")
-        .upload(path, photo);
+        .upload(path, photo, { upsert: true });
 
       if (uploadError) {
         setError(uploadError.message);
@@ -111,13 +134,14 @@ export default function RecipeForm({ userId }: { userId: string }) {
         data: { publicUrl },
       } = supabase.storage.from("recipe-images").getPublicUrl(path);
 
+      await supabase.from("recipe_images").delete().eq("recipe_id", recipe.id);
       await supabase
         .from("recipe_images")
         .insert({ recipe_id: recipe.id, url: publicUrl });
     }
 
     setLoading(false);
-    router.push("/");
+    router.push(`/recipes/${recipe.id}`);
     router.refresh();
   }
 
@@ -282,17 +306,18 @@ export default function RecipeForm({ userId }: { userId: string }) {
         onChange={(e) => setLanguage(e.target.value as "fi" | "en")}
         className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
       >
-        <option value="en">English</option>
         <option value="fi">Finnish</option>
+        <option value="en">English</option>
       </select>
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
-        required
-        className="text-sm text-zinc-600 dark:text-zinc-400"
-      />
+      <label className="flex flex-col gap-1 text-sm text-zinc-600 dark:text-zinc-400">
+        Replace photo (optional)
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
+        />
+      </label>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
@@ -301,8 +326,12 @@ export default function RecipeForm({ userId }: { userId: string }) {
         disabled={loading}
         className="rounded-md bg-black px-3 py-2 text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-black"
       >
-        {loading ? "Saving..." : "Add recipe"}
+        {loading ? "Saving..." : "Save changes"}
       </button>
+
+      <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+        <DeleteRecipeButton recipeId={recipe.id} />
+      </div>
     </form>
   );
 }

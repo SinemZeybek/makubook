@@ -21,7 +21,7 @@ export default async function RecipePage({
   const { data: recipe, error } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, ingredients, instructions, tips, recipe_images(url)"
+      "id, title, description, country, meal_type, language, ingredients, instructions, tips, author_id, recipe_images(url)"
     )
     .eq("id", id)
     .single();
@@ -46,12 +46,23 @@ export default async function RecipePage({
   return (
     <main className="min-h-screen bg-zinc-50 px-6 py-16 dark:bg-black">
       <div className="mx-auto max-w-2xl">
-        <Link
-          href="/"
-          className="text-sm text-zinc-600 underline dark:text-zinc-400"
-        >
-          Back to recipes
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link
+            href="/"
+            className="text-sm text-zinc-600 underline dark:text-zinc-400"
+          >
+            Back to recipes
+          </Link>
+
+          {user?.id === recipe.author_id && (
+            <Link
+              href={`/recipes/${recipe.id}/edit`}
+              className="text-sm text-zinc-600 underline dark:text-zinc-400"
+            >
+              Edit
+            </Link>
+          )}
+        </div>
 
         {recipe.recipe_images?.[0]?.url && (
           <Image
