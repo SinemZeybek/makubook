@@ -10,8 +10,8 @@ export default function Navbar({ userEmail }: { userEmail: string | null }) {
 
   return (
     <div className="sticky top-0 z-10 border-b border-berry/10 bg-cream/95 backdrop-blur">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-        <span className="text-2xl font-semibold">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <span className="font-logo text-2xl">
           <span className="text-gold">Maku</span>
           <span className="text-berry">book</span>
         </span>
@@ -65,7 +65,7 @@ export default function Navbar({ userEmail }: { userEmail: string | null }) {
       </div>
 
       {searchOpen && (
-        <div className="mx-auto max-w-3xl px-6 pb-4">
+        <div className="mx-auto max-w-6xl px-6 pb-4">
           <RecipeFilters />
         </div>
       )}
