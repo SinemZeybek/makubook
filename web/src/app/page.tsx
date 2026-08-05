@@ -39,10 +39,24 @@ export default async function Home({
     <main className="min-h-screen bg-cream">
       <Navbar userEmail={user?.email ?? null} />
 
+      <div className="relative h-72 w-full">
+        <Image
+          src="/dish-mediterranean-spread.jpg"
+          alt="A spread of dishes from around the world"
+          fill
+          priority
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-berry/60" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+          <h1 className="text-4xl font-semibold text-cream">Makubook</h1>
+          <p className="mt-2 max-w-md text-cream/90">
+            Recipes from every home, shared with the world.
+          </p>
+        </div>
+      </div>
+
       <div className="mx-auto max-w-3xl px-6 py-10">
-        <p className="text-berry/70">
-          Recipes from every home, shared with the world.
-        </p>
 
         {user && (
           <Link
