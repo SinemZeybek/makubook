@@ -23,7 +23,7 @@ export default async function Home({
   let recipesQuery = supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, recipe_images(url)"
+      "id, title, description, country, meal_type, language, recipe_images(url), profiles(display_name, avatar_url)"
     )
     .order("created_at", { ascending: false });
 
@@ -37,7 +37,9 @@ export default async function Home({
 
   const { data: featuredRecipes } = await supabase
     .from("recipes")
-    .select("id, title, country, meal_type, language, recipe_images(url)")
+    .select(
+      "id, title, description, country, meal_type, language, recipe_images(url), profiles(display_name, avatar_url)"
+    )
     .order("created_at", { ascending: false })
     .limit(5);
 
@@ -55,7 +57,7 @@ export default async function Home({
 
       <div className="relative h-72 w-full md:h-[420px]">
         <Image
-          src="/dish-mediterranean-spread.jpg"
+          src="/dish-autumn-spread.jpg"
           alt="A spread of dishes from around the world"
           fill
           priority
@@ -77,14 +79,14 @@ export default async function Home({
           <h2 className="text-xl font-semibold text-berry">
             Easy to access and follow recipes
           </h2>
-          <div className="mt-4 flex gap-4 overflow-x-auto pb-2">
+          <div className="mt-4 flex gap-5 overflow-x-auto pb-2">
             {featuredRecipes.map((recipe, i) => (
               <Link
                 key={recipe.id}
                 href={`/recipes/${recipe.id}`}
-                className="w-56 flex-shrink-0 overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30"
+                className="w-72 flex-shrink-0 overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30"
               >
-                <div className="relative h-36 w-full">
+                <div className="relative h-48 w-full">
                   <Image
                     src={
                       recipe.recipe_images?.[0]?.url ||
@@ -95,8 +97,28 @@ export default async function Home({
                     className="object-cover"
                   />
                 </div>
-                <div className="p-3">
-                  <h3 className="font-medium text-berry">{recipe.title}</h3>
+                <div className="p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-lg font-medium text-berry">
+                      {recipe.title}
+                    </h3>
+                    <div className="flex shrink-0 items-center gap-1.5">
+                      <div className="relative h-5 w-5 overflow-hidden rounded-full">
+                        <Image
+                          src={
+                            recipe.profiles?.avatar_url ||
+                            "/default-avatar.png"
+                          }
+                          alt=""
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <span className="text-xs text-berry/60">
+                        {recipe.profiles?.display_name ?? "Anonymous"}
+                      </span>
+                    </div>
+                  </div>
                   <div className="mt-1 flex flex-wrap gap-1">
                     {recipe.country && (
                       <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
@@ -109,6 +131,11 @@ export default async function Home({
                       </span>
                     )}
                   </div>
+                  {recipe.description && (
+                    <p className="mt-2 text-sm text-berry/70">
+                      {recipe.description}
+                    </p>
+                  )}
                 </div>
               </Link>
             ))}
@@ -141,14 +168,14 @@ export default async function Home({
         )}
 
         {!error && recipes && recipes.length > 0 && (
-          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {recipes.map((recipe) => (
               <li key={recipe.id}>
                 <Link
                   href={`/recipes/${recipe.id}`}
                   className="block overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30"
                 >
-                  <div className="relative h-40 w-full bg-berry/5">
+                  <div className="relative h-56 w-full bg-berry/5">
                     {recipe.recipe_images?.[0]?.url && (
                       <Image
                         src={recipe.recipe_images[0].url}
@@ -158,27 +185,45 @@ export default async function Home({
                       />
                     )}
                   </div>
-                  <div className="p-4">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="text-lg font-medium text-berry">
-                        {recipe.title}
-                      </h2>
-                      {recipe.country && (
-                        <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
-                          {recipe.country}
+                  <div className="p-5">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h2 className="text-xl font-medium text-berry">
+                          {recipe.title}
+                        </h2>
+                        {recipe.country && (
+                          <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
+                            {recipe.country}
+                          </span>
+                        )}
+                        {recipe.meal_type && (
+                          <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
+                            {recipe.meal_type}
+                          </span>
+                        )}
+                        <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
+                          {recipe.language}
                         </span>
-                      )}
-                      {recipe.meal_type && (
-                        <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
-                          {recipe.meal_type}
+                      </div>
+                      <div className="flex shrink-0 items-center gap-1.5">
+                        <div className="relative h-5 w-5 overflow-hidden rounded-full">
+                          <Image
+                            src={
+                              recipe.profiles?.avatar_url ||
+                              "/default-avatar.png"
+                            }
+                            alt=""
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <span className="text-xs text-berry/60">
+                          {recipe.profiles?.display_name ?? "Anonymous"}
                         </span>
-                      )}
-                      <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
-                        {recipe.language}
-                      </span>
+                      </div>
                     </div>
                     {recipe.description && (
-                      <p className="mt-1 text-berry/70">
+                      <p className="mt-2 text-base text-berry/70">
                         {recipe.description}
                       </p>
                     )}
