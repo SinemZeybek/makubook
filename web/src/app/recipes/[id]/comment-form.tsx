@@ -50,7 +50,7 @@ export default function CommentForm({ recipeId }: { recipeId: string }) {
       <select
         value={rating}
         onChange={(e) => setRating(e.target.value)}
-        className="w-32 rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+        className="w-32 rounded-md border border-berry/20 px-3 py-2 text-berry"
       >
         {[5, 4, 3, 2, 1].map((n) => (
           <option key={n} value={n}>
@@ -66,7 +66,7 @@ export default function CommentForm({ recipeId }: { recipeId: string }) {
         onChange={(e) => setBody(e.target.value)}
         required
         rows={3}
-        className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+        className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       />
 
       {error && <p className="text-sm text-red-600">{error}</p>}
@@ -74,7 +74,7 @@ export default function CommentForm({ recipeId }: { recipeId: string }) {
       <button
         type="submit"
         disabled={loading}
-        className="self-start rounded-md bg-black px-3 py-2 text-sm text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-black"
+        className="self-start rounded-md bg-gold px-3 py-2 text-sm font-medium text-berry disabled:opacity-50"
       >
         {loading ? "Posting..." : "Post comment"}
       </button>
