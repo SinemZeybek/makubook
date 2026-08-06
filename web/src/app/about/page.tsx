@@ -70,11 +70,11 @@ export default async function AboutPage() {
             </div>
             <div className="flex flex-col items-center text-center">
               <Image
-                src="/join-icon.png"
+                src="/join-icon-transparent.png"
                 alt=""
-                width={80}
-                height={80}
-                className="h-20 w-20"
+                width={100}
+                height={100}
+                className="h-24 w-24"
               />
               <p className="mt-3 text-sm font-medium text-berry">
                 Free to join!
@@ -94,11 +94,11 @@ export default async function AboutPage() {
             </div>
             <div className="flex flex-col items-center text-center">
               <Image
-                src="/star-icon.png"
+                src="/star-icon-transparent.png"
                 alt=""
-                width={80}
-                height={80}
-                className="h-20 w-20"
+                width={100}
+                height={100}
+                className="h-24 w-24"
               />
               <p className="mt-3 text-sm font-medium text-berry">
                 Community rated
