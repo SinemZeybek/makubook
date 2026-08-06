@@ -6,7 +6,7 @@ import LogoutButton from "./logout-button";
 import RecipeFilters from "./recipe-filters";
 
 export default function Navbar({ userEmail }: { userEmail: string | null }) {
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(true);
 
   return (
     <div className="sticky top-0 z-10 border-b border-berry/10 bg-cream/95 backdrop-blur">

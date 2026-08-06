@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "./navbar";
+import RecipeCard from "./recipe-card";
+import { MEAL_TYPES } from "@/lib/mealTypes";
 
 export default async function Home({
   searchParams,
@@ -34,6 +36,16 @@ export default async function Home({
 
   const { data: recipes, error } = await recipesQuery;
   const hasActiveFilters = Boolean(q || country || mealType || language);
+
+  function categoryHref(type?: string) {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (country) params.set("country", country);
+    if (type) params.set("mealType", type);
+    if (language) params.set("language", language);
+    const qs = params.toString();
+    return qs ? `/?${qs}` : "/";
+  }
 
   const { data: featuredRecipes } = await supabase
     .from("recipes")
@@ -159,6 +171,32 @@ export default async function Home({
           </p>
         )}
 
+        <div className="mt-8 flex flex-wrap gap-2">
+          <Link
+            href={categoryHref(undefined)}
+            className={
+              !mealType
+                ? "rounded-full bg-berry px-4 py-1.5 text-sm text-cream"
+                : "rounded-full border border-berry/20 px-4 py-1.5 text-sm text-berry hover:bg-berry/10"
+            }
+          >
+            All
+          </Link>
+          {MEAL_TYPES.map((type) => (
+            <Link
+              key={type}
+              href={categoryHref(type)}
+              className={
+                mealType === type
+                  ? "rounded-full bg-berry px-4 py-1.5 text-sm text-cream"
+                  : "rounded-full border border-berry/20 px-4 py-1.5 text-sm text-berry hover:bg-berry/10"
+              }
+            >
+              {type}
+            </Link>
+          ))}
+        </div>
+
         {!error && recipes && recipes.length === 0 && (
           <p className="mt-8 text-berry/70">
             {hasActiveFilters
@@ -171,64 +209,7 @@ export default async function Home({
           <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {recipes.map((recipe) => (
               <li key={recipe.id}>
-                <Link
-                  href={`/recipes/${recipe.id}`}
-                  className="block overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30"
-                >
-                  <div className="relative h-56 w-full bg-berry/5">
-                    {recipe.recipe_images?.[0]?.url && (
-                      <Image
-                        src={recipe.recipe_images[0].url}
-                        alt={recipe.title}
-                        fill
-                        className="object-cover"
-                      />
-                    )}
-                  </div>
-                  <div className="p-5">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h2 className="text-xl font-medium text-berry">
-                          {recipe.title}
-                        </h2>
-                        {recipe.country && (
-                          <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
-                            {recipe.country}
-                          </span>
-                        )}
-                        {recipe.meal_type && (
-                          <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
-                            {recipe.meal_type}
-                          </span>
-                        )}
-                        <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
-                          {recipe.language}
-                        </span>
-                      </div>
-                      <div className="flex shrink-0 items-center gap-1.5">
-                        <div className="relative h-5 w-5 overflow-hidden rounded-full">
-                          <Image
-                            src={
-                              recipe.profiles?.avatar_url ||
-                              "/default-avatar.png"
-                            }
-                            alt=""
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <span className="text-xs text-berry/60">
-                          {recipe.profiles?.display_name ?? "Anonymous"}
-                        </span>
-                      </div>
-                    </div>
-                    {recipe.description && (
-                      <p className="mt-2 text-base text-berry/70">
-                        {recipe.description}
-                      </p>
-                    )}
-                  </div>
-                </Link>
+                <RecipeCard recipe={recipe} />
               </li>
             ))}
           </ul>
