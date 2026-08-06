@@ -199,23 +199,25 @@ export default async function Home({
           ))}
         </div>
 
-        {!error && recipes && recipes.length === 0 && (
-          <p className="mt-8 text-berry/70">
-            {hasActiveFilters
-              ? "No recipes match your filters."
-              : "No recipes yet — be the first to add one!"}
-          </p>
-        )}
+        <div className="min-h-[50vh]">
+          {!error && recipes && recipes.length === 0 && (
+            <p className="mt-8 text-berry/70">
+              {hasActiveFilters
+                ? "No recipes match your filters."
+                : "No recipes yet — be the first to add one!"}
+            </p>
+          )}
 
-        {!error && recipes && recipes.length > 0 && (
-          <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {recipes.map((recipe) => (
-              <li key={recipe.id}>
-                <RecipeCard recipe={recipe} />
-              </li>
-            ))}
-          </ul>
-        )}
+          {!error && recipes && recipes.length > 0 && (
+            <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {recipes.map((recipe) => (
+                <li key={recipe.id}>
+                  <RecipeCard recipe={recipe} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </main>
   );
