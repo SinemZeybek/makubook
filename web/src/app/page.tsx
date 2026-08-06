@@ -209,7 +209,7 @@ export default async function Home({
           )}
 
           {!error && recipes && recipes.length > 0 && (
-            <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {recipes.map((recipe) => (
                 <li key={recipe.id}>
                   <RecipeCard recipe={recipe} />

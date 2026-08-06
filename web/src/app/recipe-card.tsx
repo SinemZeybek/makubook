@@ -16,9 +16,9 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
   return (
     <Link
       href={`/recipes/${recipe.id}`}
-      className="block overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30"
+      className="flex h-full flex-col overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30"
     >
-      <div className="relative h-56 w-full bg-berry/5">
+      <div className="relative h-56 w-full shrink-0 bg-berry/5">
         {recipe.recipe_images?.[0]?.url && (
           <Image
             src={recipe.recipe_images[0].url}
@@ -28,7 +28,7 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
           />
         )}
       </div>
-      <div className="p-5">
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-xl font-medium text-berry">{recipe.title}</h2>
@@ -61,7 +61,9 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
           </div>
         </div>
         {recipe.description && (
-          <p className="mt-2 text-base text-berry/70">{recipe.description}</p>
+          <p className="mt-2 line-clamp-2 text-base text-berry/70">
+            {recipe.description}
+          </p>
         )}
       </div>
     </Link>
