@@ -153,7 +153,7 @@ export default function EditRecipeForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
-        className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+        className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       />
 
       <textarea
@@ -162,14 +162,14 @@ export default function EditRecipeForm({
         onChange={(e) => setDescription(e.target.value)}
         required
         rows={2}
-        className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+        className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       />
 
       <select
         value={country}
         onChange={(e) => setCountry(e.target.value)}
         required
-        className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+        className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       >
         <option value="" disabled>
           Country of origin
@@ -185,7 +185,7 @@ export default function EditRecipeForm({
         value={mealType}
         onChange={(e) => setMealType(e.target.value)}
         required
-        className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+        className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       >
         <option value="" disabled>
           Meal type
@@ -198,7 +198,7 @@ export default function EditRecipeForm({
       </select>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-zinc-600 dark:text-zinc-400">
+        <label className="text-sm text-berry/70">
           Ingredients
         </label>
         {ingredients.map((ingredient, i) => (
@@ -214,13 +214,13 @@ export default function EditRecipeForm({
                 updateIngredient(i, "quantity", e.target.value)
               }
               required
-              className="w-16 rounded-md border border-zinc-300 px-2 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="w-16 rounded-md border border-berry/20 px-2 py-2 text-berry placeholder:text-berry/40"
             />
             <select
               value={ingredient.unit}
               onChange={(e) => updateIngredient(i, "unit", e.target.value)}
               required
-              className="w-24 rounded-md border border-zinc-300 px-2 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="w-24 rounded-md border border-berry/20 px-2 py-2 text-berry"
             >
               <option value="" disabled>
                 Unit
@@ -237,13 +237,13 @@ export default function EditRecipeForm({
               value={ingredient.name}
               onChange={(e) => updateIngredient(i, "name", e.target.value)}
               required
-              className="flex-1 rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="flex-1 rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
             />
             {ingredients.length > 1 && (
               <button
                 type="button"
                 onClick={() => removeIngredient(i)}
-                className="text-sm text-zinc-500 dark:text-zinc-400"
+                className="text-sm text-berry/60"
               >
                 Remove
               </button>
@@ -253,14 +253,14 @@ export default function EditRecipeForm({
         <button
           type="button"
           onClick={addIngredient}
-          className="self-start text-sm text-zinc-600 underline dark:text-zinc-400"
+          className="self-start text-sm text-berry underline"
         >
           Add another ingredient
         </button>
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-zinc-600 dark:text-zinc-400">
+        <label className="text-sm text-berry/70">
           Steps
         </label>
         {steps.map((step, i) => (
@@ -271,13 +271,13 @@ export default function EditRecipeForm({
               value={step}
               onChange={(e) => updateStep(i, e.target.value)}
               required
-              className="flex-1 rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              className="flex-1 rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
             />
             {steps.length > 1 && (
               <button
                 type="button"
                 onClick={() => removeStep(i)}
-                className="text-sm text-zinc-500 dark:text-zinc-400"
+                className="text-sm text-berry/60"
               >
                 Remove
               </button>
@@ -287,7 +287,7 @@ export default function EditRecipeForm({
         <button
           type="button"
           onClick={addStep}
-          className="self-start text-sm text-zinc-600 underline dark:text-zinc-400"
+          className="self-start text-sm text-berry underline"
         >
           Add another step
         </button>
@@ -298,19 +298,19 @@ export default function EditRecipeForm({
         value={tips}
         onChange={(e) => setTips(e.target.value)}
         rows={2}
-        className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+        className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       />
 
       <select
         value={language}
         onChange={(e) => setLanguage(e.target.value as "fi" | "en")}
-        className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+        className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       >
         <option value="fi">Finnish</option>
         <option value="en">English</option>
       </select>
 
-      <label className="flex flex-col gap-1 text-sm text-zinc-600 dark:text-zinc-400">
+      <label className="flex flex-col gap-1 text-sm text-berry/70">
         Replace photo (optional)
         <input
           type="file"
@@ -324,12 +324,12 @@ export default function EditRecipeForm({
       <button
         type="submit"
         disabled={loading}
-        className="rounded-md bg-black px-3 py-2 text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-black"
+        className="rounded-md bg-gold px-3 py-2 font-medium text-berry disabled:opacity-50"
       >
         {loading ? "Saving..." : "Save changes"}
       </button>
 
-      <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+      <div className="mt-4 border-t border-berry/15 pt-4">
         <DeleteRecipeButton recipeId={recipe.id} />
       </div>
     </form>

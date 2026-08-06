@@ -1,5 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import Navbar from "../../../navbar";
 import EditRecipeForm from "./edit-recipe-form";
 
 export default async function EditRecipePage({
@@ -31,11 +32,10 @@ export default async function EditRecipePage({
   }
 
   return (
-    <main className="min-h-screen bg-zinc-50 px-6 py-16 dark:bg-black">
-      <div className="mx-auto max-w-xl">
-        <h1 className="text-2xl font-semibold text-black dark:text-zinc-50">
-          Edit recipe
-        </h1>
+    <main className="min-h-screen bg-cream">
+      <Navbar userEmail={user.email ?? null} />
+      <div className="mx-auto max-w-xl px-6 py-10">
+        <h1 className="text-2xl font-semibold text-berry">Edit recipe</h1>
         <EditRecipeForm recipe={recipe} userId={user.id} />
       </div>
     </main>
