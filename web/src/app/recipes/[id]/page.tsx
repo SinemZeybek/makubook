@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import Navbar from "../../navbar";
 import CommentForm from "./comment-form";
 
 type Ingredient = { quantity: string; unit: string; name: string };
@@ -44,20 +45,19 @@ export default async function RecipePage({
     : [];
 
   return (
-    <main className="min-h-screen bg-zinc-50 px-6 py-16 dark:bg-black">
-      <div className="mx-auto max-w-2xl">
+    <main className="min-h-screen bg-cream">
+      <Navbar userEmail={user?.email ?? null} />
+
+      <div className="mx-auto max-w-3xl px-6 py-10">
         <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            className="text-sm text-zinc-600 underline dark:text-zinc-400"
-          >
+          <Link href="/" className="text-sm text-berry underline">
             Back to recipes
           </Link>
 
           {user?.id === recipe.author_id && (
             <Link
               href={`/recipes/${recipe.id}/edit`}
-              className="text-sm text-zinc-600 underline dark:text-zinc-400"
+              className="text-sm text-berry underline"
             >
               Edit
             </Link>
@@ -68,42 +68,38 @@ export default async function RecipePage({
           <Image
             src={recipe.recipe_images[0].url}
             alt={recipe.title}
-            width={640}
-            height={360}
-            className="mt-4 h-64 w-full rounded-lg object-cover"
+            width={768}
+            height={432}
+            className="mt-4 h-72 w-full rounded-lg object-cover"
           />
         )}
 
-        <div className="mt-4 flex items-center gap-2">
-          <h1 className="text-3xl font-semibold text-black dark:text-zinc-50">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <h1 className="text-3xl font-semibold text-berry">
             {recipe.title}
           </h1>
           {recipe.country && (
-            <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+            <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
               {recipe.country}
             </span>
           )}
           {recipe.meal_type && (
-            <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-xs text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
+            <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
               {recipe.meal_type}
             </span>
           )}
-          <span className="rounded bg-zinc-200 px-1.5 py-0.5 text-xs uppercase text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+          <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
             {recipe.language}
           </span>
         </div>
 
         {recipe.description && (
-          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-            {recipe.description}
-          </p>
+          <p className="mt-2 text-berry/70">{recipe.description}</p>
         )}
 
         <section className="mt-8">
-          <h2 className="text-lg font-medium text-black dark:text-zinc-50">
-            Ingredients
-          </h2>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-zinc-700 dark:text-zinc-300">
+          <h2 className="text-lg font-medium text-berry">Ingredients</h2>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-berry/80">
             {ingredients.map((ingredient, i) => (
               <li key={i}>
                 {ingredient.quantity} {ingredient.unit} {ingredient.name}
@@ -113,10 +109,8 @@ export default async function RecipePage({
         </section>
 
         <section className="mt-8">
-          <h2 className="text-lg font-medium text-black dark:text-zinc-50">
-            Steps
-          </h2>
-          <ol className="mt-2 list-decimal space-y-2 pl-5 text-zinc-700 dark:text-zinc-300">
+          <h2 className="text-lg font-medium text-berry">Steps</h2>
+          <ol className="mt-2 list-decimal space-y-2 pl-5 text-berry/80">
             {instructions.map((step, i) => (
               <li key={i}>{step}</li>
             ))}
@@ -124,25 +118,19 @@ export default async function RecipePage({
         </section>
 
         {recipe.tips && (
-          <section className="mt-8 rounded-lg bg-amber-50 p-4 dark:bg-amber-950">
-            <h2 className="text-lg font-medium text-black dark:text-zinc-50">
-              Tips
-            </h2>
-            <p className="mt-2 text-zinc-700 dark:text-zinc-300">
-              {recipe.tips}
-            </p>
+          <section className="mt-8 rounded-lg bg-gold/15 p-4">
+            <h2 className="text-lg font-medium text-berry">Tips</h2>
+            <p className="mt-2 text-berry/80">{recipe.tips}</p>
           </section>
         )}
 
         <section className="mt-8">
-          <h2 className="text-lg font-medium text-black dark:text-zinc-50">
-            Comments
-          </h2>
+          <h2 className="text-lg font-medium text-berry">Comments</h2>
 
           {user ? (
             <CommentForm recipeId={recipe.id} />
           ) : (
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="mt-2 text-sm text-berry/70">
               <Link href="/login" className="underline">
                 Log in
               </Link>{" "}
@@ -154,7 +142,7 @@ export default async function RecipePage({
             {comments?.map((comment) => (
               <li
                 key={comment.id}
-                className="rounded-lg border border-zinc-200 p-3 dark:border-zinc-800"
+                className="rounded-lg border border-berry/15 bg-white p-3"
               >
                 <div className="flex items-center gap-2 text-sm">
                   <div className="h-6 w-6 overflow-hidden rounded-full">
@@ -171,23 +159,19 @@ export default async function RecipePage({
                       }
                     />
                   </div>
-                  <span className="font-medium text-black dark:text-zinc-50">
+                  <span className="font-medium text-berry">
                     {comment.profiles?.display_name ?? "Anonymous"}
                   </span>
-                  <span className="text-amber-500">
+                  <span className="text-gold-dark">
                     {"★".repeat(comment.rating ?? 0)}
                     {"☆".repeat(5 - (comment.rating ?? 0))}
                   </span>
                 </div>
-                <p className="mt-1 text-zinc-700 dark:text-zinc-300">
-                  {comment.body}
-                </p>
+                <p className="mt-1 text-berry/80">{comment.body}</p>
               </li>
             ))}
             {comments?.length === 0 && (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                No comments yet.
-              </p>
+              <p className="text-sm text-berry/70">No comments yet.</p>
             )}
           </ul>
         </section>
