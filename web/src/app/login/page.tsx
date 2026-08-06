@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -74,9 +75,14 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-50 px-6 py-16 dark:bg-black">
-      <div className="mx-auto max-w-sm">
-        <h1 className="text-2xl font-semibold text-black dark:text-zinc-50">
+    <main className="flex min-h-screen items-center justify-center bg-cream px-6 py-16">
+      <div className="w-full max-w-sm">
+        <Link href="/" className="mb-6 block text-center font-logo text-2xl">
+          <span className="text-gold">Maku</span>
+          <span className="text-berry">book</span>
+        </Link>
+
+        <h1 className="text-center text-2xl font-semibold text-berry">
           {mode === "sign-in" ? "Log in" : "Sign up"}
         </h1>
 
@@ -87,7 +93,7 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
           />
           <input
             type="password"
@@ -96,7 +102,7 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
-            className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+            className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
           />
 
           {mode === "sign-up" && (
@@ -107,19 +113,19 @@ export default function LoginPage() {
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 required
-                className="rounded-md border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
               />
-              <label className="flex flex-col gap-1 text-sm text-zinc-600 dark:text-zinc-400">
+              <label className="flex flex-col gap-1 text-sm text-berry/70">
                 Birthday
                 <input
                   type="date"
                   value={birthday}
                   onChange={(e) => setBirthday(e.target.value)}
                   required
-                  className="rounded-md border border-zinc-300 px-3 py-2 text-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                  className="rounded-md border border-berry/20 px-3 py-2 text-berry"
                 />
               </label>
-              <label className="flex flex-col gap-1 text-sm text-zinc-600 dark:text-zinc-400">
+              <label className="flex flex-col gap-1 text-sm text-berry/70">
                 Profile picture (optional)
                 <input
                   type="file"
@@ -135,7 +141,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-md bg-black px-3 py-2 text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-black"
+            className="rounded-md bg-gold px-3 py-2 font-medium text-berry disabled:opacity-50"
           >
             {loading ? "..." : mode === "sign-in" ? "Log in" : "Sign up"}
           </button>
@@ -143,7 +149,7 @@ export default function LoginPage() {
 
         <button
           onClick={() => setMode(mode === "sign-in" ? "sign-up" : "sign-in")}
-          className="mt-4 text-sm text-zinc-600 underline dark:text-zinc-400"
+          className="mt-4 block w-full text-center text-sm text-berry underline"
         >
           {mode === "sign-in"
             ? "Need an account? Sign up"
