@@ -11,12 +11,18 @@ export default function Navbar({ userEmail }: { userEmail: string | null }) {
   return (
     <div className="sticky top-0 z-10 border-b border-berry/10 bg-cream/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <span className="font-logo text-2xl">
+        <Link href="/" className="font-logo text-2xl">
           <span className="text-gold">Maku</span>
           <span className="text-berry">book</span>
-        </span>
+        </Link>
 
         <div className="flex items-center gap-4">
+          <Link
+            href="/about"
+            className="hidden text-sm text-berry underline underline-offset-2 sm:inline"
+          >
+            About
+          </Link>
           <button
             onClick={() => setSearchOpen((open) => !open)}
             aria-label="Search recipes"
