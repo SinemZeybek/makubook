@@ -174,6 +174,7 @@ export default async function Home({
         <div className="mt-8 flex flex-wrap gap-2">
           <Link
             href={categoryHref(undefined)}
+            scroll={false}
             className={
               !mealType
                 ? "rounded-full bg-berry px-4 py-1.5 text-sm text-cream"
@@ -186,6 +187,7 @@ export default async function Home({
             <Link
               key={type}
               href={categoryHref(type)}
+              scroll={false}
               className={
                 mealType === type
                   ? "rounded-full bg-berry px-4 py-1.5 text-sm text-cream"

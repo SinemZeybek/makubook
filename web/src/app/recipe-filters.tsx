@@ -19,7 +19,9 @@ export default function RecipeFilters() {
     } else {
       params.delete(key);
     }
-    router.push(params.toString() ? `${pathname}?${params.toString()}` : pathname);
+    router.push(params.toString() ? `${pathname}?${params.toString()}` : pathname, {
+      scroll: false,
+    });
   }
 
   function handleSearchSubmit(e: React.FormEvent) {
@@ -93,7 +95,7 @@ export default function RecipeFilters() {
             type="button"
             onClick={() => {
               setSearch("");
-              router.push(pathname);
+              router.push(pathname, { scroll: false });
             }}
             className="text-sm text-zinc-600 underline dark:text-zinc-400"
           >
