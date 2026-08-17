@@ -26,7 +26,7 @@ export default function Navbar({
           <Link
             href="/about"
             aria-label="About"
-            className="flex items-center gap-1.5 rounded-full px-2 py-2 text-berry hover:bg-berry/10 sm:px-3"
+            className="group relative flex items-center gap-1.5 rounded-full px-2 py-2 text-berry hover:bg-berry/10 sm:px-3"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -44,6 +44,9 @@ export default function Navbar({
               <line x1="12" y1="8" x2="12.01" y2="8" />
             </svg>
             <span className="hidden text-sm sm:inline">About</span>
+            <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-1 -translate-x-1/2 whitespace-nowrap rounded bg-berry px-2 py-1 text-xs text-cream opacity-0 transition-opacity group-hover:opacity-100 group-focus:opacity-100 sm:hidden">
+              About
+            </span>
           </Link>
           <button
             onClick={() => setSearchOpen((open) => !open)}
