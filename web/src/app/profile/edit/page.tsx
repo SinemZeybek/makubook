@@ -21,9 +21,9 @@ export default async function EditProfilePage() {
     .single();
 
   return (
-    <main className="min-h-screen bg-cream">
+    <main className="flex min-h-screen flex-col bg-cream">
       <Navbar userEmail={user.email ?? null} userId={user.id} />
-      <div className="mx-auto max-w-xl px-6 py-10">
+      <div className="flex-1 mx-auto max-w-xl px-6 py-10">
         <h1 className="text-2xl font-semibold text-berry">Edit profile</h1>
         <EditProfileForm
           userId={user.id}
@@ -32,7 +32,7 @@ export default async function EditProfilePage() {
         />
       </div>
 
-      <Footer isLoggedIn />
+      <Footer />
     </main>
   );
 }

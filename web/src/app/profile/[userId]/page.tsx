@@ -48,10 +48,10 @@ export default async function ProfilePage({
   }
 
   return (
-    <main className="min-h-screen bg-cream">
+    <main className="flex min-h-screen flex-col bg-cream">
       <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
 
-      <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="flex-1 mx-auto max-w-6xl px-6 py-10">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="relative h-20 w-20 overflow-hidden rounded-full bg-berry/10">
@@ -114,7 +114,7 @@ export default async function ProfilePage({
         </div>
       </div>
 
-      <Footer isLoggedIn={Boolean(user)} />
+      <Footer />
     </main>
   );
 }

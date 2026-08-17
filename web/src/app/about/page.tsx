@@ -13,10 +13,10 @@ export default async function AboutPage() {
   } = await supabase.auth.getUser();
 
   return (
-    <main className="min-h-screen bg-cream">
+    <main className="flex min-h-screen flex-col bg-cream">
       <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
 
-      <div className="mx-auto max-w-4xl px-6 py-12">
+      <div className="flex-1 mx-auto max-w-4xl px-6 py-12">
         <div className="grid items-center gap-8 md:grid-cols-2">
           <div>
             <h1 className="font-logo text-3xl text-berry md:text-4xl">
@@ -139,7 +139,7 @@ export default async function AboutPage() {
         </section>
       </div>
 
-      <Footer isLoggedIn={Boolean(user)} />
+      <Footer />
     </main>
   );
 }

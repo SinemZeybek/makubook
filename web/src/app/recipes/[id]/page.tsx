@@ -58,10 +58,10 @@ export default async function RecipePage({
     : [];
 
   return (
-    <main className="min-h-screen bg-cream">
+    <main className="flex min-h-screen flex-col bg-cream">
       <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
 
-      <div className="mx-auto max-w-3xl px-6 py-10">
+      <div className="flex-1 mx-auto max-w-3xl px-6 py-10">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-sm text-berry underline">
             Back to recipes
@@ -199,7 +199,7 @@ export default async function RecipePage({
         </section>
       </div>
 
-      <Footer isLoggedIn={Boolean(user)} />
+      <Footer />
     </main>
   );
 }

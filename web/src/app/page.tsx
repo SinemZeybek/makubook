@@ -74,9 +74,10 @@ export default async function Home({
   ];
 
   return (
-    <main className="min-h-screen bg-cream">
+    <main className="flex min-h-screen flex-col bg-cream">
       <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
 
+      <div className="flex-1">
       <div className="relative h-72 w-full md:h-[420px]">
         <Image
           src="/dish-autumn-spread.jpg"
@@ -240,8 +241,9 @@ export default async function Home({
           )}
         </div>
       </div>
+      </div>
 
-      <Footer isLoggedIn={Boolean(user)} />
+      <Footer />
     </main>
   );
 }

@@ -33,14 +33,14 @@ export default async function EditRecipePage({
   }
 
   return (
-    <main className="min-h-screen bg-cream">
+    <main className="flex min-h-screen flex-col bg-cream">
       <Navbar userEmail={user.email ?? null} userId={user.id} />
-      <div className="mx-auto max-w-xl px-6 py-10">
+      <div className="flex-1 mx-auto max-w-xl px-6 py-10">
         <h1 className="text-2xl font-semibold text-berry">Edit recipe</h1>
         <EditRecipeForm recipe={recipe} userId={user.id} />
       </div>
 
-      <Footer isLoggedIn />
+      <Footer />
     </main>
   );
 }

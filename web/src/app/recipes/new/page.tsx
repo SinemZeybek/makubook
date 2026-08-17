@@ -15,14 +15,14 @@ export default async function NewRecipePage() {
   }
 
   return (
-    <main className="min-h-screen bg-cream">
+    <main className="flex min-h-screen flex-col bg-cream">
       <Navbar userEmail={user.email ?? null} userId={user.id} />
-      <div className="mx-auto max-w-xl px-6 py-10">
+      <div className="flex-1 mx-auto max-w-xl px-6 py-10">
         <h1 className="text-2xl font-semibold text-berry">Add a recipe</h1>
         <RecipeForm userId={user.id} />
       </div>
 
-      <Footer isLoggedIn />
+      <Footer />
     </main>
   );
 }

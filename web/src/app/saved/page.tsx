@@ -27,10 +27,10 @@ export default async function SavedRecipesPage() {
     .filter((recipe): recipe is NonNullable<typeof recipe> => Boolean(recipe));
 
   return (
-    <main className="min-h-screen bg-cream">
+    <main className="flex min-h-screen flex-col bg-cream">
       <Navbar userEmail={user.email ?? null} userId={user.id} />
 
-      <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="flex-1 mx-auto max-w-6xl px-6 py-10">
         <h1 className="text-2xl font-semibold text-berry">
           Your saved recipes
         </h1>
@@ -60,7 +60,7 @@ export default async function SavedRecipesPage() {
         </div>
       </div>
 
-      <Footer isLoggedIn />
+      <Footer />
     </main>
   );
 }

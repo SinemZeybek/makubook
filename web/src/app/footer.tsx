@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const CONTACT_EMAIL = "sinemzpeltokangas.dev@gmail.com";
 
-export default function Footer({ isLoggedIn }: { isLoggedIn: boolean }) {
+export default function Footer() {
   return (
     <footer className="mt-16 border-t border-berry/10 bg-cream">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
@@ -15,15 +15,6 @@ export default function Footer({ isLoggedIn }: { isLoggedIn: boolean }) {
           <Link href="/about" className="hover:text-berry hover:underline">
             About
           </Link>
-          {isLoggedIn ? (
-            <Link href="/saved" className="hover:text-berry hover:underline">
-              Saved
-            </Link>
-          ) : (
-            <Link href="/login" className="hover:text-berry hover:underline">
-              Log in
-            </Link>
-          )}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
             className="hover:text-berry hover:underline"
