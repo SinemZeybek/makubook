@@ -18,17 +18,17 @@ export default function Navbar({
 
   return (
     <div className="sticky top-0 z-10 border-b border-berry/10 bg-cream/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="font-logo text-2xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+        <Link href="/" className="font-logo text-xl sm:text-2xl">
           <span className="text-gold">Maku</span>
           <span className="text-berry">book</span>
         </Link>
 
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-1 sm:gap-4">
           <Link
             href="/about"
             aria-label="About"
-            className="group relative flex items-center gap-1.5 rounded-full px-2 py-2 text-berry hover:bg-berry/10 sm:px-3"
+            className="group relative flex items-center gap-1.5 rounded-full px-1.5 py-2 text-berry hover:bg-berry/10 sm:px-3"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +53,7 @@ export default function Navbar({
           <button
             onClick={() => setSearchOpen((open) => !open)}
             aria-label="Search recipes"
-            className="rounded-full p-2 text-berry hover:bg-berry/10"
+            className="rounded-full p-1.5 text-berry hover:bg-berry/10 sm:p-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -72,11 +72,11 @@ export default function Navbar({
           </button>
 
           {userEmail ? (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 sm:gap-3">
               <Link
                 href="/saved"
                 aria-label="Saved recipes"
-                className="flex items-center gap-1.5 rounded-full px-2 py-2 text-berry hover:bg-berry/10 sm:px-3"
+                className="flex items-center gap-1.5 rounded-full px-1.5 py-2 text-berry hover:bg-berry/10 sm:px-3"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -96,16 +96,31 @@ export default function Navbar({
               {isEditor && (
                 <Link
                   href="/editor"
-                  className="rounded-full bg-berry px-3 py-1.5 text-sm font-medium text-cream hover:bg-berry-dark"
+                  aria-label="Editor queue"
+                  className="flex items-center gap-1.5 rounded-full bg-berry px-1.5 py-1.5 text-sm font-medium text-cream hover:bg-berry-dark sm:px-3"
                 >
-                  Editor
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 3 3 7v5c0 4.5 3.4 8.2 9 10 5.6-1.8 9-5.5 9-10V7l-9-4Z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                  <span className="hidden sm:inline">Editor</span>
                 </Link>
               )}
               {userId ? (
                 <Link
                   href={`/profile/${userId}`}
                   aria-label="Your profile"
-                  className="flex items-center gap-1.5 rounded-full px-2 py-2 text-berry/70 hover:bg-berry/10 sm:px-1"
+                  className="flex items-center gap-1.5 rounded-full px-1.5 py-2 text-berry/70 hover:bg-berry/10 sm:px-1"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

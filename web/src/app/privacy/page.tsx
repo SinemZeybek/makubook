@@ -1,8 +1,7 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
 import Footer from "../footer";
-
-const CONTACT_EMAIL = "sinemzpeltokangas.dev@gmail.com";
 
 export default async function PrivacyPage() {
   const supabase = await createClient();
@@ -10,9 +9,23 @@ export default async function PrivacyPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  let isEditor = false;
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+    isEditor = profile?.role === "editor";
+  }
+
   return (
     <main className="flex min-h-screen flex-col bg-cream">
-      <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
+      <Navbar
+        userEmail={user?.email ?? null}
+        userId={user?.id ?? null}
+        isEditor={isEditor}
+      />
 
       <div className="flex-1 mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-3xl font-semibold text-berry">Privacy Policy</h1>
@@ -23,14 +36,10 @@ export default async function PrivacyPage() {
             <h2 className="text-lg font-semibold text-berry">Who we are</h2>
             <p className="mt-2">
               Makubook is a recipe-sharing platform based in Finland. For
-              anything related to this privacy policy or your data, you can
-              reach us at{" "}
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="underline hover:text-berry"
-              >
-                {CONTACT_EMAIL}
-              </a>
+              anything related to this privacy policy or your data, you can{" "}
+              <Link href="/contact" className="underline hover:text-berry">
+                get in touch here
+              </Link>
               .
             </p>
           </section>
@@ -99,13 +108,10 @@ export default async function PrivacyPage() {
               edit your display name and profile picture, and delete your
               own recipes and comments, directly in the app at any time.
               To request full deletion of your account and all associated
-              data, email us at{" "}
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="underline hover:text-berry"
-              >
-                {CONTACT_EMAIL}
-              </a>{" "}
+              data,{" "}
+              <Link href="/contact" className="underline hover:text-berry">
+                contact us here
+              </Link>{" "}
               and we'll process it promptly.
             </p>
           </section>

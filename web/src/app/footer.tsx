@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-const CONTACT_EMAIL = "sinemzpeltokangas.dev@gmail.com";
-
 export default function Footer() {
   return (
     <footer className="mt-16 border-t border-berry/10 bg-cream">
@@ -15,12 +13,9 @@ export default function Footer() {
           <Link href="/about" className="hover:text-berry hover:underline">
             About
           </Link>
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            className="hover:text-berry hover:underline"
-          >
+          <Link href="/contact" className="hover:text-berry hover:underline">
             Contact us
-          </a>
+          </Link>
         </nav>
       </div>
 

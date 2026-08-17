@@ -4,8 +4,6 @@ import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
 import Footer from "../footer";
 
-const CONTACT_EMAIL = "sinemzpeltokangas.dev@gmail.com";
-
 export default async function AboutPage() {
   const supabase = await createClient();
   const {
@@ -144,12 +142,12 @@ export default async function AboutPage() {
             Questions, feedback, or a recipe idea you want to see on
             Makubook? We'd love to hear from you.
           </p>
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
+          <Link
+            href="/contact"
             className="mt-5 inline-block rounded-md border border-berry/20 px-5 py-2.5 font-medium text-berry hover:bg-berry/10"
           >
-            {CONTACT_EMAIL}
-          </a>
+            Contact us
+          </Link>
         </section>
       </div>
 
