@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { COUNTRIES } from "@/lib/countries";
 import { MEAL_TYPES } from "@/lib/mealTypes";
 
@@ -11,6 +12,30 @@ export default function RecipeFilters() {
   const searchParams = useSearchParams();
 
   const [search, setSearch] = useState(searchParams.get("q") ?? "");
+  const [availableCountries, setAvailableCountries] = useState<string[]>([]);
+  const [availableMealTypes, setAvailableMealTypes] = useState<string[]>([]);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("recipes")
+      .select("country, meal_type")
+      .then(({ data }) => {
+        if (!data) return;
+        const countriesInUse = new Set(
+          data.map((recipe) => recipe.country).filter(Boolean)
+        );
+        const mealTypesInUse = new Set(
+          data.map((recipe) => recipe.meal_type).filter(Boolean)
+        );
+        setAvailableCountries(
+          COUNTRIES.filter((c) => countriesInUse.has(c))
+        );
+        setAvailableMealTypes(
+          MEAL_TYPES.filter((m) => mealTypesInUse.has(m))
+        );
+      });
+  }, []);
 
   function updateParam(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -60,7 +85,7 @@ export default function RecipeFilters() {
           className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
         >
           <option value="">All countries</option>
-          {COUNTRIES.map((c) => (
+          {availableCountries.map((c) => (
             <option key={c} value={c}>
               {c}
             </option>
@@ -73,7 +98,7 @@ export default function RecipeFilters() {
           className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
         >
           <option value="">All meal types</option>
-          {MEAL_TYPES.map((m) => (
+          {availableMealTypes.map((m) => (
             <option key={m} value={m}>
               {m}
             </option>
