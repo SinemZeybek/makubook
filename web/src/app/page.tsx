@@ -25,7 +25,7 @@ export default async function Home({
   let recipesQuery = supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
     )
     .order("created_at", { ascending: false });
 
@@ -50,7 +50,7 @@ export default async function Home({
   const { data: featuredRecipes } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
     )
     .order("created_at", { ascending: false })
     .limit(5);
@@ -65,7 +65,7 @@ export default async function Home({
 
   return (
     <main className="min-h-screen bg-cream">
-      <Navbar userEmail={user?.email ?? null} />
+      <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
 
       <div className="relative h-72 w-full md:h-[420px]">
         <Image
@@ -93,12 +93,16 @@ export default async function Home({
           </h2>
           <div className="mt-4 flex gap-5 overflow-x-auto pb-2">
             {featuredRecipes.map((recipe, i) => (
-              <Link
+              <div
                 key={recipe.id}
-                href={`/recipes/${recipe.id}`}
-                className="w-72 flex-shrink-0 overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30"
+                className="relative w-72 flex-shrink-0 overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30"
               >
-                <div className="relative h-48 w-full">
+                <Link
+                  href={`/recipes/${recipe.id}`}
+                  className="absolute inset-0 z-0"
+                  aria-label={recipe.title}
+                />
+                <div className="pointer-events-none relative h-48 w-full">
                   <Image
                     src={
                       recipe.recipe_images?.[0]?.url ||
@@ -111,10 +115,13 @@ export default async function Home({
                 </div>
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-lg font-medium text-berry">
+                    <h3 className="pointer-events-none text-lg font-medium text-berry">
                       {recipe.title}
                     </h3>
-                    <div className="flex shrink-0 items-center gap-1.5">
+                    <Link
+                      href={`/profile/${recipe.author_id}`}
+                      className="relative z-10 flex shrink-0 items-center gap-1.5 hover:underline"
+                    >
                       <div className="relative h-5 w-5 overflow-hidden rounded-full">
                         <Image
                           src={
@@ -129,9 +136,9 @@ export default async function Home({
                       <span className="text-xs text-berry/60">
                         {recipe.profiles?.display_name ?? "Anonymous"}
                       </span>
-                    </div>
+                    </Link>
                   </div>
-                  <div className="mt-1 flex flex-wrap gap-1">
+                  <div className="pointer-events-none mt-1 flex flex-wrap gap-1">
                     {recipe.country && (
                       <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
                         {recipe.country}
@@ -144,12 +151,12 @@ export default async function Home({
                     )}
                   </div>
                   {recipe.description && (
-                    <p className="mt-2 text-sm text-berry/70">
+                    <p className="pointer-events-none mt-2 text-sm text-berry/70">
                       {recipe.description}
                     </p>
                   )}
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>

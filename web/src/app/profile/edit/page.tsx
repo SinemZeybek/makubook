@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
-import RecipeForm from "./recipe-form";
+import EditProfileForm from "./edit-profile-form";
 
-export default async function NewRecipePage() {
+export default async function EditProfilePage() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -13,12 +13,22 @@ export default async function NewRecipePage() {
     redirect("/login");
   }
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("id, display_name, avatar_url")
+    .eq("id", user.id)
+    .single();
+
   return (
     <main className="min-h-screen bg-cream">
       <Navbar userEmail={user.email ?? null} userId={user.id} />
       <div className="mx-auto max-w-xl px-6 py-10">
-        <h1 className="text-2xl font-semibold text-berry">Add a recipe</h1>
-        <RecipeForm userId={user.id} />
+        <h1 className="text-2xl font-semibold text-berry">Edit profile</h1>
+        <EditProfileForm
+          userId={user.id}
+          displayName={profile?.display_name ?? ""}
+          avatarUrl={profile?.avatar_url ?? null}
+        />
       </div>
     </main>
   );

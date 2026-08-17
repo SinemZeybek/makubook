@@ -5,7 +5,13 @@ import Link from "next/link";
 import LogoutButton from "./logout-button";
 import RecipeFilters from "./recipe-filters";
 
-export default function Navbar({ userEmail }: { userEmail: string | null }) {
+export default function Navbar({
+  userEmail,
+  userId,
+}: {
+  userEmail: string | null;
+  userId?: string | null;
+}) {
   const [searchOpen, setSearchOpen] = useState(true);
 
   return (
@@ -46,9 +52,37 @@ export default function Navbar({ userEmail }: { userEmail: string | null }) {
 
           {userEmail ? (
             <div className="flex items-center gap-3">
-              <span className="hidden text-sm text-berry/70 sm:inline">
-                {userEmail}
-              </span>
+              <Link
+                href="/favorites"
+                aria-label="Favorites"
+                className="rounded-full p-2 text-berry hover:bg-berry/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M20.8 4.6c-1.6-1.6-4.2-1.6-5.8 0L12 7.6l-3-3c-1.6-1.6-4.2-1.6-5.8 0-1.6 1.6-1.6 4.2 0 5.8L12 19l8.8-8.6c1.6-1.6 1.6-4.2 0-5.8Z" />
+                </svg>
+              </Link>
+              {userId ? (
+                <Link
+                  href={`/profile/${userId}`}
+                  className="hidden text-sm text-berry/70 underline underline-offset-2 sm:inline"
+                >
+                  {userEmail}
+                </Link>
+              ) : (
+                <span className="hidden text-sm text-berry/70 sm:inline">
+                  {userEmail}
+                </span>
+              )}
               <LogoutButton />
             </div>
           ) : (

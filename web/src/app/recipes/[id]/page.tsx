@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
 import CommentForm from "./comment-form";
+import FavoriteButton from "./favorite-button";
 
 type Ingredient = { quantity: string; unit: string; name: string };
 
@@ -37,6 +38,17 @@ export default async function RecipePage({
     .eq("recipe_id", id)
     .order("created_at", { ascending: false });
 
+  let initialFavorited = false;
+  if (user) {
+    const { data: favorite } = await supabase
+      .from("favorites")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("recipe_id", id)
+      .maybeSingle();
+    initialFavorited = Boolean(favorite);
+  }
+
   const ingredients = Array.isArray(recipe.ingredients)
     ? (recipe.ingredients as Ingredient[])
     : [];
@@ -46,7 +58,7 @@ export default async function RecipePage({
 
   return (
     <main className="min-h-screen bg-cream">
-      <Navbar userEmail={user?.email ?? null} />
+      <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
 
       <div className="mx-auto max-w-3xl px-6 py-10">
         <div className="flex items-center justify-between">
@@ -54,14 +66,23 @@ export default async function RecipePage({
             Back to recipes
           </Link>
 
-          {user?.id === recipe.author_id && (
-            <Link
-              href={`/recipes/${recipe.id}/edit`}
-              className="text-sm text-berry underline"
-            >
-              Edit
-            </Link>
-          )}
+          <div className="flex items-center gap-4">
+            {user && (
+              <FavoriteButton
+                recipeId={recipe.id}
+                userId={user.id}
+                initialFavorited={initialFavorited}
+              />
+            )}
+            {user?.id === recipe.author_id && (
+              <Link
+                href={`/recipes/${recipe.id}/edit`}
+                className="text-sm text-berry underline"
+              >
+                Edit
+              </Link>
+            )}
+          </div>
         </div>
 
         {recipe.recipe_images?.[0]?.url && (

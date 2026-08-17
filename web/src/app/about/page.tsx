@@ -11,7 +11,7 @@ export default async function AboutPage() {
 
   return (
     <main className="min-h-screen bg-cream">
-      <Navbar userEmail={user?.email ?? null} />
+      <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
 
       <div className="mx-auto max-w-4xl px-6 py-12">
         <div className="grid items-center gap-8 md:grid-cols-2">
