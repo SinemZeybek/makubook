@@ -13,26 +13,19 @@ export default function RecipeFilters() {
 
   const [search, setSearch] = useState(searchParams.get("q") ?? "");
   const [availableCountries, setAvailableCountries] = useState<string[]>([]);
-  const [availableMealTypes, setAvailableMealTypes] = useState<string[]>([]);
 
   useEffect(() => {
     const supabase = createClient();
     supabase
       .from("recipes")
-      .select("country, meal_type")
+      .select("country")
       .then(({ data }) => {
         if (!data) return;
         const countriesInUse = new Set(
           data.map((recipe) => recipe.country).filter(Boolean)
         );
-        const mealTypesInUse = new Set(
-          data.map((recipe) => recipe.meal_type).filter(Boolean)
-        );
         setAvailableCountries(
           COUNTRIES.filter((c) => countriesInUse.has(c))
-        );
-        setAvailableMealTypes(
-          MEAL_TYPES.filter((m) => mealTypesInUse.has(m))
         );
       });
   }, []);
@@ -98,7 +91,7 @@ export default function RecipeFilters() {
           className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
         >
           <option value="">All meal types</option>
-          {availableMealTypes.map((m) => (
+          {MEAL_TYPES.map((m) => (
             <option key={m} value={m}>
               {m}
             </option>
