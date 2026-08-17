@@ -10,4 +10,5 @@ export const MEAL_TYPES = [
   "Dessert",
   "Baking",
   "Beverage",
+  "Other",
 ] as const;

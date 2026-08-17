@@ -16,5 +16,5 @@ export const COUNTRIES = [
   "South Korea", "Spain", "Sri Lanka", "Sudan", "Sweden", "Switzerland",
   "Syria", "Taiwan", "Tajikistan", "Thailand", "Tunisia", "Turkey",
   "Turkmenistan", "Uganda", "Ukraine", "United Kingdom", "United States",
-  "Uzbekistan", "Venezuela", "Vietnam", "Yemen", "Other",
+  "Uzbekistan", "Venezuela", "Vietnam", "Yemen", "Fusion / Mixed", "Other",
 ] as const;
