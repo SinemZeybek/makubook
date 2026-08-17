@@ -213,7 +213,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
               value={ingredient.name}
               onChange={(e) => updateIngredient(i, "name", e.target.value)}
               required
-              className="flex-1 rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
+              className="min-w-0 flex-1 rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
             />
             {ingredients.length > 1 && (
               <button
@@ -247,7 +247,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
               value={step}
               onChange={(e) => updateStep(i, e.target.value)}
               required
-              className="flex-1 rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
+              className="min-w-0 flex-1 rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
             />
             {steps.length > 1 && (
               <button

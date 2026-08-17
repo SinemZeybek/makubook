@@ -43,11 +43,11 @@ export default function RecipeFilters() {
           placeholder="Search recipes..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+          className="flex-1 rounded-md border border-berry/20 px-3 py-2 text-sm text-berry placeholder:text-berry/40"
         />
         <button
           type="submit"
-          className="rounded-md border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:text-zinc-50"
+          className="rounded-md border border-berry/20 px-3 py-2 text-sm text-berry hover:bg-berry/10"
         >
           Search
         </button>
@@ -57,7 +57,7 @@ export default function RecipeFilters() {
         <select
           value={searchParams.get("country") ?? ""}
           onChange={(e) => updateParam("country", e.target.value)}
-          className="rounded-md border border-zinc-300 px-2 py-1.5 text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+          className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
         >
           <option value="">All countries</option>
           {COUNTRIES.map((c) => (
@@ -70,7 +70,7 @@ export default function RecipeFilters() {
         <select
           value={searchParams.get("mealType") ?? ""}
           onChange={(e) => updateParam("mealType", e.target.value)}
-          className="rounded-md border border-zinc-300 px-2 py-1.5 text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+          className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
         >
           <option value="">All meal types</option>
           {MEAL_TYPES.map((m) => (
@@ -83,7 +83,7 @@ export default function RecipeFilters() {
         <select
           value={searchParams.get("language") ?? ""}
           onChange={(e) => updateParam("language", e.target.value)}
-          className="rounded-md border border-zinc-300 px-2 py-1.5 text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+          className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
         >
           <option value="">All languages</option>
           <option value="fi">Finnish</option>
@@ -97,7 +97,7 @@ export default function RecipeFilters() {
               setSearch("");
               router.push(pathname, { scroll: false });
             }}
-            className="text-sm text-zinc-600 underline dark:text-zinc-400"
+            className="text-sm text-berry/70 underline"
           >
             Clear filters
           </button>
