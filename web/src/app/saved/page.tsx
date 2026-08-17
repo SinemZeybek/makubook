@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
 import RecipeCard from "../recipe-card";
 
-export default async function FavoritesPage() {
+export default async function SavedRecipesPage() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -31,7 +31,7 @@ export default async function FavoritesPage() {
 
       <div className="mx-auto max-w-6xl px-6 py-10">
         <h1 className="text-2xl font-semibold text-berry">
-          Your favorite recipes
+          Your saved recipes
         </h1>
 
         <div className="mt-8">
@@ -45,7 +45,7 @@ export default async function FavoritesPage() {
             </ul>
           ) : (
             <p className="text-berry/70">
-              You haven't favorited any recipes yet. Browse the{" "}
+              You haven't saved any recipes yet. Browse the{" "}
               <a href="/" className="underline">
                 homepage
               </a>{" "}

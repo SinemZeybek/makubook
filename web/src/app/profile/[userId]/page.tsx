@@ -72,10 +72,10 @@ export default async function ProfilePage({
                 Edit profile
               </Link>
               <Link
-                href="/favorites"
+                href="/saved"
                 className="rounded-md bg-gold px-4 py-2 text-sm font-medium text-berry"
               >
-                Favorites
+                Saved recipes
               </Link>
             </div>
           )}

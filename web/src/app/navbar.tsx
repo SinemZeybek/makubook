@@ -53,9 +53,9 @@ export default function Navbar({
           {userEmail ? (
             <div className="flex items-center gap-3">
               <Link
-                href="/favorites"
-                aria-label="Favorites"
-                className="rounded-full p-2 text-berry hover:bg-berry/10"
+                href="/saved"
+                aria-label="Saved recipes"
+                className="flex items-center gap-1.5 rounded-full px-2 py-2 text-berry hover:bg-berry/10 sm:px-3"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -68,8 +68,9 @@ export default function Navbar({
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <path d="M20.8 4.6c-1.6-1.6-4.2-1.6-5.8 0L12 7.6l-3-3c-1.6-1.6-4.2-1.6-5.8 0-1.6 1.6-1.6 4.2 0 5.8L12 19l8.8-8.6c1.6-1.6 1.6-4.2 0-5.8Z" />
+                  <path d="M6 3.5h12a.5.5 0 0 1 .5.5v17l-6.5-4-6.5 4V4a.5.5 0 0 1 .5-.5Z" />
                 </svg>
+                <span className="hidden text-sm sm:inline">Saved</span>
               </Link>
               {userId ? (
                 <Link

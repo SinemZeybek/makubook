@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
 import CommentForm from "./comment-form";
-import FavoriteButton from "./favorite-button";
+import SaveButton from "./save-button";
 
 type Ingredient = { quantity: string; unit: string; name: string };
 
@@ -38,7 +38,7 @@ export default async function RecipePage({
     .eq("recipe_id", id)
     .order("created_at", { ascending: false });
 
-  let initialFavorited = false;
+  let initialSaved = false;
   if (user) {
     const { data: favorite } = await supabase
       .from("favorites")
@@ -46,7 +46,7 @@ export default async function RecipePage({
       .eq("user_id", user.id)
       .eq("recipe_id", id)
       .maybeSingle();
-    initialFavorited = Boolean(favorite);
+    initialSaved = Boolean(favorite);
   }
 
   const ingredients = Array.isArray(recipe.ingredients)
@@ -68,10 +68,10 @@ export default async function RecipePage({
 
           <div className="flex items-center gap-4">
             {user && (
-              <FavoriteButton
+              <SaveButton
                 recipeId={recipe.id}
                 userId={user.id}
-                initialFavorited={initialFavorited}
+                initialSaved={initialSaved}
               />
             )}
             {user?.id === recipe.author_id && (
