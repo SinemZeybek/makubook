@@ -12,9 +12,23 @@ export default async function AboutPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  let isEditor = false;
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+    isEditor = profile?.role === "editor";
+  }
+
   return (
     <main className="flex min-h-screen flex-col bg-cream">
-      <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
+      <Navbar
+        userEmail={user?.email ?? null}
+        userId={user?.id ?? null}
+        isEditor={isEditor}
+      />
 
       <div className="flex-1 mx-auto max-w-4xl px-6 py-12">
         <div className="grid items-center gap-8 md:grid-cols-2">

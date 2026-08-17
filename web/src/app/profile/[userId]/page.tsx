@@ -31,7 +31,7 @@ export default async function ProfilePage({
   const { data: recipes } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, status, recipe_images(url), profiles(display_name, avatar_url)"
     )
     .eq("author_id", userId)
     .order("created_at", { ascending: false });
@@ -39,17 +39,29 @@ export default async function ProfilePage({
   const isOwnProfile = user?.id === userId;
 
   let savedRecipeIds = new Set<string>();
+  let isEditor = false;
   if (user) {
     const { data: favorites } = await supabase
       .from("favorites")
       .select("recipe_id")
       .eq("user_id", user.id);
     savedRecipeIds = new Set(favorites?.map((f) => f.recipe_id));
+
+    const { data: viewerProfile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+    isEditor = viewerProfile?.role === "editor";
   }
 
   return (
     <main className="flex min-h-screen flex-col bg-cream">
-      <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
+      <Navbar
+        userEmail={user?.email ?? null}
+        userId={user?.id ?? null}
+        isEditor={isEditor}
+      />
 
       <div className="flex-1 mx-auto max-w-6xl px-6 py-10">
         <div className="flex flex-wrap items-center justify-between gap-4">

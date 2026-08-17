@@ -19,6 +19,7 @@ export default function RecipeFilters() {
     supabase
       .from("recipes")
       .select("country")
+      .eq("status", "published")
       .then(({ data }) => {
         if (!data) return;
         const countriesInUse = new Set(

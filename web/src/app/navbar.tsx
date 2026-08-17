@@ -8,9 +8,11 @@ import RecipeFilters from "./recipe-filters";
 export default function Navbar({
   userEmail,
   userId,
+  isEditor,
 }: {
   userEmail: string | null;
   userId?: string | null;
+  isEditor?: boolean;
 }) {
   const [searchOpen, setSearchOpen] = useState(true);
 
@@ -91,6 +93,14 @@ export default function Navbar({
                 </svg>
                 <span className="hidden text-sm sm:inline">Saved</span>
               </Link>
+              {isEditor && (
+                <Link
+                  href="/editor"
+                  className="rounded-full bg-berry px-3 py-1.5 text-sm font-medium text-cream hover:bg-berry-dark"
+                >
+                  Editor
+                </Link>
+              )}
               {userId ? (
                 <Link
                   href={`/profile/${userId}`}

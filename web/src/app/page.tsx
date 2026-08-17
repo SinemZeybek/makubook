@@ -28,6 +28,7 @@ export default async function Home({
     .select(
       "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
     )
+    .eq("status", "published")
     .order("created_at", { ascending: false });
 
   if (q) recipesQuery = recipesQuery.ilike("title", `%${q}%`);
@@ -39,12 +40,20 @@ export default async function Home({
   const hasActiveFilters = Boolean(q || country || mealType || language);
 
   let savedRecipeIds = new Set<string>();
+  let isEditor = false;
   if (user) {
     const { data: favorites } = await supabase
       .from("favorites")
       .select("recipe_id")
       .eq("user_id", user.id);
     savedRecipeIds = new Set(favorites?.map((f) => f.recipe_id));
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+    isEditor = profile?.role === "editor";
   }
 
   function categoryHref(type?: string) {
@@ -62,6 +71,7 @@ export default async function Home({
     .select(
       "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
     )
+    .eq("status", "published")
     .order("created_at", { ascending: false })
     .limit(5);
 
@@ -75,7 +85,11 @@ export default async function Home({
 
   return (
     <main className="flex min-h-screen flex-col bg-cream">
-      <Navbar userEmail={user?.email ?? null} userId={user?.id ?? null} />
+      <Navbar
+        userEmail={user?.email ?? null}
+        userId={user?.id ?? null}
+        isEditor={isEditor}
+      />
 
       <div className="flex-1">
       <div className="relative h-72 w-full md:h-[420px]">

@@ -10,6 +10,7 @@ type Recipe = {
   meal_type: string | null;
   language: string;
   author_id: string;
+  status?: string;
   recipe_images: { url: string }[] | null;
   profiles: { display_name: string | null; avatar_url: string | null } | null;
 };
@@ -45,6 +46,17 @@ export default function RecipeCard({
           userId={currentUserId}
           initialSaved={initialSaved}
         />
+        {recipe.status && recipe.status !== "published" && (
+          <span
+            className={`pointer-events-none absolute left-2 top-2 z-10 rounded-full px-2 py-1 text-xs font-medium ${
+              recipe.status === "rejected"
+                ? "bg-red-600 text-white"
+                : "bg-gold text-berry"
+            }`}
+          >
+            {recipe.status === "rejected" ? "Rejected" : "Pending review"}
+          </span>
+        )}
       </div>
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-2">

@@ -117,7 +117,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
     }
 
     setLoading(false);
-    router.push("/");
+    router.push(`/recipes/${recipe.id}`);
     router.refresh();
   }
 
@@ -294,6 +294,11 @@ export default function RecipeForm({ userId }: { userId: string }) {
         className="text-sm text-berry/70"
       />
 
+      <p className="text-sm text-berry/60">
+        New recipes are reviewed by an editor before they're published and
+        visible to everyone.
+      </p>
+
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <button
@@ -301,7 +306,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
         disabled={loading}
         className="rounded-md bg-gold px-3 py-2 font-medium text-berry disabled:opacity-50"
       >
-        {loading ? "Saving..." : "Add recipe"}
+        {loading ? "Submitting..." : "Submit for review"}
       </button>
     </form>
   );

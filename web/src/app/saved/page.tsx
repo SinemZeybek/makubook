@@ -14,6 +14,12 @@ export default async function SavedRecipesPage() {
     redirect("/login");
   }
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
   const { data: favorites } = await supabase
     .from("favorites")
     .select(
@@ -28,7 +34,11 @@ export default async function SavedRecipesPage() {
 
   return (
     <main className="flex min-h-screen flex-col bg-cream">
-      <Navbar userEmail={user.email ?? null} userId={user.id} />
+      <Navbar
+        userEmail={user.email ?? null}
+        userId={user.id}
+        isEditor={profile?.role === "editor"}
+      />
 
       <div className="flex-1 mx-auto max-w-6xl px-6 py-10">
         <h1 className="text-2xl font-semibold text-berry">
