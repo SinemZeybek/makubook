@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Navbar from "../navbar";
@@ -11,6 +11,10 @@ export default function LoginPage() {
   const [mode, setMode] = useState<"sign-in" | "sign-up">(
     searchParams.get("mode") === "sign-up" ? "sign-up" : "sign-in"
   );
+
+  useEffect(() => {
+    setMode(searchParams.get("mode") === "sign-up" ? "sign-up" : "sign-in");
+  }, [searchParams]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -177,7 +181,11 @@ export default function LoginPage() {
         <button
           onClick={() => {
             setCheckEmail(false);
-            setMode(mode === "sign-in" ? "sign-up" : "sign-in");
+            const nextMode = mode === "sign-in" ? "sign-up" : "sign-in";
+            router.replace(
+              nextMode === "sign-up" ? "/login?mode=sign-up" : "/login"
+            );
+            setMode(nextMode);
           }}
           className="mt-4 block w-full text-center text-sm text-berry underline"
         >
