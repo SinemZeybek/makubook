@@ -120,7 +120,7 @@ export default async function Home({
             {featuredRecipes.map((recipe, i) => (
               <div
                 key={recipe.id}
-                className="relative w-72 flex-shrink-0 overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30"
+                className="relative w-72 flex-shrink-0 overflow-hidden rounded-lg border border-berry/15 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:border-berry/30 hover:shadow-md"
               >
                 <Link
                   href={`/recipes/${recipe.id}`}

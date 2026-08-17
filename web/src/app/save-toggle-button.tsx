@@ -21,7 +21,10 @@ export default function SaveToggleButton({
 
   function showToast(message: string) {
     setToast(message);
-    setToastVisible(true);
+    setToastVisible(false);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setToastVisible(true));
+    });
     setTimeout(() => setToastVisible(false), 1500);
     setTimeout(() => setToast(null), 1800);
   }

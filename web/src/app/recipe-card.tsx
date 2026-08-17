@@ -25,7 +25,7 @@ export default function RecipeCard({
   initialSaved?: boolean;
 }) {
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30">
+    <div className="relative flex h-full flex-col overflow-hidden rounded-lg border border-berry/15 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:border-berry/30 hover:shadow-md">
       <Link
         href={`/recipes/${recipe.id}`}
         className="absolute inset-0 z-0"
