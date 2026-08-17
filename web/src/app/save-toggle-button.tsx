@@ -104,11 +104,11 @@ export default function SaveToggleButton({
             e.stopPropagation();
             setShowLoginPrompt(false);
           }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-berry/40 p-4"
+          className="pointer-events-auto fixed inset-0 z-50 flex items-center justify-center bg-berry/40 p-4"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-lg bg-cream p-6 text-center shadow-lg"
+            className="pointer-events-auto w-full max-w-sm rounded-lg bg-cream p-6 text-center shadow-lg"
           >
             <p className="text-berry">
               You need to be logged in to save a recipe.

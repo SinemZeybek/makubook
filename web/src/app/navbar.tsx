@@ -157,7 +157,7 @@ export default function Navbar({
                 Log in
               </Link>
               <Link
-                href="/login"
+                href="/login?mode=sign-up"
                 className="rounded-md bg-gold px-4 py-2 text-sm font-medium text-berry"
               >
                 Sign up

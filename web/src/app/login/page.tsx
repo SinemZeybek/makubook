@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import Navbar from "../navbar";
+import Footer from "../footer";
 
 export default function LoginPage() {
-  const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
+  const searchParams = useSearchParams();
+  const [mode, setMode] = useState<"sign-in" | "sign-up">(
+    searchParams.get("mode") === "sign-up" ? "sign-up" : "sign-in"
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -86,13 +90,11 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-cream px-6 py-16">
-      <div className="w-full max-w-sm">
-        <Link href="/" className="mb-6 block text-center font-logo text-2xl">
-          <span className="text-gold">Maku</span>
-          <span className="text-berry">book</span>
-        </Link>
+    <main className="flex min-h-screen flex-col bg-cream">
+      <Navbar userEmail={null} />
 
+      <div className="flex flex-1 items-center justify-center px-6 py-16">
+      <div className="w-full max-w-sm">
         {checkEmail ? (
           <div className="text-center">
             <h1 className="text-2xl font-semibold text-berry">
@@ -186,6 +188,9 @@ export default function LoginPage() {
             : "Already have an account? Log in"}
         </button>
       </div>
+      </div>
+
+      <Footer />
     </main>
   );
 }

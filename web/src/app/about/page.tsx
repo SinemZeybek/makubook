@@ -128,7 +128,7 @@ export default async function AboutPage() {
               Ready to share your first recipe?
             </h2>
             <Link
-              href="/login"
+              href="/login?mode=sign-up"
               className="mt-5 inline-block rounded-md bg-gold px-5 py-2.5 font-medium text-berry"
             >
               Sign up
