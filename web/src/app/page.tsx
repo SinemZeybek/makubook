@@ -37,6 +37,15 @@ export default async function Home({
   const { data: recipes, error } = await recipesQuery;
   const hasActiveFilters = Boolean(q || country || mealType || language);
 
+  let savedRecipeIds = new Set<string>();
+  if (user) {
+    const { data: favorites } = await supabase
+      .from("favorites")
+      .select("recipe_id")
+      .eq("user_id", user.id);
+    savedRecipeIds = new Set(favorites?.map((f) => f.recipe_id));
+  }
+
   function categoryHref(type?: string) {
     const params = new URLSearchParams();
     if (q) params.set("q", q);
@@ -219,7 +228,11 @@ export default async function Home({
             <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {recipes.map((recipe) => (
                 <li key={recipe.id}>
-                  <RecipeCard recipe={recipe} />
+                  <RecipeCard
+                    recipe={recipe}
+                    currentUserId={user?.id ?? null}
+                    initialSaved={savedRecipeIds.has(recipe.id)}
+                  />
                 </li>
               ))}
             </ul>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import SaveToggleButton from "./save-toggle-button";
 
 type Recipe = {
   id: string;
@@ -13,7 +14,15 @@ type Recipe = {
   profiles: { display_name: string | null; avatar_url: string | null } | null;
 };
 
-export default function RecipeCard({ recipe }: { recipe: Recipe }) {
+export default function RecipeCard({
+  recipe,
+  currentUserId = null,
+  initialSaved = false,
+}: {
+  recipe: Recipe;
+  currentUserId?: string | null;
+  initialSaved?: boolean;
+}) {
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg border border-berry/15 bg-white hover:border-berry/30">
       <Link
@@ -31,6 +40,11 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
             className="object-cover"
           />
         )}
+        <SaveToggleButton
+          recipeId={recipe.id}
+          userId={currentUserId}
+          initialSaved={initialSaved}
+        />
       </div>
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-2">
