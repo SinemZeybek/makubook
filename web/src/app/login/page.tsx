@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [checkEmail, setCheckEmail] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
@@ -45,7 +46,11 @@ export default function LoginPage() {
     });
 
     if (signUpError || !data.user) {
-      setError(signUpError?.message ?? "Could not create account");
+      const message =
+        typeof signUpError?.message === "string" && signUpError.message
+          ? signUpError.message
+          : "Could not create account. Please check your email address and try again.";
+      setError(message);
       setLoading(false);
       return;
     }
@@ -70,6 +75,12 @@ export default function LoginPage() {
     }
 
     setLoading(false);
+
+    if (!data.session) {
+      setCheckEmail(true);
+      return;
+    }
+
     router.push("/");
     router.refresh();
   }
@@ -82,11 +93,23 @@ export default function LoginPage() {
           <span className="text-berry">book</span>
         </Link>
 
-        <h1 className="text-center text-2xl font-semibold text-berry">
-          {mode === "sign-in" ? "Log in" : "Sign up"}
-        </h1>
+        {checkEmail ? (
+          <div className="text-center">
+            <h1 className="text-2xl font-semibold text-berry">
+              Check your email
+            </h1>
+            <p className="mt-4 text-berry/70">
+              We've sent a confirmation link to <strong>{email}</strong>.
+              Click it to activate your account, then come back and log in.
+            </p>
+          </div>
+        ) : (
+          <>
+            <h1 className="text-center text-2xl font-semibold text-berry">
+              {mode === "sign-in" ? "Log in" : "Sign up"}
+            </h1>
 
-        <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
           <input
             type="email"
             placeholder="Email"
@@ -146,13 +169,20 @@ export default function LoginPage() {
             {loading ? "..." : mode === "sign-in" ? "Log in" : "Sign up"}
           </button>
         </form>
+          </>
+        )}
 
         <button
-          onClick={() => setMode(mode === "sign-in" ? "sign-up" : "sign-in")}
+          onClick={() => {
+            setCheckEmail(false);
+            setMode(mode === "sign-in" ? "sign-up" : "sign-in");
+          }}
           className="mt-4 block w-full text-center text-sm text-berry underline"
         >
-          {mode === "sign-in"
-            ? "Need an account? Sign up"
+          {checkEmail || mode === "sign-in"
+            ? checkEmail
+              ? "Back to log in"
+              : "Need an account? Sign up"
             : "Already have an account? Log in"}
         </button>
       </div>
