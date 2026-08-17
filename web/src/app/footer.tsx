@@ -24,8 +24,11 @@ export default function Footer() {
         </nav>
       </div>
 
-      <div className="border-t border-berry/10 py-4 text-center text-xs text-berry/50">
-        © {new Date().getFullYear()} Makubook
+      <div className="flex flex-col items-center gap-2 border-t border-berry/10 py-4 text-center text-xs text-berry/50">
+        <span>© {new Date().getFullYear()} Makubook</span>
+        <Link href="/privacy" className="hover:text-berry hover:underline">
+          Privacy Policy
+        </Link>
       </div>
     </footer>
   );
