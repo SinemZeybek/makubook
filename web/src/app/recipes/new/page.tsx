@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
+import Footer from "../../footer";
 import RecipeForm from "./recipe-form";
 
 export default async function NewRecipePage() {
@@ -20,6 +21,8 @@ export default async function NewRecipePage() {
         <h1 className="text-2xl font-semibold text-berry">Add a recipe</h1>
         <RecipeForm userId={user.id} />
       </div>
+
+      <Footer isLoggedIn />
     </main>
   );
 }

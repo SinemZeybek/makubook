@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
+import Footer from "../../footer";
 import CommentForm from "./comment-form";
 import SaveButton from "./save-button";
 
@@ -197,6 +198,8 @@ export default async function RecipePage({
           </ul>
         </section>
       </div>
+
+      <Footer isLoggedIn={Boolean(user)} />
     </main>
   );
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
+import Footer from "../../footer";
 import RecipeCard from "../../recipe-card";
 
 export default async function ProfilePage({
@@ -112,6 +113,8 @@ export default async function ProfilePage({
           )}
         </div>
       </div>
+
+      <Footer isLoggedIn={Boolean(user)} />
     </main>
   );
 }

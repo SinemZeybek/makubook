@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
+import Footer from "../footer";
 import RecipeCard from "../recipe-card";
 
 export default async function SavedRecipesPage() {
@@ -58,6 +59,8 @@ export default async function SavedRecipesPage() {
           )}
         </div>
       </div>
+
+      <Footer isLoggedIn />
     </main>
   );
 }

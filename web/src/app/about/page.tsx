@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
+import Footer from "../footer";
+
+const CONTACT_EMAIL = "sinemzpeltokangas.dev@gmail.com";
 
 export default async function AboutPage() {
   const supabase = await createClient();
@@ -120,7 +123,23 @@ export default async function AboutPage() {
             </Link>
           </section>
         )}
+
+        <section className="mt-16 text-center">
+          <h2 className="text-2xl font-semibold text-berry">Get in touch</h2>
+          <p className="mx-auto mt-3 max-w-xl text-berry/70">
+            Questions, feedback, or a recipe idea you want to see on
+            Makubook? We'd love to hear from you.
+          </p>
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="mt-5 inline-block rounded-md border border-berry/20 px-5 py-2.5 font-medium text-berry hover:bg-berry/10"
+          >
+            {CONTACT_EMAIL}
+          </a>
+        </section>
       </div>
+
+      <Footer isLoggedIn={Boolean(user)} />
     </main>
   );
 }

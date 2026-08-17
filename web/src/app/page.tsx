@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "./navbar";
+import Footer from "./footer";
 import RecipeCard from "./recipe-card";
 import { MEAL_TYPES } from "@/lib/mealTypes";
 
@@ -239,6 +240,8 @@ export default async function Home({
           )}
         </div>
       </div>
+
+      <Footer isLoggedIn={Boolean(user)} />
     </main>
   );
 }

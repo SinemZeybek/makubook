@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
+import Footer from "../../footer";
 import EditProfileForm from "./edit-profile-form";
 
 export default async function EditProfilePage() {
@@ -30,6 +31,8 @@ export default async function EditProfilePage() {
           avatarUrl={profile?.avatar_url ?? null}
         />
       </div>
+
+      <Footer isLoggedIn />
     </main>
   );
 }
