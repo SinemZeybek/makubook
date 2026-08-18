@@ -191,30 +191,29 @@ export default function RecipeForm({ userId }: { userId: string }) {
     <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
       <div>
         <input
-          id="recipe-photo-input"
+          id="recipe-photo-camera-input"
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handlePhotoChange}
+          className="sr-only"
+        />
+        <input
+          id="recipe-photo-library-input"
           type="file"
           accept="image/*"
           onChange={handlePhotoChange}
           className="sr-only"
         />
-        <label
-          htmlFor="recipe-photo-input"
-          className="group relative flex h-56 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-berry/25 bg-berry/5 transition-colors hover:border-gold hover:bg-berry/10"
-        >
+
+        <div className="flex h-56 w-full items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-berry/25 bg-berry/5">
           {photoPreview ? (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={photoPreview}
-                alt=""
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-                <span className="rounded-md bg-white/90 px-3 py-1.5 text-sm font-medium text-berry">
-                  Change photo
-                </span>
-              </div>
-            </>
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={photoPreview}
+              alt=""
+              className="h-full w-full object-cover"
+            />
           ) : (
             <div className="flex flex-col items-center gap-2 text-berry/45">
               <svg
@@ -235,7 +234,51 @@ export default function RecipeForm({ userId }: { userId: string }) {
               <span className="text-xs text-berry/40">Required</span>
             </div>
           )}
-        </label>
+        </div>
+
+        <div className="mt-2 flex gap-2">
+          <label
+            htmlFor="recipe-photo-camera-input"
+            className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-berry/20 px-3 py-2 text-sm font-medium text-berry transition-colors hover:bg-berry/10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h9l1 1.5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+            {photoPreview ? "Retake photo" : "Take a photo"}
+          </label>
+          <label
+            htmlFor="recipe-photo-library-input"
+            className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-berry/20 px-3 py-2 text-sm font-medium text-berry transition-colors hover:bg-berry/10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="m21 15-5-5L5 21" />
+            </svg>
+            {photoPreview ? "Choose different photo" : "Choose from library"}
+          </label>
+        </div>
       </div>
 
       <input
