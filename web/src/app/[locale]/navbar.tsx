@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -48,8 +49,16 @@ export default function Navbar({
   const t = useTranslations("Navbar");
   const locale = useLocale();
   const pathname = usePathname();
+  const [searchOpen, setSearchOpen] = useState(pathname === "/");
+  const pendingFocusRef = useRef(false);
 
-  function handleSearchClick() {
+  useEffect(() => {
+    if (!searchOpen || !pendingFocusRef.current) return;
+    pendingFocusRef.current = false;
+    pulseSearchInput();
+  }, [searchOpen]);
+
+  function pulseSearchInput() {
     const input = document.getElementById(
       "recipe-search-input"
     ) as HTMLInputElement | null;
@@ -64,6 +73,15 @@ export default function Navbar({
       () => input.classList.remove("animate-search-pulse"),
       { once: true }
     );
+  }
+
+  function handleSearchClick() {
+    if (!searchOpen) {
+      pendingFocusRef.current = true;
+      setSearchOpen(true);
+      return;
+    }
+    pulseSearchInput();
   }
 
   return (
@@ -282,9 +300,11 @@ export default function Navbar({
         <div className="h-[3px] bg-gradient-to-r from-gold via-berry to-gold" />
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 pb-4">
-        <RecipeFilters />
-      </div>
+      {searchOpen && (
+        <div className="mx-auto max-w-6xl px-6 pb-4">
+          <RecipeFilters />
+        </div>
+      )}
     </>
   );
 }
