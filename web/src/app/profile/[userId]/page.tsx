@@ -64,9 +64,9 @@ export default async function ProfilePage({
       />
 
       <div className="flex-1 mx-auto max-w-6xl px-6 py-10">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-berry/10 bg-white p-6 shadow-sm">
           <div className="flex items-center gap-4">
-            <div className="relative h-20 w-20 overflow-hidden rounded-full bg-berry/10">
+            <div className="relative h-20 w-20 overflow-hidden rounded-full bg-berry/10 ring-2 ring-gold ring-offset-2 ring-offset-white">
               <Image
                 src={profile.avatar_url || "/default-avatar.png"}
                 alt=""
@@ -89,14 +89,41 @@ export default async function ProfilePage({
             <div className="flex gap-2">
               <Link
                 href="/profile/edit"
-                className="rounded-md border border-berry/20 px-4 py-2 text-sm text-berry hover:bg-berry/10"
+                className="flex items-center gap-1.5 rounded-full border border-berry/20 px-4 py-2 text-sm font-medium text-berry transition-all duration-200 hover:-translate-y-0.5 hover:bg-berry/10"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                </svg>
                 Edit profile
               </Link>
               <Link
                 href="/saved"
-                className="rounded-md border border-berry/20 px-4 py-2 text-sm text-berry hover:bg-berry/10"
+                className="flex items-center gap-1.5 rounded-full border border-gold bg-gold/25 px-4 py-2 text-sm font-medium text-berry shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold/45 hover:shadow-md"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 3.5h12a.5.5 0 0 1 .5.5v17l-6.5-4-6.5 4V4a.5.5 0 0 1 .5-.5Z" />
+                </svg>
                 Saved recipes
               </Link>
             </div>
