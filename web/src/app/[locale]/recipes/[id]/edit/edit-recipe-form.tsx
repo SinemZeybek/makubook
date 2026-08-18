@@ -16,7 +16,7 @@ type Recipe = {
   title: string;
   description: string | null;
   country: string | null;
-  meal_type: string | null;
+  meal_type: string[] | null;
   servings: number | null;
   language: "fi" | "en";
   ingredients: unknown;
@@ -42,7 +42,7 @@ export default function EditRecipeForm({
   const [title, setTitle] = useState(recipe.title);
   const [description, setDescription] = useState(recipe.description ?? "");
   const [country, setCountry] = useState(recipe.country ?? "");
-  const [mealType, setMealType] = useState(recipe.meal_type ?? "");
+  const [mealTypes, setMealTypes] = useState<string[]>(recipe.meal_type ?? []);
   const [servings, setServings] = useState(
     recipe.servings ? String(recipe.servings) : ""
   );
@@ -95,9 +95,21 @@ export default function EditRecipeForm({
     setSteps((prev) => prev.filter((_, i) => i !== index));
   }
 
+  function toggleMealType(type: string) {
+    setMealTypes((prev) =>
+      prev.includes(type) ? prev.filter((m) => m !== type) : [...prev, type]
+    );
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (mealTypes.length === 0) {
+      setError(t("mealTypeRequiredError"));
+      return;
+    }
+
     setLoading(true);
 
     const supabase = createClient();
@@ -117,7 +129,7 @@ export default function EditRecipeForm({
         title,
         description,
         country,
-        meal_type: mealType,
+        meal_type: mealTypes,
         servings: Number(servings),
         ingredients: ingredientList,
         instructions,
@@ -195,21 +207,31 @@ export default function EditRecipeForm({
         ))}
       </select>
 
-      <select
-        value={mealType}
-        onChange={(e) => setMealType(e.target.value)}
-        required
-        className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
-      >
-        <option value="" disabled>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-semibold text-berry">
           {t("mealTypePlaceholder")}
-        </option>
-        {MEAL_TYPES.map((m) => (
-          <option key={m} value={m}>
-            {tMeal(m)}
-          </option>
-        ))}
-      </select>
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {MEAL_TYPES.map((m) => (
+            <label
+              key={m}
+              className={`cursor-pointer rounded-full border px-3 py-1.5 text-sm ${
+                mealTypes.includes(m)
+                  ? "border-berry bg-berry text-cream"
+                  : "border-berry/20 text-berry"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={mealTypes.includes(m)}
+                onChange={() => toggleMealType(m)}
+                className="sr-only"
+              />
+              {tMeal(m)}
+            </label>
+          ))}
+        </div>
+      </div>
 
       <label className="flex flex-col gap-1 text-sm text-berry/70">
         {t("servings")}

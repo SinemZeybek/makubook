@@ -11,7 +11,7 @@ type Recipe = {
   title: string;
   description: string | null;
   country: string | null;
-  meal_type: string | null;
+  meal_type: string[] | null;
   language: string;
   author_id: string;
   recipe_images: { url: string }[] | null;
@@ -94,7 +94,9 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
           </div>
           <span>{recipe.profiles?.display_name ?? tCommon("anonymous")}</span>
           {recipe.country && <span>· {tCountry(recipe.country)}</span>}
-          {recipe.meal_type && <span>· {tMeal(recipe.meal_type)}</span>}
+          {recipe.meal_type?.map((type) => (
+            <span key={type}>· {tMeal(type)}</span>
+          ))}
         </div>
 
         <input

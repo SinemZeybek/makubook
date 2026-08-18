@@ -21,6 +21,10 @@ export default async function Home({
   }>;
 }) {
   const { q, country, mealType, language, servings } = await searchParams;
+  const countryArr = country ? country.split(",") : [];
+  const mealTypeArr = mealType ? mealType.split(",") : [];
+  const languageArr = language ? language.split(",") : [];
+  const servingsArr = servings ? servings.split(",") : [];
   const t = await getTranslations("Home");
   const tMeal = await getTranslations("MealTypes");
   const tCountry = await getTranslations("Countries");
@@ -31,6 +35,12 @@ export default async function Home({
     data: { user },
   } = await supabase.auth.getUser();
 
+  function servingsFilterExpr(bucket: string) {
+    if (bucket === "7+") return "servings.gte.7";
+    const [min, max] = bucket.split("-").map(Number);
+    return `and(servings.gte.${min},servings.lte.${max})`;
+  }
+
   let recipesQuery = supabase
     .from("recipes")
     .select(
@@ -40,19 +50,21 @@ export default async function Home({
     .order("created_at", { ascending: false });
 
   if (q) recipesQuery = recipesQuery.ilike("title", `%${q}%`);
-  if (country) recipesQuery = recipesQuery.eq("country", country);
-  if (mealType) recipesQuery = recipesQuery.eq("meal_type", mealType);
-  if (language) recipesQuery = recipesQuery.eq("language", language);
-  if (servings === "7+") {
-    recipesQuery = recipesQuery.gte("servings", 7);
-  } else if (servings) {
-    const [min, max] = servings.split("-").map(Number);
-    recipesQuery = recipesQuery.gte("servings", min).lte("servings", max);
-  }
+  if (countryArr.length > 0) recipesQuery = recipesQuery.in("country", countryArr);
+  if (mealTypeArr.length > 0)
+    recipesQuery = recipesQuery.overlaps("meal_type", mealTypeArr);
+  if (languageArr.length > 0)
+    recipesQuery = recipesQuery.in("language", languageArr);
+  if (servingsArr.length > 0)
+    recipesQuery = recipesQuery.or(servingsArr.map(servingsFilterExpr).join(","));
 
   const { data: recipes, error } = await recipesQuery;
   const hasActiveFilters = Boolean(
-    q || country || mealType || language || servings
+    q ||
+      countryArr.length > 0 ||
+      mealTypeArr.length > 0 ||
+      languageArr.length > 0 ||
+      servingsArr.length > 0
   );
 
   let savedRecipeIds = new Set<string>();
@@ -72,13 +84,27 @@ export default async function Home({
     isEditor = profile?.role === "editor";
   }
 
-  function categoryHref(type?: string) {
+  function baseParams() {
     const params = new URLSearchParams();
     if (q) params.set("q", q);
-    if (country) params.set("country", country);
-    if (type) params.set("mealType", type);
-    if (language) params.set("language", language);
-    if (servings) params.set("servings", servings);
+    if (countryArr.length) params.set("country", countryArr.join(","));
+    if (languageArr.length) params.set("language", languageArr.join(","));
+    if (servingsArr.length) params.set("servings", servingsArr.join(","));
+    return params;
+  }
+
+  function clearMealTypesHref() {
+    const params = baseParams();
+    const qs = params.toString();
+    return qs ? `/?${qs}` : "/";
+  }
+
+  function toggleMealTypeHref(type: string) {
+    const params = baseParams();
+    const nextMealTypes = mealTypeArr.includes(type)
+      ? mealTypeArr.filter((m) => m !== type)
+      : [...mealTypeArr, type];
+    if (nextMealTypes.length) params.set("mealType", nextMealTypes.join(","));
     const qs = params.toString();
     return qs ? `/?${qs}` : "/";
   }
@@ -175,11 +201,14 @@ export default async function Home({
                         {tCountry(recipe.country)}
                       </span>
                     )}
-                    {recipe.meal_type && (
-                      <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
-                        {tMeal(recipe.meal_type)}
+                    {recipe.meal_type?.map((type: string) => (
+                      <span
+                        key={type}
+                        className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry"
+                      >
+                        {tMeal(type)}
                       </span>
-                    )}
+                    ))}
                   </div>
                   {recipe.description && (
                     <p className="pointer-events-none mt-2 text-sm text-berry/70">
@@ -224,10 +253,10 @@ export default async function Home({
 
         <FadeIn className="mt-8 flex flex-wrap gap-2">
           <Link
-            href={categoryHref(undefined)}
+            href={clearMealTypesHref()}
             scroll={false}
             className={
-              !mealType
+              mealTypeArr.length === 0
                 ? "rounded-full bg-berry px-4 py-1.5 text-sm text-cream"
                 : "rounded-full border border-berry/20 px-4 py-1.5 text-sm text-berry hover:bg-berry/10"
             }
@@ -237,10 +266,10 @@ export default async function Home({
           {MEAL_TYPES.map((type) => (
             <Link
               key={type}
-              href={categoryHref(type)}
+              href={toggleMealTypeHref(type)}
               scroll={false}
               className={
-                mealType === type
+                mealTypeArr.includes(type)
                   ? "rounded-full bg-berry px-4 py-1.5 text-sm text-cream"
                   : "rounded-full border border-berry/20 px-4 py-1.5 text-sm text-berry hover:bg-berry/10"
               }

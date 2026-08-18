@@ -7,6 +7,11 @@ import { useRouter, usePathname } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { COUNTRIES } from "@/lib/countries";
 import { MEAL_TYPES } from "@/lib/mealTypes";
+import MultiSelect from "./multi-select";
+
+function parseParam(value: string | null) {
+  return value ? value.split(",") : [];
+}
 
 export default function RecipeFilters() {
   const t = useTranslations("Search");
@@ -38,10 +43,10 @@ export default function RecipeFilters() {
       });
   }, [tCountry]);
 
-  function updateParam(key: string, value: string) {
+  function updateParam(key: string, values: string[]) {
     const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set(key, value);
+    if (values.length > 0) {
+      params.set(key, values.join(","));
     } else {
       params.delete(key);
     }
@@ -52,15 +57,28 @@ export default function RecipeFilters() {
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
-    updateParam("q", search);
+    const params = new URLSearchParams(searchParams.toString());
+    if (search) {
+      params.set("q", search);
+    } else {
+      params.delete("q");
+    }
+    router.push(params.toString() ? `${pathname}?${params.toString()}` : pathname, {
+      scroll: false,
+    });
   }
+
+  const selectedCountries = parseParam(searchParams.get("country"));
+  const selectedMealTypes = parseParam(searchParams.get("mealType"));
+  const selectedLanguages = parseParam(searchParams.get("language"));
+  const selectedServings = parseParam(searchParams.get("servings"));
 
   const hasActiveFilters =
     searchParams.get("q") ||
-    searchParams.get("country") ||
-    searchParams.get("mealType") ||
-    searchParams.get("language") ||
-    searchParams.get("servings");
+    selectedCountries.length > 0 ||
+    selectedMealTypes.length > 0 ||
+    selectedLanguages.length > 0 ||
+    selectedServings.length > 0;
 
   return (
     <div className="mt-6 flex flex-col gap-3">
@@ -82,53 +100,49 @@ export default function RecipeFilters() {
       </form>
 
       <div className="flex flex-wrap items-center gap-2">
-        <select
-          value={searchParams.get("country") ?? ""}
-          onChange={(e) => updateParam("country", e.target.value)}
-          className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
-        >
-          <option value="">{t("allCountries")}</option>
-          {availableCountries.map((c) => (
-            <option key={c} value={c}>
-              {tCountry(c)}
-            </option>
-          ))}
-        </select>
+        <MultiSelect
+          placeholder={t("allCountries")}
+          options={availableCountries.map((c) => ({
+            value: c,
+            label: tCountry(c),
+          }))}
+          selected={selectedCountries}
+          onChange={(values) => updateParam("country", values)}
+          selectedCountLabel={(count) => t("selectedCount", { count })}
+          searchPlaceholder={t("searchCountries")}
+        />
 
-        <select
-          value={searchParams.get("mealType") ?? ""}
-          onChange={(e) => updateParam("mealType", e.target.value)}
-          className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
-        >
-          <option value="">{t("allMealTypes")}</option>
-          {MEAL_TYPES.map((m) => (
-            <option key={m} value={m}>
-              {tMeal(m)}
-            </option>
-          ))}
-        </select>
+        <MultiSelect
+          placeholder={t("allMealTypes")}
+          options={MEAL_TYPES.map((m) => ({ value: m, label: tMeal(m) }))}
+          selected={selectedMealTypes}
+          onChange={(values) => updateParam("mealType", values)}
+          selectedCountLabel={(count) => t("selectedCount", { count })}
+        />
 
-        <select
-          value={searchParams.get("language") ?? ""}
-          onChange={(e) => updateParam("language", e.target.value)}
-          className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
-        >
-          <option value="">{t("allLanguages")}</option>
-          <option value="fi">{t("finnish")}</option>
-          <option value="en">{t("english")}</option>
-        </select>
+        <MultiSelect
+          placeholder={t("allLanguages")}
+          options={[
+            { value: "fi", label: t("finnish") },
+            { value: "en", label: t("english") },
+          ]}
+          selected={selectedLanguages}
+          onChange={(values) => updateParam("language", values)}
+          selectedCountLabel={(count) => t("selectedCount", { count })}
+        />
 
-        <select
-          value={searchParams.get("servings") ?? ""}
-          onChange={(e) => updateParam("servings", e.target.value)}
-          className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
-        >
-          <option value="">{t("anyServings")}</option>
-          <option value="1-2">{t("servings1to2")}</option>
-          <option value="3-4">{t("servings3to4")}</option>
-          <option value="5-6">{t("servings5to6")}</option>
-          <option value="7+">{t("servings7plus")}</option>
-        </select>
+        <MultiSelect
+          placeholder={t("anyServings")}
+          options={[
+            { value: "1-2", label: t("servings1to2") },
+            { value: "3-4", label: t("servings3to4") },
+            { value: "5-6", label: t("servings5to6") },
+            { value: "7+", label: t("servings7plus") },
+          ]}
+          selected={selectedServings}
+          onChange={(values) => updateParam("servings", values)}
+          selectedCountLabel={(count) => t("selectedCount", { count })}
+        />
 
         {hasActiveFilters && (
           <button

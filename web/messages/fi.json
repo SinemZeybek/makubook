@@ -31,7 +31,10 @@
     "servings3to4": "3-4 annosta",
     "servings5to6": "5-6 annosta",
     "servings7plus": "7+ annosta",
-    "clearFilters": "Tyhjennä suodattimet"
+    "clearFilters": "Tyhjennä suodattimet",
+    "selectedCount": "{count} valittu",
+    "searchCountries": "Hae maita...",
+    "done": "Valmis"
   },
   "MealTypes": {
     "Breakfast": "Aamiainen",
@@ -116,6 +119,7 @@
     "chooseDifferentPhoto": "Valitse toinen kuva",
     "replacePhotoOptional": "Vaihda kuva (valinnainen)",
     "photoRequiredError": "Lisää kuva ruoastasi.",
+    "mealTypeRequiredError": "Valitse vähintään yksi ateriatyyppi.",
     "editorNote": "Toimittaja tarkistaa uudet reseptit ennen kuin ne julkaistaan ja näkyvät kaikille.",
     "submitForReview": "Lähetä tarkistettavaksi",
     "submitting": "Lähetetään...",

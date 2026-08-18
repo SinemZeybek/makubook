@@ -8,7 +8,7 @@ type Recipe = {
   title: string;
   description: string | null;
   country: string | null;
-  meal_type: string | null;
+  meal_type: string[] | null;
   language: string;
   author_id: string;
   status?: string;
@@ -82,11 +82,14 @@ export default function RecipeCard({
               {tCountry(recipe.country)}
             </span>
           )}
-          {recipe.meal_type && (
-            <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
-              {tMeal(recipe.meal_type)}
+          {recipe.meal_type?.map((type) => (
+            <span
+              key={type}
+              className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry"
+            >
+              {tMeal(type)}
             </span>
-          )}
+          ))}
           <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
             {recipe.language}
           </span>

@@ -31,7 +31,10 @@
     "servings3to4": "3-4 servings",
     "servings5to6": "5-6 servings",
     "servings7plus": "7+ servings",
-    "clearFilters": "Clear filters"
+    "clearFilters": "Clear filters",
+    "selectedCount": "{count} selected",
+    "searchCountries": "Search countries...",
+    "done": "Done"
   },
   "MealTypes": {
     "Breakfast": "Breakfast",
@@ -116,6 +119,7 @@
     "chooseDifferentPhoto": "Choose different photo",
     "replacePhotoOptional": "Replace photo (optional)",
     "photoRequiredError": "Please add a photo of your dish.",
+    "mealTypeRequiredError": "Please choose at least one meal type.",
     "editorNote": "New recipes are reviewed by an editor before they're published and visible to everyone.",
     "submitForReview": "Submit for review",
     "submitting": "Submitting...",
