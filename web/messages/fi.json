@@ -146,7 +146,10 @@
     "placeholder": "Mitä pidit? Teitkö muutoksia?",
     "mustBeLoggedIn": "Sinun täytyy kirjautua sisään kommentoidaksesi.",
     "posting": "Lähetetään...",
-    "postComment": "Lähetä kommentti"
+    "postComment": "Lähetä kommentti",
+    "delete": "Poista",
+    "deleting": "Poistetaan...",
+    "confirmDelete": "Poistetaanko tämä kommentti? Tätä ei voi perua."
   },
   "Save": {
     "label": "Tykkää",

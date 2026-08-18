@@ -7,6 +7,7 @@ import Navbar from "../../navbar";
 import Footer from "../../footer";
 import CommentForm from "./comment-form";
 import SaveButton from "./save-button";
+import DeleteCommentButton from "./delete-comment-button";
 
 type Ingredient = { quantity: string; unit: string; name: string };
 
@@ -42,7 +43,9 @@ export default async function RecipePage({
 
   const { data: comments } = await supabase
     .from("comments")
-    .select("id, body, rating, created_at, profiles(display_name, avatar_url)")
+    .select(
+      "id, body, rating, created_at, user_id, profiles(display_name, avatar_url)"
+    )
     .eq("recipe_id", id)
     .order("created_at", { ascending: false });
 
@@ -233,6 +236,9 @@ export default async function RecipePage({
                     {"★".repeat(comment.rating ?? 0)}
                     {"☆".repeat(5 - (comment.rating ?? 0))}
                   </span>
+                  {user && (user.id === comment.user_id || isEditor) && (
+                    <DeleteCommentButton commentId={comment.id} />
+                  )}
                 </div>
                 <p className="mt-1 text-berry/80">{comment.body}</p>
               </li>
