@@ -12,7 +12,6 @@ type Recipe = {
   language: string;
   author_id: string;
   status?: string;
-  like_count?: number | null;
   recipe_images: { url: string }[] | null;
   profiles: { display_name: string | null; avatar_url: string | null } | null;
 };
@@ -52,7 +51,6 @@ export default function RecipeCard({
           recipeId={recipe.id}
           userId={currentUserId}
           initialSaved={initialSaved}
-          initialLikeCount={recipe.like_count ?? 0}
         />
         {recipe.status && recipe.status !== "published" && (
           <span

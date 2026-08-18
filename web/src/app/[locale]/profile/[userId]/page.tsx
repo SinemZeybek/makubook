@@ -34,7 +34,7 @@ export default async function ProfilePage({
   const { data: recipes } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, status, like_count, recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, status, recipe_images(url), profiles(display_name, avatar_url)"
     )
     .eq("author_id", userId)
     .order("created_at", { ascending: false });
