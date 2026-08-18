@@ -115,7 +115,7 @@ export default async function Home({
           alt="A spread of dishes from around the world"
           fill
           priority
-          className="animate-ken-burns object-cover"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-berry/60" />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
