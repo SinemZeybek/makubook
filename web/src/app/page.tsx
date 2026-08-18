@@ -188,15 +188,6 @@ export default async function Home({
       )}
 
       <div className="mx-auto max-w-6xl px-6 py-10">
-        {user && (
-          <Link
-            href="/recipes/new"
-            className="mt-4 inline-block rounded-md bg-gold px-4 py-2 text-sm font-medium text-berry"
-          >
-            Add a recipe
-          </Link>
-        )}
-
         {error && (
           <p className="mt-8 text-red-600">
             Error loading recipes: {error.message}

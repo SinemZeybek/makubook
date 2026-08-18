@@ -19,12 +19,11 @@ export default function Navbar({
   return (
     <div className="sticky top-0 z-10 border-b border-berry/10 bg-cream/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-        <Link href="/" className="font-logo text-xl sm:text-2xl">
-          <span className="text-gold">Maku</span>
-          <span className="text-berry">book</span>
-        </Link>
-
         <div className="flex items-center gap-1 sm:gap-4">
+          <Link href="/" className="font-logo text-xl sm:text-2xl">
+            <span className="text-gold">Maku</span>
+            <span className="text-berry">book</span>
+          </Link>
           <Link
             href="/about"
             aria-label="About"
@@ -50,6 +49,9 @@ export default function Navbar({
               About
             </span>
           </Link>
+        </div>
+
+        <div className="flex items-center gap-1 sm:gap-4">
           <button
             onClick={() => setSearchOpen((open) => !open)}
             aria-label="Search recipes"
@@ -73,6 +75,28 @@ export default function Navbar({
 
           {userEmail ? (
             <div className="flex items-center gap-1 sm:gap-3">
+              <Link
+                href="/recipes/new"
+                aria-label="Add a recipe"
+                className="flex items-center gap-1.5 rounded-full px-1.5 py-2 text-berry hover:bg-berry/10 sm:px-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <line x1="12" y1="8" x2="12" y2="16" />
+                  <line x1="8" y1="12" x2="16" y2="12" />
+                </svg>
+                <span className="hidden text-sm sm:inline">Add recipe</span>
+              </Link>
               <Link
                 href="/saved"
                 aria-label="Saved recipes"
@@ -116,11 +140,11 @@ export default function Navbar({
                   <span className="hidden sm:inline">Editor</span>
                 </Link>
               )}
-              {userId ? (
+              {userId && (
                 <Link
                   href={`/profile/${userId}`}
                   aria-label="Your profile"
-                  className="flex items-center gap-1.5 rounded-full px-1.5 py-2 text-berry/70 hover:bg-berry/10 sm:px-1"
+                  className="flex items-center gap-1.5 rounded-full px-1.5 py-2 text-berry hover:bg-berry/10 sm:px-3"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -132,19 +156,12 @@ export default function Navbar({
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="sm:hidden"
                   >
                     <circle cx="12" cy="8" r="4" />
                     <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
                   </svg>
-                  <span className="hidden text-sm underline underline-offset-2 sm:inline">
-                    {userEmail}
-                  </span>
+                  <span className="hidden text-sm sm:inline">Profile</span>
                 </Link>
-              ) : (
-                <span className="hidden text-sm text-berry/70 sm:inline">
-                  {userEmail}
-                </span>
               )}
               <LogoutButton />
             </div>
