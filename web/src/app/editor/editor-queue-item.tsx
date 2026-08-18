@@ -24,14 +24,35 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  async function updateStatus(status: "published" | "rejected") {
+  async function approve() {
+    setError(null);
+    setLoading(true);
+
+    const res = await fetch(`/api/recipes/${recipe.id}/approve`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: title.trim() }),
+    });
+
+    setLoading(false);
+
+    if (!res.ok) {
+      const { error: approveError } = await res.json().catch(() => ({}));
+      setError(approveError ?? "Could not approve recipe");
+      return;
+    }
+
+    router.refresh();
+  }
+
+  async function reject() {
     setError(null);
     setLoading(true);
     const supabase = createClient();
 
     const { error: updateError } = await supabase
       .from("recipes")
-      .update({ title: title.trim(), status })
+      .update({ title: title.trim(), status: "rejected" })
       .eq("id", recipe.id);
 
     setLoading(false);
@@ -96,7 +117,7 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
           <button
             type="button"
             disabled={loading || !title.trim()}
-            onClick={() => updateStatus("published")}
+            onClick={approve}
             className="rounded-md bg-gold px-4 py-2 text-sm font-medium text-berry disabled:opacity-50"
           >
             Approve
@@ -104,7 +125,7 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
           <button
             type="button"
             disabled={loading}
-            onClick={() => updateStatus("rejected")}
+            onClick={reject}
             className="rounded-md border border-red-600/30 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-600/10 disabled:opacity-50"
           >
             Reject

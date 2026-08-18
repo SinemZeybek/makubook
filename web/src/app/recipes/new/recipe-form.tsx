@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { COUNTRIES } from "@/lib/countries";
@@ -25,6 +26,9 @@ export default function RecipeForm({ userId }: { userId: string }) {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [submittedRecipeId, setSubmittedRecipeId] = useState<string | null>(
+    null
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -141,8 +145,46 @@ export default function RecipeForm({ userId }: { userId: string }) {
     }
 
     setLoading(false);
-    router.push(`/recipes/${recipe.id}`);
-    router.refresh();
+    setSubmittedRecipeId(recipe.id);
+    setTimeout(() => {
+      router.push(`/recipes/${recipe.id}`);
+      router.refresh();
+    }, 3500);
+  }
+
+  if (submittedRecipeId) {
+    return (
+      <div className="mt-10 flex flex-col items-center gap-3 rounded-lg border border-berry/10 bg-white px-6 py-12 text-center shadow-sm">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gold/25 text-berry">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </div>
+        <h2 className="text-xl font-semibold text-berry">
+          Recipe submitted!
+        </h2>
+        <p className="max-w-sm text-sm text-berry/70">
+          Our review usually doesn&apos;t take long. We&apos;ll email you as
+          soon as it&apos;s published.
+        </p>
+        <Link
+          href={`/recipes/${submittedRecipeId}`}
+          className="mt-2 text-sm text-berry underline"
+        >
+          View your recipe now
+        </Link>
+      </div>
+    );
   }
 
   return (
