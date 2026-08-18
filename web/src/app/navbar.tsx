@@ -62,7 +62,8 @@ export default function Navbar({
   }
 
   return (
-    <div className="sticky top-0 z-10 bg-cream/95 shadow-sm backdrop-blur">
+    <>
+      <div className="sticky top-0 z-10 bg-cream/95 shadow-sm backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <div className="flex items-center gap-1 sm:gap-4">
           <Link href="/" className="group flex items-center gap-1.5">
@@ -249,11 +250,12 @@ export default function Navbar({
         </div>
       </div>
 
+        <div className="h-[3px] bg-gradient-to-r from-gold via-berry to-gold" />
+      </div>
+
       <div className="mx-auto max-w-6xl px-6 pb-4">
         <RecipeFilters />
       </div>
-
-      <div className="h-[3px] bg-gradient-to-r from-gold via-berry to-gold" />
-    </div>
+    </>
   );
 }
