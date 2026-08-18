@@ -9,16 +9,28 @@ const RIGHT_PAGE_OPEN =
   "M12 6 C12 4 14 3 16 3 L20 3 C20.6 3 21 3.4 21 4 L21 17 C21 17.6 20.6 18 20 18 L16 18 C14 18 12 19 12 21 Z";
 const RIGHT_PAGE_TURN =
   "M12 6 C12 4 13 3 14 3 L15 3 C15.3 3 15.5 3.4 15.5 4 L15.5 17 C15.5 17.6 15.3 18 15 18 L14 18 C13 18 12 19 12 21 Z";
+const LEFT_PAGE_OPEN =
+  "M12 6 C12 4 10 3 8 3 L4 3 C3.4 3 3 3.4 3 4 L3 17 C3 17.6 3.4 18 4 18 L8 18 C10 18 12 19 12 21 Z";
+const LEFT_PAGE_TURN =
+  "M12 6 C12 4 11 3 10 3 L9 3 C8.7 3 8.5 3.4 8.5 4 L8.5 17 C8.5 17.6 8.7 18 9 18 L10 18 C11 18 12 19 12 21 Z";
 
 const bookIconVariants = {
   rest: { scale: 1 },
   hover: { scale: 1.08, transition: { type: "spring", stiffness: 400, damping: 12 } },
 };
 
-const bookPageVariants = {
+const rightPageVariants = {
   rest: { d: RIGHT_PAGE_OPEN },
   hover: {
     d: [RIGHT_PAGE_OPEN, RIGHT_PAGE_TURN, RIGHT_PAGE_OPEN],
+    transition: { duration: 0.6, repeat: Infinity, ease: "easeInOut" },
+  },
+};
+
+const leftPageVariants = {
+  rest: { d: LEFT_PAGE_OPEN },
+  hover: {
+    d: [LEFT_PAGE_OPEN, LEFT_PAGE_TURN, LEFT_PAGE_OPEN],
     transition: { duration: 0.6, repeat: Infinity, ease: "easeInOut" },
   },
 };
@@ -69,8 +81,8 @@ export default function Navbar({
               strokeLinejoin="round"
               className="text-gold"
             >
-              <path d="M12 6 C12 4 10 3 8 3 L4 3 C3.4 3 3 3.4 3 4 L3 17 C3 17.6 3.4 18 4 18 L8 18 C10 18 12 19 12 21 Z" />
-              <motion.path variants={bookPageVariants} />
+              <motion.path variants={leftPageVariants} />
+              <motion.path variants={rightPageVariants} />
             </motion.svg>
             <span className="font-logo text-xl sm:text-2xl">
               <span className="text-gold">Maku</span>

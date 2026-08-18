@@ -89,7 +89,7 @@ export default async function AboutPage() {
                 {
                   step: "1",
                   title: "Share a recipe",
-                  body: "Write up a dish from your home country, add a photo, and tell people the story behind it.",
+                  body: "Write up a dish you love making, add a photo and tell people the story behind it.",
                 },
                 {
                   step: "2",
