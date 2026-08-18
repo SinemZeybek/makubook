@@ -95,7 +95,7 @@ export default async function ProfilePage({
               </Link>
               <Link
                 href="/saved"
-                className="rounded-md bg-gold px-4 py-2 text-sm font-medium text-berry"
+                className="rounded-md border border-berry/20 px-4 py-2 text-sm text-berry hover:bg-berry/10"
               >
                 Saved recipes
               </Link>
@@ -104,8 +104,13 @@ export default async function ProfilePage({
         </div>
 
         <div className="mt-10">
+          <h2 className="text-xl font-semibold text-berry">
+            {isOwnProfile
+              ? "My recipes"
+              : `${profile.display_name ?? "Anonymous"}'s recipes`}
+          </h2>
           {recipes && recipes.length > 0 ? (
-            <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {recipes.map((recipe) => (
                 <li key={recipe.id}>
                   <RecipeCard
@@ -117,7 +122,7 @@ export default async function ProfilePage({
               ))}
             </ul>
           ) : (
-            <p className="text-berry/70">
+            <p className="mt-4 text-berry/70">
               {isOwnProfile
                 ? "You haven't shared any recipes yet."
                 : "This user hasn't shared any recipes yet."}

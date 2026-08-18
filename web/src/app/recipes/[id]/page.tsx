@@ -24,7 +24,7 @@ export default async function RecipePage({
   const { data: recipe, error } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, ingredients, instructions, tips, author_id, status, recipe_images(url)"
+      "id, title, description, country, meal_type, servings, language, ingredients, instructions, tips, author_id, status, recipe_images(url)"
     )
     .eq("id", id)
     .single();
@@ -143,6 +143,12 @@ export default async function RecipePage({
 
         {recipe.description && (
           <p className="mt-2 text-berry/70">{recipe.description}</p>
+        )}
+
+        {recipe.servings && (
+          <p className="mt-3 text-sm font-medium text-berry">
+            Serves {recipe.servings}
+          </p>
         )}
 
         <section className="mt-8">

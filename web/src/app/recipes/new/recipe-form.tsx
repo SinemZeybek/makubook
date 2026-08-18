@@ -14,6 +14,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
   const [description, setDescription] = useState("");
   const [country, setCountry] = useState("");
   const [mealType, setMealType] = useState("");
+  const [servings, setServings] = useState("");
   const [ingredients, setIngredients] = useState<Ingredient[]>([
     { quantity: "", unit: "", name: "" },
   ]);
@@ -81,6 +82,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
         description,
         country,
         meal_type: mealType,
+        servings: Number(servings),
         ingredients: ingredientList,
         instructions,
         tips: tips.trim() || null,
@@ -172,6 +174,20 @@ export default function RecipeForm({ userId }: { userId: string }) {
           </option>
         ))}
       </select>
+
+      <label className="flex flex-col gap-1 text-sm text-berry/70">
+        Servings
+        <input
+          type="number"
+          placeholder="e.g. 4"
+          min={1}
+          step={1}
+          value={servings}
+          onChange={(e) => setServings(e.target.value)}
+          required
+          className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
+        />
+      </label>
 
       <div className="flex flex-col gap-2">
         <label className="text-sm text-berry/70">

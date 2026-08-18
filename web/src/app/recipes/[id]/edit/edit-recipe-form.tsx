@@ -16,6 +16,7 @@ type Recipe = {
   description: string | null;
   country: string | null;
   meal_type: string | null;
+  servings: number | null;
   language: "fi" | "en";
   ingredients: unknown;
   instructions: unknown;
@@ -33,6 +34,9 @@ export default function EditRecipeForm({
   const [description, setDescription] = useState(recipe.description ?? "");
   const [country, setCountry] = useState(recipe.country ?? "");
   const [mealType, setMealType] = useState(recipe.meal_type ?? "");
+  const [servings, setServings] = useState(
+    recipe.servings ? String(recipe.servings) : ""
+  );
   const [ingredients, setIngredients] = useState<Ingredient[]>(
     Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0
       ? (recipe.ingredients as Ingredient[])
@@ -105,6 +109,7 @@ export default function EditRecipeForm({
         description,
         country,
         meal_type: mealType,
+        servings: Number(servings),
         ingredients: ingredientList,
         instructions,
         tips: tips.trim() || null,
@@ -196,6 +201,20 @@ export default function EditRecipeForm({
           </option>
         ))}
       </select>
+
+      <label className="flex flex-col gap-1 text-sm text-berry/70">
+        Servings
+        <input
+          type="number"
+          placeholder="e.g. 4"
+          min={1}
+          step={1}
+          value={servings}
+          onChange={(e) => setServings(e.target.value)}
+          required
+          className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
+        />
+      </label>
 
       <div className="flex flex-col gap-2">
         <label className="text-sm text-berry/70">

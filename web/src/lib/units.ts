@@ -1,4 +1,4 @@
 export const UNITS = [
-  "g", "kg", "ml", "l", "tsp", "tbsp", "cup", "oz", "lb",
+  "g", "kg", "ml", "dl", "l", "tsp", "tbsp", "cup", "oz", "lb",
   "pcs", "clove", "pinch", "can", "package",
 ] as const;

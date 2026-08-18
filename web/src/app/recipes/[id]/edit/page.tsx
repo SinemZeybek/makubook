@@ -19,7 +19,7 @@ export default async function EditRecipePage({
   const { data: recipe, error } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, ingredients, instructions, tips, author_id"
+      "id, title, description, country, meal_type, servings, language, ingredients, instructions, tips, author_id"
     )
     .eq("id", id)
     .single();
