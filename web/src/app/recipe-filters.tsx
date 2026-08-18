@@ -52,7 +52,8 @@ export default function RecipeFilters() {
     searchParams.get("q") ||
     searchParams.get("country") ||
     searchParams.get("mealType") ||
-    searchParams.get("language");
+    searchParams.get("language") ||
+    searchParams.get("servings");
 
   return (
     <div className="mt-6 flex flex-col gap-3">
@@ -108,6 +109,18 @@ export default function RecipeFilters() {
           <option value="">All languages</option>
           <option value="fi">Finnish</option>
           <option value="en">English</option>
+        </select>
+
+        <select
+          value={searchParams.get("servings") ?? ""}
+          onChange={(e) => updateParam("servings", e.target.value)}
+          className="rounded-md border border-berry/20 px-2 py-1.5 text-sm text-berry"
+        >
+          <option value="">Any servings</option>
+          <option value="1-2">1-2 servings</option>
+          <option value="3-4">3-4 servings</option>
+          <option value="5-6">5-6 servings</option>
+          <option value="7+">7+ servings</option>
         </select>
 
         {hasActiveFilters && (

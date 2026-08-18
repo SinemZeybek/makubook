@@ -15,9 +15,10 @@ export default async function Home({
     country?: string;
     mealType?: string;
     language?: string;
+    servings?: string;
   }>;
 }) {
-  const { q, country, mealType, language } = await searchParams;
+  const { q, country, mealType, language, servings } = await searchParams;
   const supabase = await createClient();
 
   const {
@@ -36,9 +37,17 @@ export default async function Home({
   if (country) recipesQuery = recipesQuery.eq("country", country);
   if (mealType) recipesQuery = recipesQuery.eq("meal_type", mealType);
   if (language) recipesQuery = recipesQuery.eq("language", language);
+  if (servings === "7+") {
+    recipesQuery = recipesQuery.gte("servings", 7);
+  } else if (servings) {
+    const [min, max] = servings.split("-").map(Number);
+    recipesQuery = recipesQuery.gte("servings", min).lte("servings", max);
+  }
 
   const { data: recipes, error } = await recipesQuery;
-  const hasActiveFilters = Boolean(q || country || mealType || language);
+  const hasActiveFilters = Boolean(
+    q || country || mealType || language || servings
+  );
 
   let savedRecipeIds = new Set<string>();
   let isEditor = false;
@@ -63,6 +72,7 @@ export default async function Home({
     if (country) params.set("country", country);
     if (type) params.set("mealType", type);
     if (language) params.set("language", language);
+    if (servings) params.set("servings", servings);
     const qs = params.toString();
     return qs ? `/?${qs}` : "/";
   }
