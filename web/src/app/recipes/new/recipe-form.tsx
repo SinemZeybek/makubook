@@ -289,7 +289,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
       </select>
 
       <label className="flex flex-col gap-1 text-sm text-berry/70">
-        Servings
+        <span className="font-semibold text-berry">Servings</span>
         <input
           type="number"
           placeholder="e.g. 4"
@@ -303,7 +303,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
       </label>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-berry/70">
+        <label className="text-sm font-semibold text-berry">
           Ingredients
         </label>
         {ingredients.map((ingredient, i) => (
@@ -365,7 +365,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-berry/70">
+        <label className="text-sm font-semibold text-berry">
           Steps
         </label>
         {steps.map((step, i) => (
