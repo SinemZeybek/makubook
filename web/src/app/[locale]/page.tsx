@@ -137,7 +137,7 @@ export default async function Home({
               {t("featuredHeading")}
             </h2>
           </FadeIn>
-          <div className="mt-4 flex gap-5 overflow-x-auto pb-2">
+          <div className="mt-4 flex gap-5 overflow-x-auto overflow-y-hidden pb-2">
             {featuredRecipes.map((recipe, i) => (
               <FadeIn
                 key={recipe.id}

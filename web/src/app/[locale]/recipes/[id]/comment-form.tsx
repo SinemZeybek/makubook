@@ -52,7 +52,7 @@ export default function CommentForm({ recipeId }: { recipeId: string }) {
       <select
         value={rating}
         onChange={(e) => setRating(e.target.value)}
-        className="w-32 rounded-md border border-berry/20 px-3 py-2 text-berry"
+        className="w-32 rounded-md border border-berry/20 px-3 py-2 text-gold-dark"
       >
         {[5, 4, 3, 2, 1].map((n) => (
           <option key={n} value={n}>
