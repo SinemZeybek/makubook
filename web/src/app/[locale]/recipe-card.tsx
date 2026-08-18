@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import SaveToggleButton from "./save-toggle-button";
 
@@ -12,6 +12,7 @@ type Recipe = {
   language: string;
   author_id: string;
   status?: string;
+  comments?: { rating: number | null }[] | null;
   recipe_images: { url: string }[] | null;
   profiles: { display_name: string | null; avatar_url: string | null } | null;
 };
@@ -29,6 +30,15 @@ export default function RecipeCard({
   const tMeal = useTranslations("MealTypes");
   const tCountry = useTranslations("Countries");
   const tCommon = useTranslations("Common");
+  const locale = useLocale();
+
+  const ratings = (recipe.comments ?? [])
+    .map((c) => c.rating)
+    .filter((r): r is number => r != null);
+  const avgRating =
+    ratings.length > 0
+      ? ratings.reduce((sum, r) => sum + r, 0) / ratings.length
+      : null;
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg border border-berry/15 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:border-berry/30 hover:shadow-md">
@@ -87,10 +97,19 @@ export default function RecipeCard({
           </p>
         )}
 
-        <div className="mt-auto flex justify-end pt-3">
+        <div className="mt-auto flex items-center gap-2 pt-3">
+          {avgRating !== null && (
+            <span className="pointer-events-none flex items-center gap-1 text-xs text-berry/60">
+              <span className="text-gold-dark">★</span>
+              {new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(
+                avgRating
+              )}
+              <span className="text-berry/40">({ratings.length})</span>
+            </span>
+          )}
           <Link
             href={`/profile/${recipe.author_id}`}
-            className="relative z-10 flex shrink-0 items-center gap-1.5 hover:underline"
+            className="relative z-10 ml-auto flex shrink-0 items-center gap-1.5 hover:underline"
           >
             <div className="relative h-5 w-5 overflow-hidden rounded-full">
               <Image
