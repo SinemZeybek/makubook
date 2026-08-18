@@ -58,6 +58,7 @@ export default function RecipeFilters() {
     <div className="mt-6 flex flex-col gap-3">
       <form onSubmit={handleSearchSubmit} className="flex gap-2">
         <input
+          id="recipe-search-input"
           type="text"
           placeholder="Search recipes..."
           value={search}

@@ -1,10 +1,27 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import LogoutButton from "./logout-button";
 import RecipeFilters from "./recipe-filters";
+
+const RIGHT_PAGE_OPEN =
+  "M12 6 C12 4 14 3 16 3 L20 3 C20.6 3 21 3.4 21 4 L21 17 C21 17.6 20.6 18 20 18 L16 18 C14 18 12 19 12 21 Z";
+const RIGHT_PAGE_TURN =
+  "M12 6 C12 4 13 3 14 3 L15 3 C15.3 3 15.5 3.4 15.5 4 L15.5 17 C15.5 17.6 15.3 18 15 18 L14 18 C13 18 12 19 12 21 Z";
+
+const bookIconVariants = {
+  rest: { scale: 1 },
+  hover: { scale: 1.08, transition: { type: "spring", stiffness: 400, damping: 12 } },
+};
+
+const bookPageVariants = {
+  rest: { d: RIGHT_PAGE_OPEN },
+  hover: {
+    d: [RIGHT_PAGE_OPEN, RIGHT_PAGE_TURN, RIGHT_PAGE_OPEN],
+    transition: { duration: 0.6, repeat: Infinity, ease: "easeInOut" },
+  },
+};
 
 export default function Navbar({
   userEmail,
@@ -15,7 +32,22 @@ export default function Navbar({
   userId?: string | null;
   isEditor?: boolean;
 }) {
-  const [searchOpen, setSearchOpen] = useState(true);
+  function handleSearchClick() {
+    const input = document.getElementById(
+      "recipe-search-input"
+    ) as HTMLInputElement | null;
+    if (!input) return;
+    input.scrollIntoView({ behavior: "smooth", block: "center" });
+    input.focus();
+    input.classList.remove("animate-search-pulse");
+    void input.offsetWidth;
+    input.classList.add("animate-search-pulse");
+    input.addEventListener(
+      "animationend",
+      () => input.classList.remove("animate-search-pulse"),
+      { once: true }
+    );
+  }
 
   return (
     <div className="sticky top-0 z-10 bg-cream/95 shadow-sm backdrop-blur">
@@ -23,8 +55,9 @@ export default function Navbar({
         <div className="flex items-center gap-1 sm:gap-4">
           <Link href="/" className="group flex items-center gap-1.5">
             <motion.svg
-              whileHover={{ rotate: -12, scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              variants={bookIconVariants}
+              initial="rest"
+              whileHover="hover"
               xmlns="http://www.w3.org/2000/svg"
               width="26"
               height="26"
@@ -36,8 +69,8 @@ export default function Navbar({
               strokeLinejoin="round"
               className="text-gold"
             >
-              <path d="M18 8a6 6 0 0 0-12 0c0 4-1.5 5.5-2 7h16c-.5-1.5-2-3-2-7Z" />
-              <path d="M9 19c.5 1.2 1.6 2 3 2s2.5-.8 3-2" />
+              <path d="M12 6 C12 4 10 3 8 3 L4 3 C3.4 3 3 3.4 3 4 L3 17 C3 17.6 3.4 18 4 18 L8 18 C10 18 12 19 12 21 Z" />
+              <motion.path variants={bookPageVariants} />
             </motion.svg>
             <span className="font-logo text-xl sm:text-2xl">
               <span className="text-gold">Maku</span>
@@ -73,7 +106,7 @@ export default function Navbar({
 
         <div className="flex items-center gap-1 sm:gap-4">
           <button
-            onClick={() => setSearchOpen((open) => !open)}
+            onClick={handleSearchClick}
             aria-label="Search recipes"
             className="rounded-full p-1.5 text-berry hover:bg-berry/10 sm:p-2"
           >
@@ -204,11 +237,9 @@ export default function Navbar({
         </div>
       </div>
 
-      {searchOpen && (
-        <div className="mx-auto max-w-6xl px-6 pb-4">
-          <RecipeFilters />
-        </div>
-      )}
+      <div className="mx-auto max-w-6xl px-6 pb-4">
+        <RecipeFilters />
+      </div>
 
       <div className="h-[3px] bg-gradient-to-r from-gold via-berry to-gold" />
     </div>
