@@ -389,6 +389,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
           <RecipeContentFields
             key={primaryKey}
             ref={primaryRef}
+            lang={language}
             initialValues={carriedValues}
           />
         </div>
@@ -407,7 +408,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
                 {t("remove")}
               </button>
             </div>
-            <RecipeContentFields ref={secondaryRef} />
+            <RecipeContentFields ref={secondaryRef} lang={secondaryLanguage} />
           </div>
         )}
       </div>

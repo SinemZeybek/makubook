@@ -3,6 +3,7 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslations } from "next-intl";
 import { UNITS } from "@/lib/units";
+import { UNIT_LABELS } from "@/lib/unitLabels";
 
 type Ingredient = { quantity: string; unit: string; name: string };
 
@@ -19,15 +20,16 @@ export type RecipeContentHandle = {
 };
 
 type RecipeContentFieldsProps = {
+  lang: "en" | "fi";
   initialValues?: RecipeContentValues;
 };
 
 const RecipeContentFields = forwardRef<
   RecipeContentHandle,
   RecipeContentFieldsProps
->(function RecipeContentFields({ initialValues }, ref) {
+>(function RecipeContentFields({ lang, initialValues }, ref) {
     const t = useTranslations("RecipeForm");
-    const tUnit = useTranslations("Units");
+    const unitLabels = UNIT_LABELS[lang];
     const [title, setTitle] = useState(initialValues?.title ?? "");
     const [description, setDescription] = useState(
       initialValues?.description ?? ""
@@ -124,7 +126,7 @@ const RecipeContentFields = forwardRef<
                 </option>
                 {UNITS.map((unit) => (
                   <option key={unit} value={unit}>
-                    {tUnit(unit)}
+                    {unitLabels[unit]}
                   </option>
                 ))}
               </select>
