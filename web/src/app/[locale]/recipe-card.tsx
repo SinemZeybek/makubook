@@ -27,6 +27,7 @@ export default function RecipeCard({
 }) {
   const t = useTranslations("RecipeCard");
   const tMeal = useTranslations("MealTypes");
+  const tCountry = useTranslations("Countries");
   const tCommon = useTranslations("Common");
 
   return (
@@ -68,7 +69,7 @@ export default function RecipeCard({
           <h2 className="text-xl font-medium text-berry">{recipe.title}</h2>
           {recipe.country && (
             <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
-              {recipe.country}
+              {tCountry(recipe.country)}
             </span>
           )}
           {recipe.meal_type && (

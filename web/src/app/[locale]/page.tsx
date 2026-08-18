@@ -22,6 +22,7 @@ export default async function Home({
   const { q, country, mealType, language, servings } = await searchParams;
   const t = await getTranslations("Home");
   const tMeal = await getTranslations("MealTypes");
+  const tCountry = await getTranslations("Countries");
   const tCommon = await getTranslations("Common");
   const supabase = await createClient();
 
@@ -165,7 +166,7 @@ export default async function Home({
                   <div className="pointer-events-none mt-1 flex flex-wrap gap-1">
                     {recipe.country && (
                       <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
-                        {recipe.country}
+                        {tCountry(recipe.country)}
                       </span>
                     )}
                     {recipe.meal_type && (

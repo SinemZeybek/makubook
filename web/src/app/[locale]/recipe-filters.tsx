@@ -11,6 +11,7 @@ import { MEAL_TYPES } from "@/lib/mealTypes";
 export default function RecipeFilters() {
   const t = useTranslations("Search");
   const tMeal = useTranslations("MealTypes");
+  const tCountry = useTranslations("Countries");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -30,10 +31,12 @@ export default function RecipeFilters() {
           data.map((recipe) => recipe.country).filter(Boolean)
         );
         setAvailableCountries(
-          COUNTRIES.filter((c) => countriesInUse.has(c))
+          COUNTRIES.filter((c) => countriesInUse.has(c)).sort((a, b) =>
+            tCountry(a).localeCompare(tCountry(b))
+          )
         );
       });
-  }, []);
+  }, [tCountry]);
 
   function updateParam(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -87,7 +90,7 @@ export default function RecipeFilters() {
           <option value="">{t("allCountries")}</option>
           {availableCountries.map((c) => (
             <option key={c} value={c}>
-              {c}
+              {tCountry(c)}
             </option>
           ))}
         </select>

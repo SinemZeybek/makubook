@@ -21,6 +21,7 @@ type Recipe = {
 export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
   const t = useTranslations("Editor");
   const tMeal = useTranslations("MealTypes");
+  const tCountry = useTranslations("Countries");
   const tCommon = useTranslations("Common");
   const [title, setTitle] = useState(recipe.title);
   const [loading, setLoading] = useState(false);
@@ -92,7 +93,7 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
             />
           </div>
           <span>{recipe.profiles?.display_name ?? tCommon("anonymous")}</span>
-          {recipe.country && <span>· {recipe.country}</span>}
+          {recipe.country && <span>· {tCountry(recipe.country)}</span>}
           {recipe.meal_type && <span>· {tMeal(recipe.meal_type)}</span>}
         </div>
 

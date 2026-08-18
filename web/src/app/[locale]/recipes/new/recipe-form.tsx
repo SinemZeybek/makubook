@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -13,6 +13,12 @@ type Ingredient = { quantity: string; unit: string; name: string };
 export default function RecipeForm({ userId }: { userId: string }) {
   const t = useTranslations("RecipeForm");
   const tMeal = useTranslations("MealTypes");
+  const tCountry = useTranslations("Countries");
+  const tUnit = useTranslations("Units");
+  const sortedCountries = useMemo(
+    () => [...COUNTRIES].sort((a, b) => tCountry(a).localeCompare(tCountry(b))),
+    [tCountry]
+  );
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [country, setCountry] = useState("");
@@ -307,9 +313,9 @@ export default function RecipeForm({ userId }: { userId: string }) {
         <option value="" disabled>
           {t("countryPlaceholder")}
         </option>
-        {COUNTRIES.map((c) => (
+        {sortedCountries.map((c) => (
           <option key={c} value={c}>
-            {c}
+            {tCountry(c)}
           </option>
         ))}
       </select>
@@ -374,7 +380,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
               </option>
               {UNITS.map((unit) => (
                 <option key={unit} value={unit}>
-                  {unit}
+                  {tUnit(unit)}
                 </option>
               ))}
             </select>

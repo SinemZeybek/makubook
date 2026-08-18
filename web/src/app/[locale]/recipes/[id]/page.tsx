@@ -18,6 +18,8 @@ export default async function RecipePage({
   const { id } = await params;
   const t = await getTranslations("RecipeDetail");
   const tMeal = await getTranslations("MealTypes");
+  const tCountry = await getTranslations("Countries");
+  const tUnit = await getTranslations("Units");
   const tCommon = await getTranslations("Common");
   const supabase = await createClient();
 
@@ -132,7 +134,7 @@ export default async function RecipePage({
           </h1>
           {recipe.country && (
             <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
-              {recipe.country}
+              {tCountry(recipe.country)}
             </span>
           )}
           {recipe.meal_type && (
@@ -160,7 +162,8 @@ export default async function RecipePage({
           <ul className="mt-2 list-disc space-y-1 pl-5 text-berry/80">
             {ingredients.map((ingredient, i) => (
               <li key={i}>
-                {ingredient.quantity} {ingredient.unit} {ingredient.name}
+                {ingredient.quantity} {ingredient.unit && tUnit(ingredient.unit)}{" "}
+                {ingredient.name}
               </li>
             ))}
           </ul>
