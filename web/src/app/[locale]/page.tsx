@@ -251,18 +251,7 @@ export default async function Home({
           </p>
         )}
 
-        <FadeIn className="mt-8 flex flex-wrap gap-2">
-          <Link
-            href={clearMealTypesHref()}
-            scroll={false}
-            className={
-              mealTypeArr.length === 0
-                ? "rounded-full bg-berry px-4 py-1.5 text-sm text-cream"
-                : "rounded-full border border-berry/20 px-4 py-1.5 text-sm text-berry hover:bg-berry/10"
-            }
-          >
-            {t("all")}
-          </Link>
+        <FadeIn className="mt-8 flex flex-wrap items-center gap-2">
           {MEAL_TYPES.map((type) => (
             <Link
               key={type}
@@ -277,6 +266,15 @@ export default async function Home({
               {tMeal(type)}
             </Link>
           ))}
+          {mealTypeArr.length > 0 && (
+            <Link
+              href={clearMealTypesHref()}
+              scroll={false}
+              className="text-sm text-berry/70 underline"
+            >
+              {t("clear")}
+            </Link>
+          )}
         </FadeIn>
 
         <div className="min-h-[50vh]">
