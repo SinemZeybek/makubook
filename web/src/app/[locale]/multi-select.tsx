@@ -86,13 +86,27 @@ export default function MultiSelect({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={`rounded-md border px-2 py-1.5 text-sm ${
+        className={`flex items-center gap-1.5 rounded-md border px-3 py-2 text-sm ${
           selected.length > 0
             ? "border-berry bg-berry/10 text-berry"
             : "border-berry/20 text-berry"
         }`}
       >
         {buttonLabel}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`shrink-0 opacity-60 transition-transform ${open ? "rotate-180" : ""}`}
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
       </button>
 
       {open && (
