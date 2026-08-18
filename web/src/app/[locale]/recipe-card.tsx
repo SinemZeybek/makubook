@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import SaveToggleButton from "./save-toggle-button";
 
@@ -24,6 +25,10 @@ export default function RecipeCard({
   currentUserId?: string | null;
   initialSaved?: boolean;
 }) {
+  const t = useTranslations("RecipeCard");
+  const tMeal = useTranslations("MealTypes");
+  const tCommon = useTranslations("Common");
+
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg border border-berry/15 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:border-berry/30 hover:shadow-md">
       <Link
@@ -54,7 +59,7 @@ export default function RecipeCard({
                 : "bg-gold text-berry"
             }`}
           >
-            {recipe.status === "rejected" ? "Rejected" : "Pending review"}
+            {recipe.status === "rejected" ? t("rejected") : t("pendingReview")}
           </span>
         )}
       </div>
@@ -68,7 +73,7 @@ export default function RecipeCard({
           )}
           {recipe.meal_type && (
             <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
-              {recipe.meal_type}
+              {tMeal(recipe.meal_type)}
             </span>
           )}
           <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
@@ -95,7 +100,7 @@ export default function RecipeCard({
               />
             </div>
             <span className="text-xs text-berry/60">
-              {recipe.profiles?.display_name ?? "Anonymous"}
+              {recipe.profiles?.display_name ?? tCommon("anonymous")}
             </span>
           </Link>
         </div>

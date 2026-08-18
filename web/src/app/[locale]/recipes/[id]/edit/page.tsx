@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../../navbar";
@@ -11,6 +12,7 @@ export default async function EditRecipePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const t = await getTranslations("RecipeForm");
   const supabase = await createClient();
 
   const {
@@ -47,7 +49,7 @@ export default async function EditRecipePage({
         isEditor={profile?.role === "editor"}
       />
       <div className="flex-1 mx-auto max-w-xl px-6 py-10">
-        <h1 className="text-2xl font-semibold text-berry">Edit recipe</h1>
+        <h1 className="text-2xl font-semibold text-berry">{t("editHeading")}</h1>
         <EditRecipeForm recipe={recipe} userId={user.id} />
       </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 
 export default function SaveButton({
@@ -12,6 +13,7 @@ export default function SaveButton({
   userId: string;
   initialSaved: boolean;
 }) {
+  const t = useTranslations("Save");
   const [saved, setSaved] = useState(initialSaved);
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +43,7 @@ export default function SaveButton({
       onClick={toggle}
       disabled={loading}
       aria-pressed={saved}
-      aria-label={saved ? "Remove from saved recipes" : "Save recipe"}
+      aria-label={saved ? t("removeSavedAria") : t("aria")}
       className="flex items-center gap-1.5 text-sm text-berry underline underline-offset-2 disabled:opacity-50"
     >
       <svg
@@ -57,7 +59,7 @@ export default function SaveButton({
       >
         <path d="M6 3.5h12a.5.5 0 0 1 .5.5v17l-6.5-4-6.5 4V4a.5.5 0 0 1 .5-.5Z" />
       </svg>
-      {saved ? "Saved" : "Save"}
+      {saved ? t("savedLabel") : t("label")}
     </button>
   );
 }

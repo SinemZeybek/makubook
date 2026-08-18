@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
@@ -15,6 +16,9 @@ export default async function RecipePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const t = await getTranslations("RecipeDetail");
+  const tMeal = await getTranslations("MealTypes");
+  const tCommon = await getTranslations("Common");
   const supabase = await createClient();
 
   const {
@@ -76,7 +80,7 @@ export default async function RecipePage({
       <div className="flex-1 mx-auto max-w-3xl px-6 py-10">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-sm text-berry underline">
-            Back to recipes
+            {t("backToRecipes")}
           </Link>
 
           <div className="flex items-center gap-4">
@@ -92,7 +96,7 @@ export default async function RecipePage({
                 href={`/recipes/${recipe.id}/edit`}
                 className="text-sm text-berry underline"
               >
-                Edit
+                {t("edit")}
               </Link>
             )}
           </div>
@@ -107,8 +111,8 @@ export default async function RecipePage({
             }`}
           >
             {recipe.status === "rejected"
-              ? "This recipe was rejected and is not visible to the public."
-              : "This recipe is pending editor review and is not visible to the public yet."}
+              ? t("rejectedBanner")
+              : t("pendingBanner")}
           </div>
         )}
 
@@ -133,7 +137,7 @@ export default async function RecipePage({
           )}
           {recipe.meal_type && (
             <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
-              {recipe.meal_type}
+              {tMeal(recipe.meal_type)}
             </span>
           )}
           <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
@@ -147,12 +151,12 @@ export default async function RecipePage({
 
         {recipe.servings && (
           <p className="mt-3 text-sm font-medium text-berry">
-            Serves {recipe.servings}
+            {t("serves", { count: recipe.servings })}
           </p>
         )}
 
         <section className="mt-8">
-          <h2 className="text-lg font-medium text-berry">Ingredients</h2>
+          <h2 className="text-lg font-medium text-berry">{t("ingredients")}</h2>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-berry/80">
             {ingredients.map((ingredient, i) => (
               <li key={i}>
@@ -163,7 +167,7 @@ export default async function RecipePage({
         </section>
 
         <section className="mt-8">
-          <h2 className="text-lg font-medium text-berry">Steps</h2>
+          <h2 className="text-lg font-medium text-berry">{t("steps")}</h2>
           <ol className="mt-2 list-decimal space-y-2 pl-5 text-berry/80">
             {instructions.map((step, i) => (
               <li key={i}>{step}</li>
@@ -173,22 +177,22 @@ export default async function RecipePage({
 
         {recipe.tips && (
           <section className="mt-8 rounded-lg bg-gold/15 p-4">
-            <h2 className="text-lg font-medium text-berry">Tips</h2>
+            <h2 className="text-lg font-medium text-berry">{t("tips")}</h2>
             <p className="mt-2 text-berry/80">{recipe.tips}</p>
           </section>
         )}
 
         <section className="mt-8">
-          <h2 className="text-lg font-medium text-berry">Comments</h2>
+          <h2 className="text-lg font-medium text-berry">{t("comments")}</h2>
 
           {user ? (
             <CommentForm recipeId={recipe.id} />
           ) : (
             <p className="mt-2 text-sm text-berry/70">
               <Link href="/login" className="underline">
-                Log in
+                {t("logIn")}
               </Link>{" "}
-              to leave a comment or rating.
+              {t("toComment")}
             </p>
           )}
 
@@ -214,7 +218,7 @@ export default async function RecipePage({
                     />
                   </div>
                   <span className="font-medium text-berry">
-                    {comment.profiles?.display_name ?? "Anonymous"}
+                    {comment.profiles?.display_name ?? tCommon("anonymous")}
                   </span>
                   <span className="text-gold-dark">
                     {"★".repeat(comment.rating ?? 0)}
@@ -225,7 +229,7 @@ export default async function RecipePage({
               </li>
             ))}
             {comments?.length === 0 && (
-              <p className="text-sm text-berry/70">No comments yet.</p>
+              <p className="text-sm text-berry/70">{t("noComments")}</p>
             )}
           </ul>
         </section>

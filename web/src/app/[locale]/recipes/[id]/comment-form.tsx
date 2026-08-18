@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function CommentForm({ recipeId }: { recipeId: string }) {
+  const t = useTranslations("Comment");
   const [body, setBody] = useState("");
   const [rating, setRating] = useState("5");
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +24,7 @@ export default function CommentForm({ recipeId }: { recipeId: string }) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      setError("You must be logged in to comment.");
+      setError(t("mustBeLoggedIn"));
       setLoading(false);
       return;
     }
@@ -61,7 +63,7 @@ export default function CommentForm({ recipeId }: { recipeId: string }) {
       </select>
 
       <textarea
-        placeholder="What did you think? Any changes you made?"
+        placeholder={t("placeholder")}
         value={body}
         onChange={(e) => setBody(e.target.value)}
         required
@@ -76,7 +78,7 @@ export default function CommentForm({ recipeId }: { recipeId: string }) {
         disabled={loading}
         className="self-start rounded-md bg-gold px-3 py-2 text-sm font-medium text-berry disabled:opacity-50"
       >
-        {loading ? "Posting..." : "Post comment"}
+        {loading ? t("posting") : t("postComment")}
       </button>
     </form>
   );

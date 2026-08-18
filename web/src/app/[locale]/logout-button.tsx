@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LogoutButton() {
+  const t = useTranslations("Logout");
   const router = useRouter();
 
   async function handleLogout() {
@@ -16,7 +18,7 @@ export default function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      aria-label="Log out"
+      aria-label={t("logOut")}
       className="flex items-center gap-1.5 rounded-full px-1.5 py-2 text-berry/70 hover:bg-berry/10 hover:text-berry sm:px-1"
     >
       <svg
@@ -35,7 +37,7 @@ export default function LogoutButton() {
         <polyline points="16 17 21 12 16 7" />
         <line x1="21" y1="12" x2="9" y2="12" />
       </svg>
-      <span className="hidden text-sm underline sm:inline">Log out</span>
+      <span className="hidden text-sm underline sm:inline">{t("logOut")}</span>
     </button>
   );
 }

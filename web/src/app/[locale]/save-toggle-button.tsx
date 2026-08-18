@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -13,6 +14,7 @@ export default function SaveToggleButton({
   userId: string | null;
   initialSaved: boolean;
 }) {
+  const t = useTranslations("Save");
   const [saved, setSaved] = useState(initialSaved);
   const [loading, setLoading] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
@@ -48,7 +50,7 @@ export default function SaveToggleButton({
         .eq("recipe_id", recipeId);
       if (!error) {
         setSaved(false);
-        showToast("Removed from saved");
+        showToast(t("removedToast"));
       }
     } else {
       const { error } = await supabase
@@ -56,7 +58,7 @@ export default function SaveToggleButton({
         .insert({ user_id: userId, recipe_id: recipeId });
       if (!error) {
         setSaved(true);
-        showToast("Saved to your recipes");
+        showToast(t("savedToast"));
       }
     }
 
@@ -70,7 +72,7 @@ export default function SaveToggleButton({
         onClick={toggle}
         disabled={loading}
         aria-pressed={saved}
-        aria-label={saved ? "Remove from saved recipes" : "Save recipe"}
+        aria-label={saved ? t("removeSavedAria") : t("aria")}
         className="pointer-events-auto absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-cream/90 text-berry shadow-sm hover:bg-cream disabled:opacity-50"
       >
         <svg
@@ -110,9 +112,7 @@ export default function SaveToggleButton({
             onClick={(e) => e.stopPropagation()}
             className="pointer-events-auto w-full max-w-sm rounded-lg bg-cream p-6 text-center shadow-lg"
           >
-            <p className="text-berry">
-              You need to be logged in to save a recipe.
-            </p>
+            <p className="text-berry">{t("loginRequired")}</p>
             <div className="mt-4 flex justify-center gap-3">
               <button
                 type="button"
@@ -122,13 +122,13 @@ export default function SaveToggleButton({
                 }}
                 className="rounded-md border border-berry/20 px-4 py-2 text-sm text-berry hover:bg-berry/10"
               >
-                Cancel
+                {t("cancel")}
               </button>
               <Link
                 href="/login"
                 className="rounded-md bg-gold px-4 py-2 text-sm font-medium text-berry"
               >
-                Log in
+                {t("logIn")}
               </Link>
             </div>
           </div>

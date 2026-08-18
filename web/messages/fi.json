@@ -83,5 +83,171 @@
     "contactHeading": "Ota yhteyttä",
     "contactBody": "Kysyttävää, palautetta vai reseptiidea, jonka haluaisit nähdä Makubookissa? Kuulisimme mielellämme sinusta.",
     "contactUs": "Ota yhteyttä"
+  },
+  "RecipeForm": {
+    "newHeading": "Lisää resepti",
+    "editHeading": "Muokkaa reseptiä",
+    "titlePlaceholder": "Otsikko",
+    "descriptionPlaceholder": "Lyhyt kuvaus",
+    "countryPlaceholder": "Alkuperämaa",
+    "mealTypePlaceholder": "Ateriatyyppi",
+    "servings": "Annoskoko",
+    "servingsPlaceholder": "esim. 4",
+    "ingredients": "Ainekset",
+    "qtyPlaceholder": "Määrä",
+    "qtyTitle": "Luku kuten 1 tai 1,5",
+    "unitPlaceholder": "Yksikkö",
+    "ingredientPlaceholder": "Ainesosa",
+    "remove": "Poista",
+    "addIngredient": "Lisää toinen ainesosa",
+    "steps": "Vaiheet",
+    "stepPlaceholder": "Vaihe {number}",
+    "addStep": "Lisää toinen vaihe",
+    "tipsPlaceholder": "Vinkkejä tai lisätietoa (valinnainen)",
+    "english": "Englanti",
+    "finnish": "Suomi",
+    "addPhoto": "Lisää kuva",
+    "required": "Pakollinen",
+    "takePhoto": "Ota kuva",
+    "retakePhoto": "Ota kuva uudelleen",
+    "chooseFromLibrary": "Valitse kirjastosta",
+    "chooseDifferentPhoto": "Valitse toinen kuva",
+    "replacePhotoOptional": "Vaihda kuva (valinnainen)",
+    "photoRequiredError": "Lisää kuva ruoastasi.",
+    "editorNote": "Toimittaja tarkistaa uudet reseptit ennen kuin ne julkaistaan ja näkyvät kaikille.",
+    "submitForReview": "Lähetä tarkistettavaksi",
+    "submitting": "Lähetetään...",
+    "saveChanges": "Tallenna muutokset",
+    "saving": "Tallennetaan...",
+    "submittedHeading": "Resepti lähetetty!",
+    "submittedBody": "Tarkistus ei yleensä kestä kauan. Lähetämme sinulle sähköpostia, kun resepti on julkaistu.",
+    "viewRecipeNow": "Katso reseptisi nyt"
+  },
+  "DeleteRecipe": {
+    "confirmDelete": "Poistetaanko tämä resepti? Tätä ei voi perua.",
+    "deleting": "Poistetaan...",
+    "deleteRecipe": "Poista resepti"
+  },
+  "RecipeDetail": {
+    "backToRecipes": "Takaisin resepteihin",
+    "edit": "Muokkaa",
+    "rejectedBanner": "Tämä resepti hylättiin eikä se näy julkisesti.",
+    "pendingBanner": "Tämä resepti odottaa toimittajan tarkistusta eikä näy vielä julkisesti.",
+    "serves": "{count} annosta",
+    "ingredients": "Ainekset",
+    "steps": "Vaiheet",
+    "tips": "Vinkit",
+    "comments": "Kommentit",
+    "logIn": "Kirjaudu sisään",
+    "toComment": "jättääksesi kommentin tai arvion.",
+    "noComments": "Ei vielä kommentteja."
+  },
+  "Comment": {
+    "placeholder": "Mitä pidit? Teitkö muutoksia?",
+    "mustBeLoggedIn": "Sinun täytyy kirjautua sisään kommentoidaksesi.",
+    "posting": "Lähetetään...",
+    "postComment": "Lähetä kommentti"
+  },
+  "Save": {
+    "label": "Tallenna",
+    "savedLabel": "Tallennettu",
+    "aria": "Tallenna resepti",
+    "removeSavedAria": "Poista tallennetuista",
+    "removedToast": "Poistettu tallennetuista",
+    "savedToast": "Tallennettu omiin resepteihin",
+    "loginRequired": "Sinun täytyy kirjautua sisään tallentaaksesi reseptin.",
+    "cancel": "Peruuta",
+    "logIn": "Kirjaudu sisään"
+  },
+  "RecipeCard": {
+    "rejected": "Hylätty",
+    "pendingReview": "Odottaa tarkistusta"
+  },
+  "Common": {
+    "anonymous": "Nimetön"
+  },
+  "Profile": {
+    "editProfile": "Muokkaa profiilia",
+    "savedRecipes": "Tallennetut reseptit",
+    "myRecipes": "Omat reseptini",
+    "recipesSharedCount": "{count, plural, one {# resepti jaettu} other {# reseptiä jaettu}}",
+    "theirRecipes": "Käyttäjän {name} reseptit",
+    "noRecipesOwn": "Et ole vielä jakanut yhtään reseptiä.",
+    "noRecipesOther": "Tämä käyttäjä ei ole vielä jakanut reseptejä."
+  },
+  "EditProfile": {
+    "profilePicture": "Profiilikuva",
+    "displayName": "Näyttönimi",
+    "saving": "Tallennetaan...",
+    "saveChanges": "Tallenna muutokset"
+  },
+  "Saved": {
+    "heading": "Tallennetut reseptisi",
+    "emptyPrefix": "Et ole vielä tallentanut reseptejä. Selaa",
+    "homepage": "etusivua",
+    "emptySuffix": "löytääksesi jotain mistä pidät."
+  },
+  "Editor": {
+    "heading": "Toimittajan jono",
+    "waitingCount": "{count, plural, one {# resepti} other {# reseptiä}} odottaa tarkistusta.",
+    "nothingWaiting": "Ei mitään odottamassa tarkistusta.",
+    "viewFullRecipe": "Näytä koko resepti",
+    "approve": "Hyväksy",
+    "reject": "Hylkää",
+    "approveError": "Reseptiä ei voitu hyväksyä"
+  },
+  "Login": {
+    "checkEmailHeading": "Tarkista sähköpostisi",
+    "checkEmailPrefix": "Lähetimme vahvistuslinkin osoitteeseen",
+    "checkEmailSuffix": "Klikkaa sitä aktivoidaksesi tilisi ja palaa sitten kirjautumaan.",
+    "logIn": "Kirjaudu sisään",
+    "signUp": "Luo tili",
+    "emailPlaceholder": "Sähköposti",
+    "passwordPlaceholder": "Salasana",
+    "displayNamePlaceholder": "Näyttönimi tai lempinimi",
+    "birthday": "Syntymäpäivä",
+    "profilePictureOptional": "Profiilikuva (valinnainen)",
+    "signUpError": "Tilin luominen epäonnistui. Tarkista sähköpostiosoitteesi ja yritä uudelleen.",
+    "backToLogin": "Takaisin kirjautumiseen",
+    "needAccount": "Eikö sinulla ole tiliä? Luo tili",
+    "alreadyHaveAccount": "Onko sinulla jo tili? Kirjaudu sisään"
+  },
+  "Logout": {
+    "logOut": "Kirjaudu ulos"
+  },
+  "Contact": {
+    "namePlaceholder": "Nimesi",
+    "emailPlaceholder": "Sähköpostisi",
+    "messagePlaceholder": "Mitä mietit?",
+    "sending": "Lähetetään...",
+    "sendMessage": "Lähetä viesti",
+    "sentThanks": "Kiitos yhteydenotostasi! Vastaamme sinulle mahdollisimman pian.",
+    "genericError": "Viestin lähettäminen epäonnistui. Yritä uudelleen."
+  },
+  "Privacy": {
+    "title": "Tietosuojaseloste",
+    "lastUpdated": "Päivitetty viimeksi: elokuu 2026",
+    "whoWeAreHeading": "Keitä olemme",
+    "whoWeAreBodyPrefix": "Makubook on Suomessa toimiva resepteja jakava alusta. Kaikessa tähän tietosuojaselosteeseen tai tietoihisi liittyvässä voit",
+    "getInTouchHere": "ottaa yhteyttä tästä",
+    "whatDataHeading": "Mitä tietoja keräämme",
+    "accountInfoLabel": "Tilitiedot:",
+    "accountInfoBody": "sähköpostiosoite, salasana (tallennettu turvallisesti, emme näe sitä koskaan selkotekstinä), näyttönimi, syntymäpäivä ja valinnainen profiilikuva.",
+    "contentLabel": "Luomasi sisältö:",
+    "contentBody": "lähettämäsi reseptit (otsikko, kuvaus, ainekset, ohjeet, kuvat), kommentit ja arviot, jotka jätät muiden resepteihin.",
+    "savedLabel": "Tallentamasi reseptit:",
+    "savedBody": "mitä reseptejä olet tallentanut — tämä lista on yksityinen ja näkyy vain sinulle.",
+    "whyHeading": "Miksi keräämme näitä tietoja",
+    "whyBody": "Käytämme näitä tietoja ainoastaan Makubookin toimintaan: tilisi luomiseen ja suojaamiseen, reseptien julkaisemiseen ja hallintaan, näyttönimesi ja kuvasi näyttämiseen sisältöjesi yhteydessä sekä tallentamiesi reseptien seurantaan. Emme myy tietojasi tai käytä niitä mainontaan.",
+    "whereHeading": "Missä tietosi säilytetään",
+    "whereBody": "Kaikki tiedot säilytetään Supabasella, tietokanta- ja hosting-palveluntarjoajallamme, EU:ssa sijaitsevassa datakeskuksessa (Tukholma, Ruotsi).",
+    "cookiesHeading": "Evästeet",
+    "cookiesBody": "Käytämme pientä määrää välttämättömiä evästeitä pitääksemme sinut kirjautuneena. Emme käytä seuranta- tai mainosevästeitä.",
+    "rightsHeading": "Oikeutesi",
+    "rightsBodyPrefix": "GDPR:n nojalla sinulla on oikeus tarkastaa, korjata tai poistaa henkilötietosi ja pyytää niistä kopio. Voit muokata näyttönimeäsi ja profiilikuvaasi sekä poistaa omat reseptisi ja kommenttisi suoraan sovelluksessa milloin tahansa. Voit pyytää tilisi ja kaikkien siihen liittyvien tietojen täydellistä poistamista",
+    "contactUsHere": "ottamalla yhteyttä tästä",
+    "rightsBodySuffix": "ja käsittelemme pyynnön pian.",
+    "changesHeading": "Muutokset",
+    "changesBody": "Jos tämä käytäntö muuttuu merkittävästi, päivitämme tämän sivun yläreunassa olevan päivämäärän."
   }
 }

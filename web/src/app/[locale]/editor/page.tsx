@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
@@ -5,6 +6,7 @@ import Footer from "../footer";
 import EditorQueueItem from "./editor-queue-item";
 
 export default async function EditorQueuePage() {
+  const t = await getTranslations("Editor");
   const supabase = await createClient();
   const {
     data: { user },
@@ -37,12 +39,9 @@ export default async function EditorQueuePage() {
       <Navbar userEmail={user.email ?? null} userId={user.id} isEditor />
 
       <div className="flex-1 mx-auto max-w-4xl px-6 py-10">
-        <h1 className="text-2xl font-semibold text-berry">
-          Editor queue
-        </h1>
+        <h1 className="text-2xl font-semibold text-berry">{t("heading")}</h1>
         <p className="mt-1 text-sm text-berry/60">
-          {pendingRecipes?.length ?? 0} recipe
-          {pendingRecipes?.length === 1 ? "" : "s"} waiting for review.
+          {t("waitingCount", { count: pendingRecipes?.length ?? 0 })}
         </p>
 
         <div className="mt-8 flex flex-col gap-4">
@@ -51,7 +50,7 @@ export default async function EditorQueuePage() {
               <EditorQueueItem key={recipe.id} recipe={recipe} />
             ))
           ) : (
-            <p className="text-berry/70">Nothing waiting for review.</p>
+            <p className="text-berry/70">{t("nothingWaiting")}</p>
           )}
         </div>
       </div>

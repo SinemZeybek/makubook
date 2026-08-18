@@ -1,9 +1,11 @@
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
 import Footer from "../footer";
 
 export default async function PrivacyPage() {
+  const t = await getTranslations("Privacy");
   const supabase = await createClient();
   const {
     data: { user },
@@ -28,17 +30,18 @@ export default async function PrivacyPage() {
       />
 
       <div className="flex-1 mx-auto max-w-3xl px-6 py-12">
-        <h1 className="text-3xl font-semibold text-berry">Privacy Policy</h1>
-        <p className="mt-2 text-sm text-berry/60">Last updated: August 2026</p>
+        <h1 className="text-3xl font-semibold text-berry">{t("title")}</h1>
+        <p className="mt-2 text-sm text-berry/60">{t("lastUpdated")}</p>
 
         <div className="mt-8 space-y-8 text-berry/80">
           <section>
-            <h2 className="text-lg font-semibold text-berry">Who we are</h2>
+            <h2 className="text-lg font-semibold text-berry">
+              {t("whoWeAreHeading")}
+            </h2>
             <p className="mt-2">
-              Makubook is a recipe-sharing platform based in Finland. For
-              anything related to this privacy policy or your data, you can{" "}
+              {t("whoWeAreBodyPrefix")}{" "}
               <Link href="/contact" className="underline hover:text-berry">
-                get in touch here
+                {t("getInTouchHere")}
               </Link>
               .
             </p>
@@ -46,82 +49,60 @@ export default async function PrivacyPage() {
 
           <section>
             <h2 className="text-lg font-semibold text-berry">
-              What data we collect
+              {t("whatDataHeading")}
             </h2>
             <ul className="mt-2 list-disc space-y-1 pl-5">
               <li>
-                <strong>Account information:</strong> email address,
-                password (stored securely, we never see it in plain text),
-                display name, birthday, and an optional profile picture.
+                <strong>{t("accountInfoLabel")}</strong> {t("accountInfoBody")}
               </li>
               <li>
-                <strong>Content you create:</strong> recipes you submit
-                (title, description, ingredients, instructions, photos),
-                comments and ratings you leave on other recipes.
+                <strong>{t("contentLabel")}</strong> {t("contentBody")}
               </li>
               <li>
-                <strong>Your saved recipes:</strong> which recipes you've
-                saved — this list is private and only visible to you.
+                <strong>{t("savedLabel")}</strong> {t("savedBody")}
               </li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-berry">
-              Why we collect it
+              {t("whyHeading")}
             </h2>
-            <p className="mt-2">
-              We use this data solely to run Makubook: creating and
-              securing your account, letting you publish and manage
-              recipes, showing your display name and avatar next to your
-              contributions, and keeping track of the recipes you've
-              saved. We do not sell your data or use it for advertising.
-            </p>
+            <p className="mt-2">{t("whyBody")}</p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-berry">
-              Where your data is stored
+              {t("whereHeading")}
             </h2>
-            <p className="mt-2">
-              All data is stored with Supabase, our database and hosting
-              provider, in a data center located in the EU (Stockholm,
-              Sweden).
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold text-berry">Cookies</h2>
-            <p className="mt-2">
-              We use a small number of essential cookies to keep you
-              logged in. We do not use tracking or advertising cookies.
-            </p>
+            <p className="mt-2">{t("whereBody")}</p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-berry">
-              Your rights
+              {t("cookiesHeading")}
+            </h2>
+            <p className="mt-2">{t("cookiesBody")}</p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-semibold text-berry">
+              {t("rightsHeading")}
             </h2>
             <p className="mt-2">
-              Under GDPR, you have the right to access, correct, or delete
-              your personal data, and to request a copy of it. You can
-              edit your display name and profile picture, and delete your
-              own recipes and comments, directly in the app at any time.
-              To request full deletion of your account and all associated
-              data,{" "}
+              {t("rightsBodyPrefix")}{" "}
               <Link href="/contact" className="underline hover:text-berry">
-                contact us here
+                {t("contactUsHere")}
               </Link>{" "}
-              and we'll process it promptly.
+              {t("rightsBodySuffix")}
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-berry">Changes</h2>
-            <p className="mt-2">
-              If this policy changes in a meaningful way, we'll update the
-              date at the top of this page.
-            </p>
+            <h2 className="text-lg font-semibold text-berry">
+              {t("changesHeading")}
+            </h2>
+            <p className="mt-2">{t("changesBody")}</p>
           </section>
         </div>
       </div>

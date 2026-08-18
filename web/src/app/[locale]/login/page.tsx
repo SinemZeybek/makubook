@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Navbar from "../navbar";
 import Footer from "../footer";
 
 export default function LoginPage() {
+  const t = useTranslations("Login");
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<"sign-in" | "sign-up">(
     searchParams.get("mode") === "sign-up" ? "sign-up" : "sign-in"
@@ -58,7 +60,7 @@ export default function LoginPage() {
       const message =
         typeof signUpError?.message === "string" && signUpError.message
           ? signUpError.message
-          : "Could not create account. Please check your email address and try again.";
+          : t("signUpError");
       setError(message);
       setLoading(false);
       return;
@@ -103,23 +105,23 @@ export default function LoginPage() {
         {checkEmail ? (
           <div className="text-center">
             <h1 className="text-2xl font-semibold text-berry">
-              Check your email
+              {t("checkEmailHeading")}
             </h1>
             <p className="mt-4 text-berry/70">
-              We've sent a confirmation link to <strong>{email}</strong>.
-              Click it to activate your account, then come back and log in.
+              {t("checkEmailPrefix")} <strong>{email}</strong>.{" "}
+              {t("checkEmailSuffix")}
             </p>
           </div>
         ) : (
           <>
             <h1 className="text-center text-2xl font-semibold text-berry">
-              {mode === "sign-in" ? "Log in" : "Sign up"}
+              {mode === "sign-in" ? t("logIn") : t("signUp")}
             </h1>
 
             <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
           <input
             type="email"
-            placeholder="Email"
+            placeholder={t("emailPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -127,7 +129,7 @@ export default function LoginPage() {
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder={t("passwordPlaceholder")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -139,14 +141,14 @@ export default function LoginPage() {
             <>
               <input
                 type="text"
-                placeholder="Display name or nickname"
+                placeholder={t("displayNamePlaceholder")}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 required
                 className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
               />
               <label className="flex flex-col gap-1 text-sm text-berry/70">
-                Birthday
+                {t("birthday")}
                 <input
                   type="date"
                   value={birthday}
@@ -156,7 +158,7 @@ export default function LoginPage() {
                 />
               </label>
               <label className="flex flex-col gap-1 text-sm text-berry/70">
-                Profile picture (optional)
+                {t("profilePictureOptional")}
                 <input
                   type="file"
                   accept="image/*"
@@ -173,7 +175,7 @@ export default function LoginPage() {
             disabled={loading}
             className="rounded-md bg-gold px-3 py-2 font-medium text-berry disabled:opacity-50"
           >
-            {loading ? "..." : mode === "sign-in" ? "Log in" : "Sign up"}
+            {loading ? "..." : mode === "sign-in" ? t("logIn") : t("signUp")}
           </button>
         </form>
           </>
@@ -192,9 +194,9 @@ export default function LoginPage() {
         >
           {checkEmail || mode === "sign-in"
             ? checkEmail
-              ? "Back to log in"
-              : "Need an account? Sign up"
-            : "Already have an account? Log in"}
+              ? t("backToLogin")
+              : t("needAccount")
+            : t("alreadyHaveAccount")}
         </button>
       </div>
       </div>

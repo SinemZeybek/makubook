@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
@@ -5,6 +6,7 @@ import Footer from "../../footer";
 import EditProfileForm from "./edit-profile-form";
 
 export default async function EditProfilePage() {
+  const t = await getTranslations("Profile");
   const supabase = await createClient();
   const {
     data: { user },
@@ -28,7 +30,7 @@ export default async function EditProfilePage() {
         isEditor={profile?.role === "editor"}
       />
       <div className="flex-1 mx-auto max-w-xl px-6 py-10">
-        <h1 className="text-2xl font-semibold text-berry">Edit profile</h1>
+        <h1 className="text-2xl font-semibold text-berry">{t("editProfile")}</h1>
         <EditProfileForm
           userId={user.id}
           displayName={profile?.display_name ?? ""}

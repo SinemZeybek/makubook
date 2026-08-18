@@ -83,5 +83,171 @@
     "contactHeading": "Get in touch",
     "contactBody": "Questions, feedback, or a recipe idea you want to see on Makubook? We'd love to hear from you.",
     "contactUs": "Contact us"
+  },
+  "RecipeForm": {
+    "newHeading": "Add a recipe",
+    "editHeading": "Edit recipe",
+    "titlePlaceholder": "Title",
+    "descriptionPlaceholder": "Short description",
+    "countryPlaceholder": "Country of origin",
+    "mealTypePlaceholder": "Meal type",
+    "servings": "Servings",
+    "servingsPlaceholder": "e.g. 4",
+    "ingredients": "Ingredients",
+    "qtyPlaceholder": "Qty",
+    "qtyTitle": "A number like 1 or 1,5",
+    "unitPlaceholder": "Unit",
+    "ingredientPlaceholder": "Ingredient",
+    "remove": "Remove",
+    "addIngredient": "Add another ingredient",
+    "steps": "Steps",
+    "stepPlaceholder": "Step {number}",
+    "addStep": "Add another step",
+    "tipsPlaceholder": "Tips or extra information (optional)",
+    "english": "English",
+    "finnish": "Finnish",
+    "addPhoto": "Add a photo",
+    "required": "Required",
+    "takePhoto": "Take a photo",
+    "retakePhoto": "Retake photo",
+    "chooseFromLibrary": "Choose from library",
+    "chooseDifferentPhoto": "Choose different photo",
+    "replacePhotoOptional": "Replace photo (optional)",
+    "photoRequiredError": "Please add a photo of your dish.",
+    "editorNote": "New recipes are reviewed by an editor before they're published and visible to everyone.",
+    "submitForReview": "Submit for review",
+    "submitting": "Submitting...",
+    "saveChanges": "Save changes",
+    "saving": "Saving...",
+    "submittedHeading": "Recipe submitted!",
+    "submittedBody": "Our review usually doesn't take long. We'll email you as soon as it's published.",
+    "viewRecipeNow": "View your recipe now"
+  },
+  "DeleteRecipe": {
+    "confirmDelete": "Delete this recipe? This cannot be undone.",
+    "deleting": "Deleting...",
+    "deleteRecipe": "Delete recipe"
+  },
+  "RecipeDetail": {
+    "backToRecipes": "Back to recipes",
+    "edit": "Edit",
+    "rejectedBanner": "This recipe was rejected and is not visible to the public.",
+    "pendingBanner": "This recipe is pending editor review and is not visible to the public yet.",
+    "serves": "Serves {count}",
+    "ingredients": "Ingredients",
+    "steps": "Steps",
+    "tips": "Tips",
+    "comments": "Comments",
+    "logIn": "Log in",
+    "toComment": "to leave a comment or rating.",
+    "noComments": "No comments yet."
+  },
+  "Comment": {
+    "placeholder": "What did you think? Any changes you made?",
+    "mustBeLoggedIn": "You must be logged in to comment.",
+    "posting": "Posting...",
+    "postComment": "Post comment"
+  },
+  "Save": {
+    "label": "Save",
+    "savedLabel": "Saved",
+    "aria": "Save recipe",
+    "removeSavedAria": "Remove from saved recipes",
+    "removedToast": "Removed from saved",
+    "savedToast": "Saved to your recipes",
+    "loginRequired": "You need to be logged in to save a recipe.",
+    "cancel": "Cancel",
+    "logIn": "Log in"
+  },
+  "RecipeCard": {
+    "rejected": "Rejected",
+    "pendingReview": "Pending review"
+  },
+  "Common": {
+    "anonymous": "Anonymous"
+  },
+  "Profile": {
+    "editProfile": "Edit profile",
+    "savedRecipes": "Saved recipes",
+    "myRecipes": "My recipes",
+    "recipesSharedCount": "{count, plural, one {# recipe shared} other {# recipes shared}}",
+    "theirRecipes": "{name}'s recipes",
+    "noRecipesOwn": "You haven't shared any recipes yet.",
+    "noRecipesOther": "This user hasn't shared any recipes yet."
+  },
+  "EditProfile": {
+    "profilePicture": "Profile picture",
+    "displayName": "Display name",
+    "saving": "Saving...",
+    "saveChanges": "Save changes"
+  },
+  "Saved": {
+    "heading": "Your saved recipes",
+    "emptyPrefix": "You haven't saved any recipes yet. Browse the",
+    "homepage": "homepage",
+    "emptySuffix": "to find something you love."
+  },
+  "Editor": {
+    "heading": "Editor queue",
+    "waitingCount": "{count, plural, one {# recipe} other {# recipes}} waiting for review.",
+    "nothingWaiting": "Nothing waiting for review.",
+    "viewFullRecipe": "View full recipe",
+    "approve": "Approve",
+    "reject": "Reject",
+    "approveError": "Could not approve recipe"
+  },
+  "Login": {
+    "checkEmailHeading": "Check your email",
+    "checkEmailPrefix": "We've sent a confirmation link to",
+    "checkEmailSuffix": "Click it to activate your account, then come back and log in.",
+    "logIn": "Log in",
+    "signUp": "Sign up",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "displayNamePlaceholder": "Display name or nickname",
+    "birthday": "Birthday",
+    "profilePictureOptional": "Profile picture (optional)",
+    "signUpError": "Could not create account. Please check your email address and try again.",
+    "backToLogin": "Back to log in",
+    "needAccount": "Need an account? Sign up",
+    "alreadyHaveAccount": "Already have an account? Log in"
+  },
+  "Logout": {
+    "logOut": "Log out"
+  },
+  "Contact": {
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "Your email",
+    "messagePlaceholder": "What's on your mind?",
+    "sending": "Sending...",
+    "sendMessage": "Send message",
+    "sentThanks": "Thanks for reaching out! We'll get back to you as soon as we can.",
+    "genericError": "Could not send message. Please try again."
+  },
+  "Privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: August 2026",
+    "whoWeAreHeading": "Who we are",
+    "whoWeAreBodyPrefix": "Makubook is a recipe-sharing platform based in Finland. For anything related to this privacy policy or your data, you can",
+    "getInTouchHere": "get in touch here",
+    "whatDataHeading": "What data we collect",
+    "accountInfoLabel": "Account information:",
+    "accountInfoBody": "email address, password (stored securely, we never see it in plain text), display name, birthday, and an optional profile picture.",
+    "contentLabel": "Content you create:",
+    "contentBody": "recipes you submit (title, description, ingredients, instructions, photos), comments and ratings you leave on other recipes.",
+    "savedLabel": "Your saved recipes:",
+    "savedBody": "which recipes you've saved — this list is private and only visible to you.",
+    "whyHeading": "Why we collect it",
+    "whyBody": "We use this data solely to run Makubook: creating and securing your account, letting you publish and manage recipes, showing your display name and avatar next to your contributions, and keeping track of the recipes you've saved. We do not sell your data or use it for advertising.",
+    "whereHeading": "Where your data is stored",
+    "whereBody": "All data is stored with Supabase, our database and hosting provider, in a data center located in the EU (Stockholm, Sweden).",
+    "cookiesHeading": "Cookies",
+    "cookiesBody": "We use a small number of essential cookies to keep you logged in. We do not use tracking or advertising cookies.",
+    "rightsHeading": "Your rights",
+    "rightsBodyPrefix": "Under GDPR, you have the right to access, correct, or delete your personal data, and to request a copy of it. You can edit your display name and profile picture, and delete your own recipes and comments, directly in the app at any time. To request full deletion of your account and all associated data,",
+    "contactUsHere": "contact us here",
+    "rightsBodySuffix": "and we'll process it promptly.",
+    "changesHeading": "Changes",
+    "changesBody": "If this policy changes in a meaningful way, we'll update the date at the top of this page."
   }
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -14,6 +15,7 @@ export default function EditProfileForm({
   displayName: string;
   avatarUrl: string | null;
 }) {
+  const t = useTranslations("EditProfile");
   const [displayName, setDisplayName] = useState(initialDisplayName);
   const [avatar, setAvatar] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(avatarUrl);
@@ -83,7 +85,7 @@ export default function EditProfileForm({
           />
         </div>
         <label className="flex flex-col gap-1 text-sm text-berry/70">
-          Profile picture
+          {t("profilePicture")}
           <input
             type="file"
             accept="image/*"
@@ -93,7 +95,7 @@ export default function EditProfileForm({
       </div>
 
       <label className="flex flex-col gap-1 text-sm text-berry/70">
-        Display name
+        {t("displayName")}
         <input
           type="text"
           value={displayName}
@@ -110,7 +112,7 @@ export default function EditProfileForm({
         disabled={loading}
         className="rounded-md bg-gold px-3 py-2 font-medium text-berry disabled:opacity-50"
       >
-        {loading ? "Saving..." : "Save changes"}
+        {loading ? t("saving") : t("saveChanges")}
       </button>
     </form>
   );

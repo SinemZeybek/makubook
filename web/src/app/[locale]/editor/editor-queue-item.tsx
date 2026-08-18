@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -18,6 +19,9 @@ type Recipe = {
 };
 
 export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
+  const t = useTranslations("Editor");
+  const tMeal = useTranslations("MealTypes");
+  const tCommon = useTranslations("Common");
   const [title, setTitle] = useState(recipe.title);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +41,7 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
 
     if (!res.ok) {
       const { error: approveError } = await res.json().catch(() => ({}));
-      setError(approveError ?? "Could not approve recipe");
+      setError(approveError ?? t("approveError"));
       return;
     }
 
@@ -87,9 +91,9 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
               className="object-cover"
             />
           </div>
-          <span>{recipe.profiles?.display_name ?? "Anonymous"}</span>
+          <span>{recipe.profiles?.display_name ?? tCommon("anonymous")}</span>
           {recipe.country && <span>· {recipe.country}</span>}
-          {recipe.meal_type && <span>· {recipe.meal_type}</span>}
+          {recipe.meal_type && <span>· {tMeal(recipe.meal_type)}</span>}
         </div>
 
         <input
@@ -107,7 +111,7 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
           href={`/recipes/${recipe.id}`}
           className="text-sm text-berry underline"
         >
-          View full recipe
+          {t("viewFullRecipe")}
         </Link>
 
         {error && <p className="text-sm text-red-600">{error}</p>}
@@ -119,7 +123,7 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
             onClick={approve}
             className="rounded-md bg-gold px-4 py-2 text-sm font-medium text-berry disabled:opacity-50"
           >
-            Approve
+            {t("approve")}
           </button>
           <button
             type="button"
@@ -127,7 +131,7 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
             onClick={reject}
             className="rounded-md border border-red-600/30 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-600/10 disabled:opacity-50"
           >
-            Reject
+            {t("reject")}
           </button>
         </div>
       </div>

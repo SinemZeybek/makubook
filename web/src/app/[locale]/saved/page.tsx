@@ -1,10 +1,12 @@
-import { redirect } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
+import { Link, redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
 import Footer from "../footer";
 import RecipeCard from "../recipe-card";
 
 export default async function SavedRecipesPage() {
+  const t = await getTranslations("Saved");
   const supabase = await createClient();
   const {
     data: { user },
@@ -41,9 +43,7 @@ export default async function SavedRecipesPage() {
       />
 
       <div className="flex-1 mx-auto max-w-6xl px-6 py-10">
-        <h1 className="text-2xl font-semibold text-berry">
-          Your saved recipes
-        </h1>
+        <h1 className="text-2xl font-semibold text-berry">{t("heading")}</h1>
 
         <div className="mt-8">
           {recipes.length > 0 ? (
@@ -60,11 +60,11 @@ export default async function SavedRecipesPage() {
             </ul>
           ) : (
             <p className="text-berry/70">
-              You haven't saved any recipes yet. Browse the{" "}
-              <a href="/" className="underline">
-                homepage
-              </a>{" "}
-              to find something you love.
+              {t("emptyPrefix")}{" "}
+              <Link href="/" className="underline">
+                {t("homepage")}
+              </Link>{" "}
+              {t("emptySuffix")}
             </p>
           )}
         </div>

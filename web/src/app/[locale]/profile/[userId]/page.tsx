@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
@@ -12,6 +13,8 @@ export default async function ProfilePage({
   params: Promise<{ userId: string }>;
 }) {
   const { userId } = await params;
+  const t = await getTranslations("Profile");
+  const tCommon = await getTranslations("Common");
   const supabase = await createClient();
 
   const {
@@ -76,11 +79,10 @@ export default async function ProfilePage({
             </div>
             <div>
               <h1 className="text-2xl font-semibold text-berry">
-                {profile.display_name ?? "Anonymous"}
+                {profile.display_name ?? tCommon("anonymous")}
               </h1>
               <p className="text-sm text-berry/60">
-                {recipes?.length ?? 0} recipe
-                {recipes?.length === 1 ? "" : "s"} shared
+                {t("recipesSharedCount", { count: recipes?.length ?? 0 })}
               </p>
             </div>
           </div>
@@ -105,7 +107,7 @@ export default async function ProfilePage({
                   <path d="M12 20h9" />
                   <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
                 </svg>
-                Edit profile
+                {t("editProfile")}
               </Link>
               <Link
                 href="/saved"
@@ -124,7 +126,7 @@ export default async function ProfilePage({
                 >
                   <path d="M6 3.5h12a.5.5 0 0 1 .5.5v17l-6.5-4-6.5 4V4a.5.5 0 0 1 .5-.5Z" />
                 </svg>
-                Saved recipes
+                {t("savedRecipes")}
               </Link>
             </div>
           )}
@@ -133,8 +135,10 @@ export default async function ProfilePage({
         <div className="mt-10">
           <h2 className="text-xl font-semibold text-berry">
             {isOwnProfile
-              ? "My recipes"
-              : `${profile.display_name ?? "Anonymous"}'s recipes`}
+              ? t("myRecipes")
+              : t("theirRecipes", {
+                  name: profile.display_name ?? tCommon("anonymous"),
+                })}
           </h2>
           {recipes && recipes.length > 0 ? (
             <ul className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -150,9 +154,7 @@ export default async function ProfilePage({
             </ul>
           ) : (
             <p className="mt-4 text-berry/70">
-              {isOwnProfile
-                ? "You haven't shared any recipes yet."
-                : "This user hasn't shared any recipes yet."}
+              {isOwnProfile ? t("noRecipesOwn") : t("noRecipesOther")}
             </p>
           )}
         </div>

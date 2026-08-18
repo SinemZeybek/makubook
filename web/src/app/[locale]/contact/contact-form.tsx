@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ContactForm() {
+  const t = useTranslations("Contact");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -24,13 +26,13 @@ export default function ContactForm() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        setError(data?.error ?? "Could not send message. Please try again.");
+        setError(data?.error ?? t("genericError"));
         return;
       }
 
       setSent(true);
     } catch {
-      setError("Could not send message. Please try again.");
+      setError(t("genericError"));
     } finally {
       setLoading(false);
     }
@@ -38,9 +40,7 @@ export default function ContactForm() {
 
   if (sent) {
     return (
-      <p className="text-berry">
-        Thanks for reaching out! We'll get back to you as soon as we can.
-      </p>
+      <p className="text-berry">{t("sentThanks")}</p>
     );
   }
 
@@ -51,7 +51,7 @@ export default function ContactForm() {
     >
       <input
         type="text"
-        placeholder="Your name"
+        placeholder={t("namePlaceholder")}
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
@@ -59,14 +59,14 @@ export default function ContactForm() {
       />
       <input
         type="email"
-        placeholder="Your email"
+        placeholder={t("emailPlaceholder")}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
         className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       />
       <textarea
-        placeholder="What's on your mind?"
+        placeholder={t("messagePlaceholder")}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         required
@@ -81,7 +81,7 @@ export default function ContactForm() {
         disabled={loading}
         className="self-start rounded-md bg-gold px-5 py-2.5 font-medium text-berry disabled:opacity-50"
       >
-        {loading ? "Sending..." : "Send message"}
+        {loading ? t("sending") : t("sendMessage")}
       </button>
     </form>
   );

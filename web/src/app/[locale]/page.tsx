@@ -22,6 +22,7 @@ export default async function Home({
   const { q, country, mealType, language, servings } = await searchParams;
   const t = await getTranslations("Home");
   const tMeal = await getTranslations("MealTypes");
+  const tCommon = await getTranslations("Common");
   const supabase = await createClient();
 
   const {
@@ -196,7 +197,7 @@ export default async function Home({
                         />
                       </div>
                       <span className="text-xs text-berry/60">
-                        {recipe.profiles?.display_name ?? "Anonymous"}
+                        {recipe.profiles?.display_name ?? tCommon("anonymous")}
                       </span>
                     </Link>
                   </div>

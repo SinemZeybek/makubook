@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { COUNTRIES } from "@/lib/countries";
@@ -10,6 +11,8 @@ import { MEAL_TYPES } from "@/lib/mealTypes";
 type Ingredient = { quantity: string; unit: string; name: string };
 
 export default function RecipeForm({ userId }: { userId: string }) {
+  const t = useTranslations("RecipeForm");
+  const tMeal = useTranslations("MealTypes");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [country, setCountry] = useState("");
@@ -82,7 +85,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
     setError(null);
 
     if (!photo) {
-      setError("Please add a photo of your dish.");
+      setError(t("photoRequiredError"));
       return;
     }
 
@@ -170,17 +173,14 @@ export default function RecipeForm({ userId }: { userId: string }) {
           </svg>
         </div>
         <h2 className="text-xl font-semibold text-berry">
-          Recipe submitted!
+          {t("submittedHeading")}
         </h2>
-        <p className="max-w-sm text-sm text-berry/70">
-          Our review usually doesn&apos;t take long. We&apos;ll email you as
-          soon as it&apos;s published.
-        </p>
+        <p className="max-w-sm text-sm text-berry/70">{t("submittedBody")}</p>
         <Link
           href={`/recipes/${submittedRecipeId}`}
           className="mt-2 text-sm text-berry underline"
         >
-          View your recipe now
+          {t("viewRecipeNow")}
         </Link>
       </div>
     );
@@ -229,8 +229,8 @@ export default function RecipeForm({ userId }: { userId: string }) {
                 <path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h9l1 1.5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
                 <circle cx="12" cy="13" r="4" />
               </svg>
-              <span className="text-sm font-medium">Add a photo</span>
-              <span className="text-xs text-berry/40">Required</span>
+              <span className="text-sm font-medium">{t("addPhoto")}</span>
+              <span className="text-xs text-berry/40">{t("required")}</span>
             </div>
           )}
         </div>
@@ -254,7 +254,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
               <path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h9l1 1.5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
               <circle cx="12" cy="13" r="4" />
             </svg>
-            {photoPreview ? "Retake photo" : "Take a photo"}
+            {photoPreview ? t("retakePhoto") : t("takePhoto")}
           </label>
           <label
             htmlFor="recipe-photo-library-input"
@@ -275,14 +275,14 @@ export default function RecipeForm({ userId }: { userId: string }) {
               <circle cx="9" cy="9" r="2" />
               <path d="m21 15-5-5L5 21" />
             </svg>
-            {photoPreview ? "Choose different photo" : "Choose from library"}
+            {photoPreview ? t("chooseDifferentPhoto") : t("chooseFromLibrary")}
           </label>
         </div>
       </div>
 
       <input
         type="text"
-        placeholder="Title"
+        placeholder={t("titlePlaceholder")}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
@@ -290,7 +290,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
       />
 
       <textarea
-        placeholder="Short description"
+        placeholder={t("descriptionPlaceholder")}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         required
@@ -305,7 +305,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
         className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       >
         <option value="" disabled>
-          Country of origin
+          {t("countryPlaceholder")}
         </option>
         {COUNTRIES.map((c) => (
           <option key={c} value={c}>
@@ -321,20 +321,20 @@ export default function RecipeForm({ userId }: { userId: string }) {
         className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       >
         <option value="" disabled>
-          Meal type
+          {t("mealTypePlaceholder")}
         </option>
         {MEAL_TYPES.map((m) => (
           <option key={m} value={m}>
-            {m}
+            {tMeal(m)}
           </option>
         ))}
       </select>
 
       <label className="flex flex-col gap-1 text-sm text-berry/70">
-        <span className="font-semibold text-berry">Servings</span>
+        <span className="font-semibold text-berry">{t("servings")}</span>
         <input
           type="number"
-          placeholder="e.g. 4"
+          placeholder={t("servingsPlaceholder")}
           min={1}
           step={1}
           value={servings}
@@ -346,16 +346,16 @@ export default function RecipeForm({ userId }: { userId: string }) {
 
       <div className="flex flex-col gap-2">
         <label className="text-sm font-semibold text-berry">
-          Ingredients
+          {t("ingredients")}
         </label>
         {ingredients.map((ingredient, i) => (
           <div key={i} className="flex items-center gap-2">
             <input
               type="text"
               inputMode="decimal"
-              placeholder="Qty"
+              placeholder={t("qtyPlaceholder")}
               pattern="^\d+([.,]\d+)?$"
-              title="A number like 1 or 1,5"
+              title={t("qtyTitle")}
               value={ingredient.quantity}
               onChange={(e) =>
                 updateIngredient(i, "quantity", e.target.value)
@@ -370,7 +370,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
               className="w-24 rounded-md border border-berry/20 px-2 py-2 text-berry"
             >
               <option value="" disabled>
-                Unit
+                {t("unitPlaceholder")}
               </option>
               {UNITS.map((unit) => (
                 <option key={unit} value={unit}>
@@ -380,7 +380,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
             </select>
             <input
               type="text"
-              placeholder="Ingredient"
+              placeholder={t("ingredientPlaceholder")}
               value={ingredient.name}
               onChange={(e) => updateIngredient(i, "name", e.target.value)}
               required
@@ -392,7 +392,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
                 onClick={() => removeIngredient(i)}
                 className="text-sm text-berry/60"
               >
-                Remove
+                {t("remove")}
               </button>
             )}
           </div>
@@ -402,19 +402,19 @@ export default function RecipeForm({ userId }: { userId: string }) {
           onClick={addIngredient}
           className="self-start text-sm text-berry underline"
         >
-          Add another ingredient
+          {t("addIngredient")}
         </button>
       </div>
 
       <div className="flex flex-col gap-2">
         <label className="text-sm font-semibold text-berry">
-          Steps
+          {t("steps")}
         </label>
         {steps.map((step, i) => (
           <div key={i} className="flex items-center gap-2">
             <input
               type="text"
-              placeholder={`Step ${i + 1}`}
+              placeholder={t("stepPlaceholder", { number: i + 1 })}
               value={step}
               onChange={(e) => updateStep(i, e.target.value)}
               required
@@ -426,7 +426,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
                 onClick={() => removeStep(i)}
                 className="text-sm text-berry/60"
               >
-                Remove
+                {t("remove")}
               </button>
             )}
           </div>
@@ -436,12 +436,12 @@ export default function RecipeForm({ userId }: { userId: string }) {
           onClick={addStep}
           className="self-start text-sm text-berry underline"
         >
-          Add another step
+          {t("addStep")}
         </button>
       </div>
 
       <textarea
-        placeholder="Tips or extra information (optional)"
+        placeholder={t("tipsPlaceholder")}
         value={tips}
         onChange={(e) => setTips(e.target.value)}
         rows={2}
@@ -453,8 +453,8 @@ export default function RecipeForm({ userId }: { userId: string }) {
         onChange={(e) => setLanguage(e.target.value as "fi" | "en")}
         className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       >
-        <option value="en">English</option>
-        <option value="fi">Finnish</option>
+        <option value="en">{t("english")}</option>
+        <option value="fi">{t("finnish")}</option>
       </select>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
@@ -476,10 +476,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
           <line x1="12" y1="16" x2="12" y2="12" />
           <line x1="12" y1="8" x2="12.01" y2="8" />
         </svg>
-        <p className="text-sm text-berry/60">
-          New recipes are reviewed by an editor before they're published
-          and visible to everyone.
-        </p>
+        <p className="text-sm text-berry/60">{t("editorNote")}</p>
       </div>
 
       <button
@@ -487,7 +484,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
         disabled={loading}
         className="rounded-md bg-gold px-3 py-2 font-medium text-berry disabled:opacity-50"
       >
-        {loading ? "Submitting..." : "Submit for review"}
+        {loading ? t("submitting") : t("submitForReview")}
       </button>
     </form>
   );
