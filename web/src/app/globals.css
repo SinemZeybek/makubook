@@ -38,3 +38,16 @@ button {
   transition-duration: 150ms;
   transition-timing-function: ease;
 }
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.animate-ken-burns {
+  animation: ken-burns 18s ease-in-out infinite alternate;
+}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import LogoutButton from "./logout-button";
 import RecipeFilters from "./recipe-filters";
 
@@ -17,12 +18,31 @@ export default function Navbar({
   const [searchOpen, setSearchOpen] = useState(true);
 
   return (
-    <div className="sticky top-0 z-10 border-b border-berry/10 bg-cream/95 backdrop-blur">
+    <div className="sticky top-0 z-10 bg-cream/95 shadow-sm backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <div className="flex items-center gap-1 sm:gap-4">
-          <Link href="/" className="font-logo text-xl sm:text-2xl">
-            <span className="text-gold">Maku</span>
-            <span className="text-berry">book</span>
+          <Link href="/" className="group flex items-center gap-1.5">
+            <motion.svg
+              whileHover={{ rotate: -12, scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              xmlns="http://www.w3.org/2000/svg"
+              width="26"
+              height="26"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-gold"
+            >
+              <path d="M18 8a6 6 0 0 0-12 0c0 4-1.5 5.5-2 7h16c-.5-1.5-2-3-2-7Z" />
+              <path d="M9 19c.5 1.2 1.6 2 3 2s2.5-.8 3-2" />
+            </motion.svg>
+            <span className="font-logo text-xl sm:text-2xl">
+              <span className="text-gold">Maku</span>
+              <span className="text-berry">book</span>
+            </span>
           </Link>
           <Link
             href="/about"
@@ -189,6 +209,8 @@ export default function Navbar({
           <RecipeFilters />
         </div>
       )}
+
+      <div className="h-[3px] bg-gradient-to-r from-gold via-berry to-gold" />
     </div>
   );
 }

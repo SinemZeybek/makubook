@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import RecipeCard from "./recipe-card";
+import FadeIn from "./fade-in";
 import { MEAL_TYPES } from "@/lib/mealTypes";
 
 export default async function Home({
@@ -92,34 +93,39 @@ export default async function Home({
       />
 
       <div className="flex-1">
-      <div className="relative h-72 w-full md:h-[420px]">
+      <div className="relative h-72 w-full overflow-hidden md:h-[420px]">
         <Image
           src="/dish-autumn-spread.jpg"
           alt="A spread of dishes from around the world"
           fill
           priority
-          className="object-cover"
+          className="animate-ken-burns object-cover"
         />
         <div className="absolute inset-0 bg-berry/60" />
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-          <h1 className="font-logo text-4xl text-cream md:text-6xl">
-            Makubook
-          </h1>
-          <p className="mt-2 max-w-md text-cream/90 md:text-lg">
-            Recipes from every home, shared with the world.
-          </p>
+          <FadeIn>
+            <h1 className="font-logo text-4xl text-cream md:text-6xl">
+              Makubook
+            </h1>
+            <p className="mt-2 max-w-md text-cream/90 md:text-lg">
+              Recipes from every home, shared with the world.
+            </p>
+          </FadeIn>
         </div>
       </div>
 
       {featuredRecipes && featuredRecipes.length > 0 && (
         <div className="mx-auto max-w-6xl px-6 pt-10">
-          <h2 className="text-xl font-semibold text-berry">
-            Easy to access and follow recipes
-          </h2>
+          <FadeIn>
+            <h2 className="text-xl font-semibold text-berry">
+              Easy to access and follow recipes
+            </h2>
+          </FadeIn>
           <div className="mt-4 flex gap-5 overflow-x-auto pb-2">
             {featuredRecipes.map((recipe, i) => (
-              <div
+              <FadeIn
                 key={recipe.id}
+                delay={i * 0.08}
                 className="relative w-72 flex-shrink-0 overflow-hidden rounded-lg border border-berry/15 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:border-berry/30 hover:shadow-md"
               >
                 <Link
@@ -182,7 +188,7 @@ export default async function Home({
                     </Link>
                   </div>
                 </div>
-              </div>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -195,7 +201,7 @@ export default async function Home({
           </p>
         )}
 
-        <div className="mt-8 flex flex-wrap gap-2">
+        <FadeIn className="mt-8 flex flex-wrap gap-2">
           <Link
             href={categoryHref(undefined)}
             scroll={false}
@@ -221,7 +227,7 @@ export default async function Home({
               {type}
             </Link>
           ))}
-        </div>
+        </FadeIn>
 
         <div className="min-h-[50vh]">
           {!error && recipes && recipes.length === 0 && (
@@ -234,21 +240,21 @@ export default async function Home({
 
           {!error && recipes && recipes.length > 0 && (
             <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {recipes.map((recipe) => (
-                <li key={recipe.id}>
+              {recipes.map((recipe, i) => (
+                <FadeIn as="li" key={recipe.id} delay={Math.min(i, 8) * 0.06}>
                   <RecipeCard
                     recipe={recipe}
                     currentUserId={user?.id ?? null}
                     initialSaved={savedRecipeIds.has(recipe.id)}
                   />
-                </li>
+                </FadeIn>
               ))}
             </ul>
           )}
         </div>
 
         {!user && (
-          <section className="mt-16 rounded-lg bg-berry px-6 py-10 text-center">
+          <FadeIn className="mt-16 rounded-lg bg-berry px-6 py-10 text-center">
             <h2 className="font-logo text-2xl text-cream">
               Ready to share your first recipe?
             </h2>
@@ -258,7 +264,7 @@ export default async function Home({
             >
               Sign up
             </Link>
-          </section>
+          </FadeIn>
         )}
       </div>
       </div>
