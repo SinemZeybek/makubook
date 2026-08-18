@@ -137,23 +137,25 @@ export default async function RecipePage({
           />
         )}
 
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+        <div className="mt-4">
           <h1 className="text-3xl font-semibold text-berry">
             {recipe.title}
           </h1>
-          {recipe.country && (
-            <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
-              {tCountry(recipe.country)}
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {recipe.country && (
+              <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
+                {tCountry(recipe.country)}
+              </span>
+            )}
+            {recipe.meal_type && (
+              <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
+                {tMeal(recipe.meal_type)}
+              </span>
+            )}
+            <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
+              {recipe.language}
             </span>
-          )}
-          {recipe.meal_type && (
-            <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
-              {tMeal(recipe.meal_type)}
-            </span>
-          )}
-          <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
-            {recipe.language}
-          </span>
+          </div>
         </div>
 
         {recipe.description && (
