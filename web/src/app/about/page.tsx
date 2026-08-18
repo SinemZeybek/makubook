@@ -38,7 +38,7 @@ export default async function AboutPage() {
             alt="A couple cooking together in a cozy kitchen"
             fill
             priority
-            className="animate-ken-burns object-cover"
+            className="animate-ken-burns object-cover object-[50%_20%]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-berry via-berry/70 to-berry/40" />
           <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
@@ -63,11 +63,12 @@ export default async function AboutPage() {
               Connecting People With Food
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-berry/70">
-              Makubook exists for one simple reason: food tastes better
-              when it's shared. We're building a place where immigrants
-              and expats living in Finland can share recipes from their
-              home countries, and Finns can discover a taste of the
-              world without leaving the kitchen table.
+              Makubook exists for one simple reason: to connect through
+              food from around the world. We're building a place where
+              everyone can share food from their homes and be able to
+              taste all the cuisines they wish to try. Now with no
+              language barrier, you can discover a taste of the world
+              without leaving the kitchen table.
             </p>
           </FadeIn>
         </section>
