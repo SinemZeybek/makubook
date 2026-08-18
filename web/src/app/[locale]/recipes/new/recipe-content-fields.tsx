@@ -18,17 +18,25 @@ export type RecipeContentHandle = {
   getValues: () => RecipeContentValues;
 };
 
-const RecipeContentFields = forwardRef<RecipeContentHandle>(
-  function RecipeContentFields(_props, ref) {
+type RecipeContentFieldsProps = {
+  initialValues?: RecipeContentValues;
+};
+
+const RecipeContentFields = forwardRef<
+  RecipeContentHandle,
+  RecipeContentFieldsProps
+>(function RecipeContentFields({ initialValues }, ref) {
     const t = useTranslations("RecipeForm");
     const tUnit = useTranslations("Units");
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [ingredients, setIngredients] = useState<Ingredient[]>([
-      { quantity: "", unit: "", name: "" },
-    ]);
-    const [steps, setSteps] = useState([""]);
-    const [tips, setTips] = useState("");
+    const [title, setTitle] = useState(initialValues?.title ?? "");
+    const [description, setDescription] = useState(
+      initialValues?.description ?? ""
+    );
+    const [ingredients, setIngredients] = useState<Ingredient[]>(
+      initialValues?.ingredients ?? [{ quantity: "", unit: "", name: "" }]
+    );
+    const [steps, setSteps] = useState(initialValues?.steps ?? [""]);
+    const [tips, setTips] = useState(initialValues?.tips ?? "");
 
     useImperativeHandle(ref, () => ({
       getValues: () => ({ title, description, ingredients, steps, tips }),

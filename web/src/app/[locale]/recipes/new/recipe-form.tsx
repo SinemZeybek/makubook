@@ -34,11 +34,26 @@ export default function RecipeForm({ userId }: { userId: string }) {
   const router = useRouter();
   const primaryRef = useRef<RecipeContentHandle>(null);
   const secondaryRef = useRef<RecipeContentHandle>(null);
+  const [primaryKey, setPrimaryKey] = useState(0);
+  const [carriedValues, setCarriedValues] = useState<
+    RecipeContentValues | undefined
+  >(undefined);
 
   const secondaryLanguage: "fi" | "en" = language === "en" ? "fi" : "en";
 
   function languageLabel(lang: "fi" | "en") {
     return lang === "en" ? t("english") : t("finnish");
+  }
+
+  function removePrimaryColumn() {
+    setCarriedValues(secondaryRef.current?.getValues());
+    setLanguage(secondaryLanguage);
+    setPrimaryKey((k) => k + 1);
+    setShowSecondLanguage(false);
+  }
+
+  function removeSecondaryColumn() {
+    setShowSecondLanguage(false);
   }
 
   useEffect(() => {
@@ -349,14 +364,36 @@ export default function RecipeForm({ userId }: { userId: string }) {
         </label>
       </div>
 
-      {showSecondLanguage ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-start">
-          <div className="flex flex-col gap-4">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-berry/50">
-              {languageLabel(language)}
-            </h2>
-            <RecipeContentFields ref={primaryRef} />
-          </div>
+      <div
+        className={
+          showSecondLanguage
+            ? "grid grid-cols-1 gap-6 md:grid-cols-2 md:items-start"
+            : "mx-auto w-full max-w-xl"
+        }
+      >
+        <div className="flex flex-col gap-4">
+          {showSecondLanguage && (
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-berry/50">
+                {languageLabel(language)}
+              </h2>
+              <button
+                type="button"
+                onClick={removePrimaryColumn}
+                className="text-xs text-berry/60 underline"
+              >
+                {t("remove")}
+              </button>
+            </div>
+          )}
+          <RecipeContentFields
+            key={primaryKey}
+            ref={primaryRef}
+            initialValues={carriedValues}
+          />
+        </div>
+
+        {showSecondLanguage && (
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-berry/50">
@@ -364,44 +401,42 @@ export default function RecipeForm({ userId }: { userId: string }) {
               </h2>
               <button
                 type="button"
-                onClick={() => setShowSecondLanguage(false)}
+                onClick={removeSecondaryColumn}
                 className="text-xs text-berry/60 underline"
               >
-                {t("removeOtherLanguage")}
+                {t("remove")}
               </button>
             </div>
             <RecipeContentFields ref={secondaryRef} />
           </div>
-        </div>
-      ) : (
-        <div className="mx-auto w-full max-w-xl">
-          <RecipeContentFields ref={primaryRef} />
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="mx-auto flex w-full max-w-xl flex-col gap-4">
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value as "fi" | "en")}
-          className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
-        >
-          <option value="en">{t("english")}</option>
-          <option value="fi">{t("finnish")}</option>
-        </select>
-
         {!showSecondLanguage && (
-          <div className="rounded-md border border-berry/10 bg-berry/5 px-4 py-3">
-            <p className="text-sm text-berry/70">
-              {t("addOtherLanguagePrompt")}
-            </p>
-            <button
-              type="button"
-              onClick={() => setShowSecondLanguage(true)}
-              className="mt-1 text-sm font-medium text-berry underline"
+          <>
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as "fi" | "en")}
+              className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
             >
-              {t("addAnotherLanguage")}
-            </button>
-          </div>
+              <option value="en">{t("english")}</option>
+              <option value="fi">{t("finnish")}</option>
+            </select>
+
+            <div className="rounded-md border border-berry/10 bg-berry/5 px-4 py-3">
+              <p className="text-sm text-berry/70">
+                {t("addOtherLanguagePrompt")}
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowSecondLanguage(true)}
+                className="mt-1 text-sm font-medium text-berry underline"
+              >
+                {t("addAnotherLanguage")}
+              </button>
+            </div>
+          </>
         )}
 
         {error && <p className="text-sm text-red-600">{error}</p>}
