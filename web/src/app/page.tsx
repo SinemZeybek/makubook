@@ -138,11 +138,29 @@ export default async function Home({
                     className="object-cover"
                   />
                 </div>
-                <div className="p-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="pointer-events-none text-lg font-medium text-berry">
-                      {recipe.title}
-                    </h3>
+                <div className="flex flex-col p-4">
+                  <h3 className="pointer-events-none text-lg font-medium text-berry">
+                    {recipe.title}
+                  </h3>
+                  <div className="pointer-events-none mt-1 flex flex-wrap gap-1">
+                    {recipe.country && (
+                      <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
+                        {recipe.country}
+                      </span>
+                    )}
+                    {recipe.meal_type && (
+                      <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
+                        {recipe.meal_type}
+                      </span>
+                    )}
+                  </div>
+                  {recipe.description && (
+                    <p className="pointer-events-none mt-2 text-sm text-berry/70">
+                      {recipe.description}
+                    </p>
+                  )}
+
+                  <div className="mt-auto flex justify-end pt-3">
                     <Link
                       href={`/profile/${recipe.author_id}`}
                       className="relative z-10 flex shrink-0 items-center gap-1.5 hover:underline"
@@ -163,23 +181,6 @@ export default async function Home({
                       </span>
                     </Link>
                   </div>
-                  <div className="pointer-events-none mt-1 flex flex-wrap gap-1">
-                    {recipe.country && (
-                      <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
-                        {recipe.country}
-                      </span>
-                    )}
-                    {recipe.meal_type && (
-                      <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
-                        {recipe.meal_type}
-                      </span>
-                    )}
-                  </div>
-                  {recipe.description && (
-                    <p className="pointer-events-none mt-2 text-sm text-berry/70">
-                      {recipe.description}
-                    </p>
-                  )}
                 </div>
               </div>
             ))}

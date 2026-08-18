@@ -59,23 +59,29 @@ export default function RecipeCard({
         )}
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-start justify-between gap-2">
-          <div className="pointer-events-none flex flex-wrap items-center gap-2">
-            <h2 className="text-xl font-medium text-berry">{recipe.title}</h2>
-            {recipe.country && (
-              <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
-                {recipe.country}
-              </span>
-            )}
-            {recipe.meal_type && (
-              <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
-                {recipe.meal_type}
-              </span>
-            )}
-            <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
-              {recipe.language}
+        <div className="pointer-events-none flex flex-wrap items-center gap-2">
+          <h2 className="text-xl font-medium text-berry">{recipe.title}</h2>
+          {recipe.country && (
+            <span className="rounded bg-gold/30 px-1.5 py-0.5 text-xs text-berry">
+              {recipe.country}
             </span>
-          </div>
+          )}
+          {recipe.meal_type && (
+            <span className="rounded bg-berry/10 px-1.5 py-0.5 text-xs text-berry">
+              {recipe.meal_type}
+            </span>
+          )}
+          <span className="rounded bg-berry px-1.5 py-0.5 text-xs uppercase text-cream">
+            {recipe.language}
+          </span>
+        </div>
+        {recipe.description && (
+          <p className="pointer-events-none mt-2 line-clamp-2 text-base text-berry/70">
+            {recipe.description}
+          </p>
+        )}
+
+        <div className="mt-auto flex justify-end pt-3">
           <Link
             href={`/profile/${recipe.author_id}`}
             className="relative z-10 flex shrink-0 items-center gap-1.5 hover:underline"
@@ -93,11 +99,6 @@ export default function RecipeCard({
             </span>
           </Link>
         </div>
-        {recipe.description && (
-          <p className="pointer-events-none mt-2 line-clamp-2 text-base text-berry/70">
-            {recipe.description}
-          </p>
-        )}
       </div>
     </div>
   );
