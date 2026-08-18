@@ -108,7 +108,6 @@ export default function RecipeFilters() {
           }))}
           selected={selectedCountries}
           onChange={(values) => updateParam("country", values)}
-          selectedCountLabel={(count) => t("selectedCount", { count })}
           searchPlaceholder={t("searchCountries")}
         />
 
@@ -117,7 +116,6 @@ export default function RecipeFilters() {
           options={MEAL_TYPES.map((m) => ({ value: m, label: tMeal(m) }))}
           selected={selectedMealTypes}
           onChange={(values) => updateParam("mealType", values)}
-          selectedCountLabel={(count) => t("selectedCount", { count })}
         />
 
         <MultiSelect
@@ -128,7 +126,6 @@ export default function RecipeFilters() {
           ]}
           selected={selectedLanguages}
           onChange={(values) => updateParam("language", values)}
-          selectedCountLabel={(count) => t("selectedCount", { count })}
         />
 
         <MultiSelect
@@ -141,7 +138,6 @@ export default function RecipeFilters() {
           ]}
           selected={selectedServings}
           onChange={(values) => updateParam("servings", values)}
-          selectedCountLabel={(count) => t("selectedCount", { count })}
         />
 
         {hasActiveFilters && (

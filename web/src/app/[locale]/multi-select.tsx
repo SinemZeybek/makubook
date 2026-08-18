@@ -1,47 +1,27 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
 
 type Option = { value: string; label: string };
-
-function sameValues(a: string[], b: string[]) {
-  if (a.length !== b.length) return false;
-  const bSet = new Set(b);
-  return a.every((v) => bSet.has(v));
-}
 
 export default function MultiSelect({
   placeholder,
   options,
   selected,
   onChange,
-  selectedCountLabel,
   searchPlaceholder,
 }: {
   placeholder: string;
   options: Option[];
   selected: string[];
   onChange: (values: string[]) => void;
-  selectedCountLabel: (count: number) => string;
   searchPlaceholder?: string;
 }) {
-  const t = useTranslations("Search");
   const [open, setOpen] = useState(false);
-  const [pending, setPending] = useState(selected);
   const [search, setSearch] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) setPending(selected);
-  }, [selected, open]);
-
-  function closeAndCommit() {
-    setOpen(false);
-    if (!sameValues(pending, selected)) {
-      onChange(pending);
-    }
-  }
+  const selectedRef = useRef(selected);
+  selectedRef.current = selected;
 
   useEffect(() => {
     if (!open) return;
@@ -50,30 +30,25 @@ export default function MultiSelect({
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
-        closeAndCommit();
+        setOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, pending, selected]);
+  }, [open]);
 
   useEffect(() => {
     if (!open) setSearch("");
   }, [open]);
 
   function toggle(value: string) {
-    setPending((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    );
+    const current = selectedRef.current;
+    const next = current.includes(value)
+      ? current.filter((v) => v !== value)
+      : [...current, value];
+    selectedRef.current = next;
+    onChange(next);
   }
-
-  const buttonLabel =
-    selected.length === 0
-      ? placeholder
-      : selected.length === 1
-        ? (options.find((o) => o.value === selected[0])?.label ?? placeholder)
-        : selectedCountLabel(selected.length);
 
   const filteredOptions = searchPlaceholder
     ? options.filter((o) =>
@@ -92,7 +67,7 @@ export default function MultiSelect({
             : "border-berry/20 text-berry"
         }`}
       >
-        {buttonLabel}
+        {placeholder}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="14"
@@ -128,7 +103,7 @@ export default function MultiSelect({
               >
                 <input
                   type="checkbox"
-                  checked={pending.includes(option.value)}
+                  checked={selected.includes(option.value)}
                   onChange={() => toggle(option.value)}
                   className="accent-berry"
                 />
@@ -136,13 +111,6 @@ export default function MultiSelect({
               </label>
             ))}
           </div>
-          <button
-            type="button"
-            onClick={closeAndCommit}
-            className="mt-2 w-full rounded-md bg-berry px-2 py-1.5 text-sm text-cream"
-          >
-            {t("done")}
-          </button>
         </div>
       )}
     </div>

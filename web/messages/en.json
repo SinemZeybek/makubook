@@ -32,9 +32,7 @@
     "servings5to6": "5-6 servings",
     "servings7plus": "7+ servings",
     "clearFilters": "Clear filters",
-    "selectedCount": "{count} selected",
-    "searchCountries": "Search countries...",
-    "done": "Done"
+    "searchCountries": "Search countries..."
   },
   "MealTypes": {
     "Breakfast": "Breakfast",

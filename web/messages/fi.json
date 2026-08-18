@@ -32,9 +32,7 @@
     "servings5to6": "5-6 annosta",
     "servings7plus": "7+ annosta",
     "clearFilters": "Tyhjennä suodattimet",
-    "selectedCount": "{count} valittu",
-    "searchCountries": "Hae maita...",
-    "done": "Valmis"
+    "searchCountries": "Hae maita..."
   },
   "MealTypes": {
     "Breakfast": "Aamiainen",
