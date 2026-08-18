@@ -32,13 +32,24 @@ export default async function RecipePage({
   const { data: recipe, error } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, servings, language, ingredients, instructions, tips, author_id, status, like_count, recipe_images(url)"
+      "id, title, description, country, meal_type, servings, language, ingredients, instructions, tips, author_id, status, like_count, translation_of, recipe_images(url)"
     )
     .eq("id", id)
     .single();
 
   if (error || !recipe) {
     notFound();
+  }
+
+  let siblingRecipe: { id: string; language: string } | null = null;
+  if (recipe.translation_of) {
+    const { data: sibling } = await supabase
+      .from("recipes")
+      .select("id, language")
+      .eq("id", recipe.translation_of)
+      .eq("status", "published")
+      .maybeSingle();
+    siblingRecipe = sibling;
   }
 
   const { data: comments } = await supabase
@@ -156,6 +167,16 @@ export default async function RecipePage({
               {recipe.language}
             </span>
           </div>
+          {siblingRecipe && (
+            <Link
+              href={`/recipes/${siblingRecipe.id}`}
+              className="mt-2 inline-block text-sm text-berry underline"
+            >
+              {siblingRecipe.language === "en"
+                ? t("viewInEnglish")
+                : t("viewInFinnish")}
+            </Link>
+          )}
         </div>
 
         {recipe.description && (
