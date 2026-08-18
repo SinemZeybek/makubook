@@ -3,8 +3,8 @@
     "about": "About",
     "search": "Search recipes",
     "addRecipe": "Add recipe",
-    "saved": "Saved",
-    "savedFull": "Saved recipes",
+    "saved": "Liked",
+    "savedFull": "Liked recipes",
     "editor": "Editor",
     "editorQueue": "Editor queue",
     "profile": "Profile",
@@ -149,15 +149,16 @@
     "postComment": "Post comment"
   },
   "Save": {
-    "label": "Save",
-    "savedLabel": "Saved",
-    "aria": "Save recipe",
-    "removeSavedAria": "Remove from saved recipes",
-    "removedToast": "Removed from saved",
-    "savedToast": "Saved to your recipes",
-    "loginRequired": "You need to be logged in to save a recipe.",
+    "label": "Like",
+    "savedLabel": "Liked",
+    "aria": "Like recipe",
+    "removeSavedAria": "Unlike recipe",
+    "removedToast": "Removed from liked",
+    "savedToast": "Added to your liked recipes",
+    "loginRequired": "You need to be logged in to like a recipe.",
     "cancel": "Cancel",
-    "logIn": "Log in"
+    "logIn": "Log in",
+    "likeCount": "{count, plural, =0 {No likes yet} one {# like} other {# likes}}"
   },
   "RecipeCard": {
     "rejected": "Rejected",
@@ -168,7 +169,7 @@
   },
   "Profile": {
     "editProfile": "Edit profile",
-    "savedRecipes": "Saved recipes",
+    "savedRecipes": "Liked recipes",
     "myRecipes": "My recipes",
     "recipesSharedCount": "{count, plural, one {# recipe shared} other {# recipes shared}}",
     "theirRecipes": "{name}'s recipes",
@@ -182,8 +183,8 @@
     "saveChanges": "Save changes"
   },
   "Saved": {
-    "heading": "Your saved recipes",
-    "emptyPrefix": "You haven't saved any recipes yet. Browse the",
+    "heading": "Your liked recipes",
+    "emptyPrefix": "You haven't liked any recipes yet. Browse the",
     "homepage": "homepage",
     "emptySuffix": "to find something you love."
   },

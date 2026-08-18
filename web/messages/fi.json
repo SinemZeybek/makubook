@@ -3,8 +3,8 @@
     "about": "Tietoa",
     "search": "Hae reseptejä",
     "addRecipe": "Lisää resepti",
-    "saved": "Tallennetut",
-    "savedFull": "Tallennetut reseptit",
+    "saved": "Tykätyt",
+    "savedFull": "Tykätyt reseptit",
     "editor": "Toimittaja",
     "editorQueue": "Toimittajan jono",
     "profile": "Profiili",
@@ -149,15 +149,16 @@
     "postComment": "Lähetä kommentti"
   },
   "Save": {
-    "label": "Tallenna",
-    "savedLabel": "Tallennettu",
-    "aria": "Tallenna resepti",
-    "removeSavedAria": "Poista tallennetuista",
-    "removedToast": "Poistettu tallennetuista",
-    "savedToast": "Tallennettu omiin resepteihin",
-    "loginRequired": "Sinun täytyy kirjautua sisään tallentaaksesi reseptin.",
+    "label": "Tykkää",
+    "savedLabel": "Tykätty",
+    "aria": "Tykkää reseptistä",
+    "removeSavedAria": "Poista tykkäys",
+    "removedToast": "Tykkäys poistettu",
+    "savedToast": "Lisätty tykätyksi",
+    "loginRequired": "Sinun täytyy kirjautua sisään tykätäksesi reseptistä.",
     "cancel": "Peruuta",
-    "logIn": "Kirjaudu sisään"
+    "logIn": "Kirjaudu sisään",
+    "likeCount": "{count, plural, =0 {Ei vielä tykkäyksiä} one {# tykkäys} other {# tykkäystä}}"
   },
   "RecipeCard": {
     "rejected": "Hylätty",
@@ -168,7 +169,7 @@
   },
   "Profile": {
     "editProfile": "Muokkaa profiilia",
-    "savedRecipes": "Tallennetut reseptit",
+    "savedRecipes": "Tykätyt reseptit",
     "myRecipes": "Omat reseptini",
     "recipesSharedCount": "{count, plural, one {# resepti jaettu} other {# reseptiä jaettu}}",
     "theirRecipes": "Käyttäjän {name} reseptit",
@@ -182,8 +183,8 @@
     "saveChanges": "Tallenna muutokset"
   },
   "Saved": {
-    "heading": "Tallennetut reseptisi",
-    "emptyPrefix": "Et ole vielä tallentanut reseptejä. Selaa",
+    "heading": "Tykkäämäsi reseptit",
+    "emptyPrefix": "Et ole vielä tykännyt yhdestäkään reseptistä. Selaa",
     "homepage": "etusivua",
     "emptySuffix": "löytääksesi jotain mistä pidät."
   },

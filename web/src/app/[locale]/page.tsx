@@ -33,7 +33,7 @@ export default async function Home({
   let recipesQuery = supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, like_count, recipe_images(url), profiles(display_name, avatar_url)"
     )
     .eq("status", "published")
     .order("created_at", { ascending: false });
@@ -85,7 +85,7 @@ export default async function Home({
   const { data: featuredRecipes } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, like_count, recipe_images(url), profiles(display_name, avatar_url)"
     )
     .eq("status", "published")
     .order("created_at", { ascending: false })

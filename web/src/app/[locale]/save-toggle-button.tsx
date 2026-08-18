@@ -9,13 +9,16 @@ export default function SaveToggleButton({
   recipeId,
   userId,
   initialSaved,
+  initialLikeCount = 0,
 }: {
   recipeId: string;
   userId: string | null;
   initialSaved: boolean;
+  initialLikeCount?: number;
 }) {
   const t = useTranslations("Save");
   const [saved, setSaved] = useState(initialSaved);
+  const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [loading, setLoading] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -50,6 +53,7 @@ export default function SaveToggleButton({
         .eq("recipe_id", recipeId);
       if (!error) {
         setSaved(false);
+        setLikeCount((count) => Math.max(count - 1, 0));
         showToast(t("removedToast"));
       }
     } else {
@@ -58,6 +62,7 @@ export default function SaveToggleButton({
         .insert({ user_id: userId, recipe_id: recipeId });
       if (!error) {
         setSaved(true);
+        setLikeCount((count) => count + 1);
         showToast(t("savedToast"));
       }
     }
@@ -67,28 +72,35 @@ export default function SaveToggleButton({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={toggle}
-        disabled={loading}
-        aria-pressed={saved}
-        aria-label={saved ? t("removeSavedAria") : t("aria")}
-        className="pointer-events-auto absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-cream/90 text-berry shadow-sm hover:bg-cream disabled:opacity-50"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill={saved ? "currentColor" : "none"}
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      <div className="pointer-events-none absolute right-2 top-2 z-10 flex items-center gap-1.5">
+        {likeCount > 0 && (
+          <span className="pointer-events-none rounded-full bg-cream/90 px-2 py-1 text-xs font-medium text-berry shadow-sm">
+            {likeCount}
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={toggle}
+          disabled={loading}
+          aria-pressed={saved}
+          aria-label={saved ? t("removeSavedAria") : t("aria")}
+          className="pointer-events-auto flex h-8 w-8 items-center justify-center rounded-full bg-cream/90 text-berry shadow-sm hover:bg-cream disabled:opacity-50"
         >
-          <path d="M6 3.5h12a.5.5 0 0 1 .5.5v17l-6.5-4-6.5 4V4a.5.5 0 0 1 .5-.5Z" />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill={saved ? "currentColor" : "none"}
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" />
+          </svg>
+        </button>
+      </div>
 
       {toast && (
         <div

@@ -21,6 +21,7 @@ export default async function RecipePage({
   const tCountry = await getTranslations("Countries");
   const tUnit = await getTranslations("Units");
   const tCommon = await getTranslations("Common");
+  const tSave = await getTranslations("Save");
   const supabase = await createClient();
 
   const {
@@ -30,7 +31,7 @@ export default async function RecipePage({
   const { data: recipe, error } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, servings, language, ingredients, instructions, tips, author_id, status, recipe_images(url)"
+      "id, title, description, country, meal_type, servings, language, ingredients, instructions, tips, author_id, status, like_count, recipe_images(url)"
     )
     .eq("id", id)
     .single();
@@ -86,12 +87,17 @@ export default async function RecipePage({
           </Link>
 
           <div className="flex items-center gap-4">
-            {user && (
+            {user ? (
               <SaveButton
                 recipeId={recipe.id}
                 userId={user.id}
                 initialSaved={initialSaved}
+                initialLikeCount={recipe.like_count ?? 0}
               />
+            ) : (
+              <span className="text-sm text-berry/60">
+                {tSave("likeCount", { count: recipe.like_count ?? 0 })}
+              </span>
             )}
             {user?.id === recipe.author_id && (
               <Link
