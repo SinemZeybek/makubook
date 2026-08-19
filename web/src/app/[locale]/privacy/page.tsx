@@ -29,7 +29,7 @@ export default async function PrivacyPage() {
         isEditor={isEditor}
       />
 
-      <div className="flex-1 mx-auto max-w-3xl px-6 py-12">
+      <div className="flex-1 mx-auto w-full max-w-3xl px-6 py-12">
         <h1 className="text-3xl font-semibold text-berry">{t("title")}</h1>
         <p className="mt-2 text-sm text-berry/60">{t("lastUpdated")}</p>
 

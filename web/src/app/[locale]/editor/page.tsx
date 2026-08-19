@@ -38,7 +38,7 @@ export default async function EditorQueuePage() {
     <main className="flex min-h-screen flex-col bg-cream">
       <Navbar userEmail={user.email ?? null} userId={user.id} isEditor />
 
-      <div className="flex-1 mx-auto max-w-4xl px-6 py-10">
+      <div className="flex-1 mx-auto w-full max-w-4xl px-6 py-10">
         <h1 className="text-2xl font-semibold text-berry">{t("heading")}</h1>
         <p className="mt-1 text-sm text-berry/60">
           {t("waitingCount", { count: pendingRecipes?.length ?? 0 })}

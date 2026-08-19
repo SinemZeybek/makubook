@@ -29,7 +29,7 @@ export default async function NewRecipePage() {
         userId={user.id}
         isEditor={profile?.role === "editor"}
       />
-      <div className="flex-1 mx-auto max-w-4xl px-6 py-10">
+      <div className="flex-1 mx-auto w-full max-w-4xl px-6 py-10">
         <h1 className="text-2xl font-semibold text-berry">{t("newHeading")}</h1>
         <RecipeForm userId={user.id} />
       </div>

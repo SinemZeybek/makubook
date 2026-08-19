@@ -29,7 +29,7 @@ export default async function EditProfilePage() {
         userId={user.id}
         isEditor={profile?.role === "editor"}
       />
-      <div className="flex-1 mx-auto max-w-xl px-6 py-10">
+      <div className="flex-1 mx-auto w-full max-w-xl px-6 py-10">
         <h1 className="text-2xl font-semibold text-berry">{t("editProfile")}</h1>
         <EditProfileForm
           userId={user.id}

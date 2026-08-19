@@ -148,7 +148,7 @@ export default async function SearchPage({
       />
 
       <div className="flex-1">
-        <div className="mx-auto max-w-6xl px-6 py-10">
+        <div className="mx-auto w-full max-w-6xl px-6 py-10">
           <RecipeFilters />
 
           {error && (

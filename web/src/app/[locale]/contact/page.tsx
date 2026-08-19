@@ -29,7 +29,7 @@ export default async function ContactPage() {
         isEditor={isEditor}
       />
 
-      <div className="flex-1 mx-auto max-w-2xl px-6 py-16 text-center">
+      <div className="flex-1 mx-auto w-full max-w-2xl px-6 py-16 text-center">
         <h1 className="text-3xl font-semibold text-berry">
           {t("contactHeading")}
         </h1>

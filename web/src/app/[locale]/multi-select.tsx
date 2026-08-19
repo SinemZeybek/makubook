@@ -19,9 +19,18 @@ export default function MultiSelect({
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [alignRight, setAlignRight] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
+
+  function handleToggle() {
+    if (!open && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setAlignRight(rect.left + 224 > window.innerWidth - 16);
+    }
+    setOpen((v) => !v);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -60,7 +69,7 @@ export default function MultiSelect({
     <div ref={containerRef} className="relative">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={handleToggle}
         className={`flex items-center gap-1.5 rounded-md border px-3 py-2 text-sm ${
           selected.length > 0
             ? "border-berry bg-berry/10 text-berry"
@@ -85,7 +94,11 @@ export default function MultiSelect({
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full z-20 mt-1 max-h-72 w-56 overflow-y-auto rounded-md border border-berry/15 bg-white p-2 shadow-lg">
+        <div
+          className={`absolute top-full z-20 mt-1 max-h-72 w-56 overflow-y-auto rounded-md border border-berry/15 bg-white p-2 shadow-lg ${
+            alignRight ? "right-0" : "left-0"
+          }`}
+        >
           {searchPlaceholder && (
             <input
               type="text"

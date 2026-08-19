@@ -66,7 +66,7 @@ export default async function ProfilePage({
         isEditor={isEditor}
       />
 
-      <div className="flex-1 mx-auto max-w-6xl px-6 py-10">
+      <div className="flex-1 mx-auto w-full max-w-6xl px-6 py-10">
         <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-berry/10 bg-white p-6 shadow-sm">
           <div className="flex items-center gap-4">
             <div className="relative h-20 w-20 overflow-hidden rounded-full bg-berry/10 ring-2 ring-gold ring-offset-2 ring-offset-white">

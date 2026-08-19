@@ -131,7 +131,7 @@ export default function Navbar({
         </div>
 
         <div className="flex items-center gap-1 sm:gap-3">
-          <div className="hidden items-center overflow-hidden rounded-full border border-berry/20 text-xs font-medium sm:flex">
+          <div className="flex items-center overflow-hidden rounded-full border border-berry/20 text-xs font-medium">
             <Link
               href={pathname}
               locale="en"
@@ -313,31 +313,6 @@ export default function Navbar({
               <line x1="12" y1="8" x2="12.01" y2="8" />
             </svg>
           </Link>
-
-          <div className="flex items-center overflow-hidden rounded-full border border-berry/20 text-xs font-medium">
-            <Link
-              href={pathname}
-              locale="en"
-              className={
-                locale === "en"
-                  ? "bg-berry px-2 py-1 text-cream"
-                  : "px-2 py-1 text-berry hover:bg-berry/10"
-              }
-            >
-              EN
-            </Link>
-            <Link
-              href={pathname}
-              locale="fi"
-              className={
-                locale === "fi"
-                  ? "bg-berry px-2 py-1 text-cream"
-                  : "px-2 py-1 text-berry hover:bg-berry/10"
-              }
-            >
-              FI
-            </Link>
-          </div>
 
           {userEmail ? (
             <>

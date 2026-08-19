@@ -137,12 +137,12 @@ export default async function Home({
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 pt-6">
+      <div className="mx-auto w-full max-w-6xl px-6 pt-6">
         <RecipeFilters navigateTo="/search" />
       </div>
 
       {featuredRecipes && featuredRecipes.length > 0 && (
-        <div className="mx-auto max-w-6xl px-6 pt-10">
+        <div className="mx-auto w-full max-w-6xl px-6 pt-10">
           <FadeIn>
             <h2 className="text-xl font-semibold text-berry">
               {t("featuredHeading")}
@@ -229,7 +229,7 @@ export default async function Home({
         </div>
       )}
 
-      <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="mx-auto w-full max-w-6xl px-6 py-10">
         {error && (
           <p className="mt-8 text-red-600">
             Error loading recipes: {error.message}

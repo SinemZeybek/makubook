@@ -108,7 +108,7 @@ export default async function RecipePage({
         isEditor={isEditor}
       />
 
-      <div className="flex-1 mx-auto max-w-3xl px-6 py-10">
+      <div className="flex-1 mx-auto w-full max-w-3xl px-6 py-10">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-sm text-berry underline">
             {t("backToRecipes")}
