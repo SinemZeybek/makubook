@@ -154,18 +154,23 @@
     "comments": "Kommentit",
     "logIn": "Kirjaudu sisään",
     "toComment": "jättääksesi kommentin tai arvion.",
-    "noComments": "Ei vielä kommentteja.",
     "viewInEnglish": "Saatavilla myös englanniksi",
     "viewInFinnish": "Saatavilla myös suomeksi"
   },
   "Comment": {
+    "noComments": "Ei vielä kommentteja.",
     "placeholder": "Mitä pidit? Teitkö muutoksia?",
     "mustBeLoggedIn": "Sinun täytyy kirjautua sisään kommentoidaksesi.",
     "posting": "Lähetetään...",
     "postComment": "Lähetä kommentti",
     "delete": "Poista",
     "deleting": "Poistetaan...",
-    "confirmDelete": "Poistetaanko tämä kommentti? Tätä ei voi perua."
+    "confirmDelete": "Poistetaanko tämä kommentti? Tätä ei voi perua.",
+    "helpful": "Hyödyllinen",
+    "helpfulAria": "Merkitse tämä kommentti hyödylliseksi",
+    "removeHelpfulAria": "Poista hyödyllinen-merkintä",
+    "helpfulCount": "{count, plural, =0 {} one {# henkilö piti tätä hyödyllisenä} other {# henkilöä piti tätä hyödyllisenä}}",
+    "showMoreComments": "Näytä lisää kommentteja"
   },
   "Save": {
     "label": "Tykkää",

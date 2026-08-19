@@ -1,3 +1,4 @@
+import type { ComponentProps } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
@@ -7,7 +8,7 @@ import Navbar from "../../navbar";
 import Footer from "../../footer";
 import CommentForm from "./comment-form";
 import SaveButton from "./save-button";
-import DeleteCommentButton from "./delete-comment-button";
+import CommentList from "./comment-list";
 
 type Ingredient = { quantity: string; unit: string; name: string };
 
@@ -21,7 +22,6 @@ export default async function RecipePage({
   const tMeal = await getTranslations("MealTypes");
   const tCountry = await getTranslations("Countries");
   const tUnit = await getTranslations("Units");
-  const tCommon = await getTranslations("Common");
   const tSave = await getTranslations("Save");
   const supabase = await createClient();
 
@@ -55,13 +55,15 @@ export default async function RecipePage({
   const { data: comments } = await supabase
     .from("comments")
     .select(
-      "id, body, rating, created_at, user_id, profiles(display_name, avatar_url)"
+      "id, body, rating, created_at, user_id, helpful_count, profiles(display_name, avatar_url)"
     )
     .eq("recipe_id", id)
+    .order("helpful_count", { ascending: false })
     .order("created_at", { ascending: false });
 
   let initialSaved = false;
   let isEditor = false;
+  let votedCommentIds: string[] = [];
   if (user) {
     const { data: favorite } = await supabase
       .from("favorites")
@@ -77,6 +79,18 @@ export default async function RecipePage({
       .eq("id", user.id)
       .single();
     isEditor = profile?.role === "editor";
+
+    if (comments && comments.length > 0) {
+      const { data: votes } = await supabase
+        .from("comment_helpful_votes")
+        .select("comment_id")
+        .eq("user_id", user.id)
+        .in(
+          "comment_id",
+          comments.map((c) => c.id)
+        );
+      votedCommentIds = votes?.map((v) => v.comment_id) ?? [];
+    }
   }
 
   const ingredients = Array.isArray(recipe.ingredients)
@@ -250,45 +264,14 @@ export default async function RecipePage({
             </p>
           )}
 
-          <ul className="mt-6 space-y-4">
-            {comments?.map((comment) => (
-              <li
-                key={comment.id}
-                className="rounded-lg border border-berry/15 bg-white p-3"
-              >
-                <div className="flex items-center gap-2 text-sm">
-                  <div className="h-6 w-6 overflow-hidden rounded-full">
-                    <Image
-                      src={comment.profiles?.avatar_url || "/default-avatar.png"}
-                      alt=""
-                      width={24}
-                      height={24}
-                      className="h-full w-full object-cover"
-                      style={
-                        comment.profiles?.avatar_url
-                          ? undefined
-                          : { transform: "scale(1.2)" }
-                      }
-                    />
-                  </div>
-                  <span className="font-medium text-berry">
-                    {comment.profiles?.display_name ?? tCommon("anonymous")}
-                  </span>
-                  <span className="text-gold-dark">
-                    {"★".repeat(comment.rating ?? 0)}
-                    {"☆".repeat(5 - (comment.rating ?? 0))}
-                  </span>
-                  {user && (user.id === comment.user_id || isEditor) && (
-                    <DeleteCommentButton commentId={comment.id} />
-                  )}
-                </div>
-                <p className="mt-1 text-berry/80">{comment.body}</p>
-              </li>
-            ))}
-            {comments?.length === 0 && (
-              <p className="text-sm text-berry/70">{t("noComments")}</p>
-            )}
-          </ul>
+          <CommentList
+            comments={(comments ?? []) as unknown as ComponentProps<
+              typeof CommentList
+            >["comments"]}
+            currentUserId={user?.id ?? null}
+            isEditor={isEditor}
+            votedCommentIds={votedCommentIds}
+          />
         </section>
       </div>
 

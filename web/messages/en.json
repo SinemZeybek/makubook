@@ -154,18 +154,23 @@
     "comments": "Comments",
     "logIn": "Log in",
     "toComment": "to leave a comment or rating.",
-    "noComments": "No comments yet.",
     "viewInEnglish": "Also available in English",
     "viewInFinnish": "Also available in Finnish"
   },
   "Comment": {
+    "noComments": "No comments yet.",
     "placeholder": "What did you think? Any changes you made?",
     "mustBeLoggedIn": "You must be logged in to comment.",
     "posting": "Posting...",
     "postComment": "Post comment",
     "delete": "Delete",
     "deleting": "Deleting...",
-    "confirmDelete": "Delete this comment? This cannot be undone."
+    "confirmDelete": "Delete this comment? This cannot be undone.",
+    "helpful": "Helpful",
+    "helpfulAria": "Mark this comment as helpful",
+    "removeHelpfulAria": "Remove helpful mark",
+    "helpfulCount": "{count, plural, =0 {} one {# person found this helpful} other {# people found this helpful}}",
+    "showMoreComments": "Show more comments"
   },
   "Save": {
     "label": "Like",
