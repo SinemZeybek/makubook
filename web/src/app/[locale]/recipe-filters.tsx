@@ -84,18 +84,18 @@ export default function RecipeFilters() {
 
   return (
     <div className="mt-6 flex flex-col items-center gap-3">
-      <form onSubmit={handleSearchSubmit} className="flex w-full max-w-xl gap-2">
+      <form onSubmit={handleSearchSubmit} className="relative w-full max-w-xl">
         <input
           id="recipe-search-input"
           type="text"
           placeholder={t("placeholder")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 rounded-md border border-berry/20 px-3 py-2 text-sm text-berry placeholder:text-berry/40"
+          className="w-full rounded-md border border-berry/20 py-2 pl-3 pr-20 text-sm text-berry placeholder:text-berry/40"
         />
         <button
           type="submit"
-          className="rounded-md border border-berry/20 px-3 py-2 text-sm text-berry hover:bg-berry/10"
+          className="absolute right-1 top-1/2 -translate-y-1/2 rounded-md border border-berry/20 bg-cream px-3 py-1.5 text-sm text-berry hover:bg-berry/10"
         >
           {t("search")}
         </button>
