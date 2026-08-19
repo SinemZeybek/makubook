@@ -54,6 +54,8 @@
     "featuredHeading": "Helposti löydettävät ja seurattavat reseptit",
     "all": "Kaikki",
     "clear": "Tyhjennä",
+    "allRecipesHeading": "Kaikki reseptit",
+    "searchResultsHeading": "Hakutulokset",
     "previous": "Edellinen",
     "next": "Seuraava",
     "pageOf": "Sivu {current}/{total}",

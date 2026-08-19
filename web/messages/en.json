@@ -54,6 +54,8 @@
     "featuredHeading": "Easy to access and follow recipes",
     "all": "All",
     "clear": "Clear",
+    "allRecipesHeading": "All recipes",
+    "searchResultsHeading": "Search results",
     "previous": "Previous",
     "next": "Next",
     "pageOf": "Page {current} of {total}",

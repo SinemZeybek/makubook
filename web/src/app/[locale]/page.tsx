@@ -268,7 +268,15 @@ export default async function Home({
           </p>
         )}
 
-        <FadeIn className="mt-8 flex flex-wrap items-center gap-2">
+        <FadeIn>
+          <h2 className="mt-8 text-xl font-semibold text-berry">
+            {hasActiveFilters
+              ? t("searchResultsHeading")
+              : t("allRecipesHeading")}
+          </h2>
+        </FadeIn>
+
+        <FadeIn className="mt-4 flex flex-wrap items-center gap-2">
           <Link
             href={clearMealTypesHref()}
             scroll={false}
