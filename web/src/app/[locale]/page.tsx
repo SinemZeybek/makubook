@@ -174,6 +174,10 @@ export default async function Home({
         </div>
       </div>
 
+      <div className="mx-auto max-w-6xl px-6 pt-6">
+        <RecipeFilters />
+      </div>
+
       {featuredRecipes && featuredRecipes.length > 0 && (
         <div className="mx-auto max-w-6xl px-6 pt-10">
           <FadeIn>
@@ -268,8 +272,6 @@ export default async function Home({
             Error loading recipes: {error.message}
           </p>
         )}
-
-        <RecipeFilters />
 
         <FadeIn>
           <h2 className="mt-8 text-xl font-semibold text-berry">
