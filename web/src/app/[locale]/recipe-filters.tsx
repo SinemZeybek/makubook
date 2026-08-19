@@ -81,8 +81,8 @@ export default function RecipeFilters() {
     selectedServings.length > 0;
 
   return (
-    <div className="mt-6 flex flex-col gap-3">
-      <form onSubmit={handleSearchSubmit} className="flex max-w-md gap-2">
+    <div className="mt-6 flex flex-col items-center gap-3">
+      <form onSubmit={handleSearchSubmit} className="flex w-full max-w-lg gap-2">
         <input
           id="recipe-search-input"
           type="text"
