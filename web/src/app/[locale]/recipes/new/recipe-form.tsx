@@ -305,7 +305,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
 
           <label
             htmlFor="recipe-photo-library-input"
-            className="flex h-56 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-berry/25 bg-berry/5 transition-colors hover:border-berry/40 hover:bg-berry/10"
+            className="flex h-72 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-berry/25 bg-berry/5 transition-colors hover:border-berry/40 hover:bg-berry/10"
           >
             {photoPreview ? (
               // eslint-disable-next-line @next/next/no-img-element

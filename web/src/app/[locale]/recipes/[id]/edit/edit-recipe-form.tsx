@@ -103,11 +103,15 @@ export default function EditRecipeForm({
   }
 
   function handleEditCrop() {
-    if (originalPhoto) setCropSource(originalPhoto);
+    if (originalPhoto) {
+      setCropSource(originalPhoto);
+    } else if (photoPreview) {
+      setCropSource({ src: photoPreview, fileName: "photo.jpg" });
+    }
   }
 
   function handleCropCancel() {
-    if (!photo && cropSource) {
+    if (!photo && cropSource && cropSource === originalPhoto) {
       URL.revokeObjectURL(cropSource.src);
       setOriginalPhoto(null);
     }
@@ -243,6 +247,110 @@ export default function EditRecipeForm({
       )}
 
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+      <div>
+        <input
+          id="recipe-photo-camera-input"
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handlePhotoChange}
+          className="sr-only"
+        />
+        <input
+          id="recipe-photo-library-input"
+          type="file"
+          accept="image/*"
+          onChange={handlePhotoChange}
+          className="sr-only"
+        />
+
+        <label
+          htmlFor="recipe-photo-library-input"
+          className="flex h-72 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-berry/25 bg-berry/5 transition-colors hover:border-berry/40 hover:bg-berry/10"
+        >
+          {photoPreview ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={photoPreview}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-2 text-berry/45">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h9l1 1.5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+              <span className="text-sm font-medium">{t("addPhoto")}</span>
+            </div>
+          )}
+        </label>
+
+        <div className="mt-2 flex gap-2">
+          <label
+            htmlFor="recipe-photo-camera-input"
+            className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-berry/20 px-3 py-2 text-sm font-medium text-berry transition-colors hover:bg-berry/10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h9l1 1.5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+            {t("retakePhoto")}
+          </label>
+          <label
+            htmlFor="recipe-photo-library-input"
+            className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-berry/20 px-3 py-2 text-sm font-medium text-berry transition-colors hover:bg-berry/10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="m21 15-5-5L5 21" />
+            </svg>
+            {t("chooseDifferentPhoto")}
+          </label>
+        </div>
+
+        {photoPreview && (
+          <button
+            type="button"
+            onClick={handleEditCrop}
+            className="mt-2 w-full text-center text-sm text-berry underline"
+          >
+            {t("editCrop")}
+          </button>
+        )}
+      </div>
+
       <input
         type="text"
         placeholder={t("titlePlaceholder")}
@@ -429,110 +537,6 @@ export default function EditRecipeForm({
         <option value="fi">{t("finnish")}</option>
         <option value="en">{t("english")}</option>
       </select>
-
-      <div>
-        <input
-          id="recipe-photo-camera-input"
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handlePhotoChange}
-          className="sr-only"
-        />
-        <input
-          id="recipe-photo-library-input"
-          type="file"
-          accept="image/*"
-          onChange={handlePhotoChange}
-          className="sr-only"
-        />
-
-        <label
-          htmlFor="recipe-photo-library-input"
-          className="flex h-56 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-berry/25 bg-berry/5 transition-colors hover:border-berry/40 hover:bg-berry/10"
-        >
-          {photoPreview ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={photoPreview}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="flex flex-col items-center gap-2 text-berry/45">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h9l1 1.5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
-                <circle cx="12" cy="13" r="4" />
-              </svg>
-              <span className="text-sm font-medium">{t("addPhoto")}</span>
-            </div>
-          )}
-        </label>
-
-        <div className="mt-2 flex gap-2">
-          <label
-            htmlFor="recipe-photo-camera-input"
-            className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-berry/20 px-3 py-2 text-sm font-medium text-berry transition-colors hover:bg-berry/10"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h9l1 1.5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
-              <circle cx="12" cy="13" r="4" />
-            </svg>
-            {t("retakePhoto")}
-          </label>
-          <label
-            htmlFor="recipe-photo-library-input"
-            className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-berry/20 px-3 py-2 text-sm font-medium text-berry transition-colors hover:bg-berry/10"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <circle cx="9" cy="9" r="2" />
-              <path d="m21 15-5-5L5 21" />
-            </svg>
-            {t("chooseDifferentPhoto")}
-          </label>
-        </div>
-
-        {photo && (
-          <button
-            type="button"
-            onClick={handleEditCrop}
-            className="mt-2 w-full text-center text-sm text-berry underline"
-          >
-            {t("editCrop")}
-          </button>
-        )}
-      </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
