@@ -24,9 +24,15 @@ export default function Footer() {
 
       <div className="flex flex-col items-center gap-2 border-t border-berry/10 py-4 text-center text-xs text-berry/50">
         <span>{t("copyright", { year: new Date().getFullYear() })}</span>
-        <Link href="/privacy" className="hover:text-berry hover:underline">
-          {t("privacy")}
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link href="/privacy" className="hover:text-berry hover:underline">
+            {t("privacy")}
+          </Link>
+          <span className="text-berry/30">·</span>
+          <Link href="/terms" className="hover:text-berry hover:underline">
+            {t("terms")}
+          </Link>
+        </div>
       </div>
     </footer>
   );
