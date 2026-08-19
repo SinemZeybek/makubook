@@ -296,7 +296,7 @@ export default function Navbar({
       </div>
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-berry/10 bg-cream/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden">
-        <div className="flex items-center justify-around px-2 py-1.5">
+        <div className="flex items-center justify-between px-4 py-1.5">
           <Link
             href="/about"
             aria-label={t("about")}
