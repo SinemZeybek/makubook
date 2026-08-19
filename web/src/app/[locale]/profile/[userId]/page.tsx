@@ -129,7 +129,6 @@ export default async function ProfilePage({
                 </svg>
                 {t("savedRecipes")}
               </Link>
-              <LogoutButton variant="pill" />
             </div>
           )}
         </div>
@@ -160,6 +159,12 @@ export default async function ProfilePage({
             </p>
           )}
         </div>
+
+        {isOwnProfile && (
+          <div className="mt-10 flex justify-center border-t border-berry/10 pt-8">
+            <LogoutButton variant="pill" />
+          </div>
+        )}
       </div>
 
       <Footer />

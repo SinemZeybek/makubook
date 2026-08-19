@@ -318,7 +318,7 @@ export default function Navbar({
               <line x1="12" y1="8" x2="12.01" y2="8" />
             </svg>
             {isAboutPage && (
-              <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-berry" />
+              <span className="absolute bottom-0.5 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-berry" />
             )}
           </Link>
 
@@ -345,7 +345,7 @@ export default function Navbar({
                   <line x1="8" y1="12" x2="16" y2="12" />
                 </svg>
                 {isAddRecipePage && (
-                  <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-berry" />
+                  <span className="absolute bottom-0.5 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-berry" />
                 )}
               </Link>
               <Link
@@ -367,7 +367,7 @@ export default function Navbar({
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" />
                 </svg>
                 {isSavedPage && (
-                  <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-berry" />
+                  <span className="absolute bottom-0.5 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-berry" />
                 )}
               </Link>
               {isEditor && (
@@ -391,7 +391,7 @@ export default function Navbar({
                     <path d="m9 12 2 2 4-4" />
                   </svg>
                   {isEditorPage && (
-                    <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-cream" />
+                    <span className="absolute bottom-0.5 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-cream" />
                   )}
                 </Link>
               )}
@@ -416,7 +416,7 @@ export default function Navbar({
                     <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
                   </svg>
                   {isProfilePage && (
-                    <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-berry" />
+                    <span className="absolute bottom-0.5 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-berry" />
                   )}
                 </Link>
               )}
