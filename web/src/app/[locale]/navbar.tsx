@@ -422,7 +422,7 @@ export default function Navbar({
               )}
             </>
           ) : (
-            <>
+            <div className="flex items-center gap-3">
               <Link
                 href="/login"
                 className="text-sm text-berry underline underline-offset-2"
@@ -435,7 +435,7 @@ export default function Navbar({
               >
                 {t("signUp")}
               </Link>
-            </>
+            </div>
           )}
         </div>
       </div>
