@@ -7,6 +7,7 @@ import Footer from "./footer";
 import RecipeCard from "./recipe-card";
 import SaveToggleButton from "./save-toggle-button";
 import FadeIn from "./fade-in";
+import RecipeFilters from "./recipe-filters";
 import { MEAL_TYPES } from "@/lib/mealTypes";
 
 export default async function Home({
@@ -134,6 +135,10 @@ export default async function Home({
             </p>
           </FadeIn>
         </div>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-6 pt-6">
+        <RecipeFilters navigateTo="/search" />
       </div>
 
       {featuredRecipes && featuredRecipes.length > 0 && (

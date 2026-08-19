@@ -13,16 +13,34 @@ function parseParam(value: string | null) {
   return value ? value.split(",") : [];
 }
 
-export default function RecipeFilters() {
+export default function RecipeFilters({
+  navigateTo,
+}: {
+  navigateTo?: string;
+} = {}) {
   const t = useTranslations("Search");
   const tMeal = useTranslations("MealTypes");
   const tCountry = useTranslations("Countries");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const deferred = Boolean(navigateTo);
 
   const [search, setSearch] = useState(searchParams.get("q") ?? "");
   const [availableCountries, setAvailableCountries] = useState<string[]>([]);
+
+  const [localCountries, setLocalCountries] = useState<string[]>(
+    parseParam(searchParams.get("country"))
+  );
+  const [localMealTypes, setLocalMealTypes] = useState<string[]>(
+    parseParam(searchParams.get("mealType"))
+  );
+  const [localLanguages, setLocalLanguages] = useState<string[]>(
+    parseParam(searchParams.get("language"))
+  );
+  const [localServings, setLocalServings] = useState<string[]>(
+    parseParam(searchParams.get("servings"))
+  );
 
   useEffect(() => {
     const supabase = createClient();
@@ -58,6 +76,19 @@ export default function RecipeFilters() {
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (deferred) {
+      const params = new URLSearchParams();
+      if (search) params.set("q", search);
+      if (localCountries.length) params.set("country", localCountries.join(","));
+      if (localMealTypes.length) params.set("mealType", localMealTypes.join(","));
+      if (localLanguages.length) params.set("language", localLanguages.join(","));
+      if (localServings.length) params.set("servings", localServings.join(","));
+      const qs = params.toString();
+      router.push(qs ? `${navigateTo}?${qs}` : navigateTo!);
+      return;
+    }
+
     const params = new URLSearchParams(searchParams.toString());
     if (search) {
       params.set("q", search);
@@ -70,17 +101,46 @@ export default function RecipeFilters() {
     });
   }
 
-  const selectedCountries = parseParam(searchParams.get("country"));
-  const selectedMealTypes = parseParam(searchParams.get("mealType"));
-  const selectedLanguages = parseParam(searchParams.get("language"));
-  const selectedServings = parseParam(searchParams.get("servings"));
+  function handleClear() {
+    setSearch("");
+    if (deferred) {
+      setLocalCountries([]);
+      setLocalMealTypes([]);
+      setLocalLanguages([]);
+      setLocalServings([]);
+      return;
+    }
+    router.push(pathname, { scroll: false });
+  }
 
-  const hasActiveFilters =
-    searchParams.get("q") ||
-    selectedCountries.length > 0 ||
-    selectedMealTypes.length > 0 ||
-    selectedLanguages.length > 0 ||
-    selectedServings.length > 0;
+  const selectedCountries = deferred
+    ? localCountries
+    : parseParam(searchParams.get("country"));
+  const selectedMealTypes = deferred
+    ? localMealTypes
+    : parseParam(searchParams.get("mealType"));
+  const selectedLanguages = deferred
+    ? localLanguages
+    : parseParam(searchParams.get("language"));
+  const selectedServings = deferred
+    ? localServings
+    : parseParam(searchParams.get("servings"));
+
+  const hasActiveFilters = deferred
+    ? Boolean(
+        search ||
+          localCountries.length > 0 ||
+          localMealTypes.length > 0 ||
+          localLanguages.length > 0 ||
+          localServings.length > 0
+      )
+    : Boolean(
+        searchParams.get("q") ||
+          selectedCountries.length > 0 ||
+          selectedMealTypes.length > 0 ||
+          selectedLanguages.length > 0 ||
+          selectedServings.length > 0
+      );
 
   return (
     <div className="mt-6 flex flex-col items-center gap-3">
@@ -110,7 +170,9 @@ export default function RecipeFilters() {
             label: tCountry(c),
           }))}
           selected={selectedCountries}
-          onChange={(values) => updateParam("country", values)}
+          onChange={(values) =>
+            deferred ? setLocalCountries(values) : updateParam("country", values)
+          }
           searchPlaceholder={t("searchCountries")}
         />
 
@@ -118,7 +180,9 @@ export default function RecipeFilters() {
           placeholder={t("allMealTypes")}
           options={MEAL_TYPES.map((m) => ({ value: m, label: tMeal(m) }))}
           selected={selectedMealTypes}
-          onChange={(values) => updateParam("mealType", values)}
+          onChange={(values) =>
+            deferred ? setLocalMealTypes(values) : updateParam("mealType", values)
+          }
         />
 
         <MultiSelect
@@ -128,7 +192,9 @@ export default function RecipeFilters() {
             { value: "en", label: t("english") },
           ]}
           selected={selectedLanguages}
-          onChange={(values) => updateParam("language", values)}
+          onChange={(values) =>
+            deferred ? setLocalLanguages(values) : updateParam("language", values)
+          }
         />
 
         <MultiSelect
@@ -140,16 +206,15 @@ export default function RecipeFilters() {
             { value: "7+", label: t("servings7plus") },
           ]}
           selected={selectedServings}
-          onChange={(values) => updateParam("servings", values)}
+          onChange={(values) =>
+            deferred ? setLocalServings(values) : updateParam("servings", values)
+          }
         />
 
         {hasActiveFilters && (
           <button
             type="button"
-            onClick={() => {
-              setSearch("");
-              router.push(pathname, { scroll: false });
-            }}
+            onClick={handleClear}
             className="ml-auto text-sm text-berry/70 underline"
           >
             {t("clearFilters")}

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import LogoutButton from "./logout-button";
 
 const RIGHT_PAGE_OPEN =
@@ -47,6 +47,32 @@ export default function Navbar({
   const t = useTranslations("Navbar");
   const locale = useLocale();
   const pathname = usePathname();
+  const router = useRouter();
+
+  function pulseSearchInput() {
+    const input = document.getElementById(
+      "recipe-search-input"
+    ) as HTMLInputElement | null;
+    if (!input) return;
+    input.scrollIntoView({ behavior: "smooth", block: "center" });
+    input.focus();
+    input.classList.remove("animate-search-pulse");
+    void input.offsetWidth;
+    input.classList.add("animate-search-pulse");
+    input.addEventListener(
+      "animationend",
+      () => input.classList.remove("animate-search-pulse"),
+      { once: true }
+    );
+  }
+
+  function handleSearchClick() {
+    if (pathname !== "/") {
+      router.push("/");
+      return;
+    }
+    pulseSearchInput();
+  }
 
   return (
     <>
