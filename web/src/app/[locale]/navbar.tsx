@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import LogoutButton from "./logout-button";
-import RecipeFilters from "./recipe-filters";
 
 const RIGHT_PAGE_OPEN =
   "M12 6 C12 4 14 3 16 3 L20 3 C20.6 3 21 3.4 21 4 L21 17 C21 17.6 20.6 18 20 18 L16 18 C14 18 12 19 12 21 Z";
@@ -49,14 +47,7 @@ export default function Navbar({
   const t = useTranslations("Navbar");
   const locale = useLocale();
   const pathname = usePathname();
-  const [searchOpen, setSearchOpen] = useState(pathname === "/");
-  const pendingFocusRef = useRef(false);
-
-  useEffect(() => {
-    if (!searchOpen || !pendingFocusRef.current) return;
-    pendingFocusRef.current = false;
-    pulseSearchInput();
-  }, [searchOpen]);
+  const router = useRouter();
 
   function pulseSearchInput() {
     const input = document.getElementById(
@@ -76,9 +67,8 @@ export default function Navbar({
   }
 
   function handleSearchClick() {
-    if (!searchOpen) {
-      pendingFocusRef.current = true;
-      setSearchOpen(true);
+    if (pathname !== "/") {
+      router.push("/");
       return;
     }
     pulseSearchInput();
@@ -299,12 +289,6 @@ export default function Navbar({
 
         <div className="h-[3px] bg-gradient-to-r from-gold via-berry to-gold" />
       </div>
-
-      {searchOpen && (
-        <div className="mx-auto w-full max-w-6xl px-6 pb-4">
-          <RecipeFilters />
-        </div>
-      )}
     </>
   );
 }

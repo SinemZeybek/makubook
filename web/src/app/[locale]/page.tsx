@@ -7,6 +7,7 @@ import Footer from "./footer";
 import RecipeCard from "./recipe-card";
 import SaveToggleButton from "./save-toggle-button";
 import FadeIn from "./fade-in";
+import RecipeFilters from "./recipe-filters";
 import { MEAL_TYPES } from "@/lib/mealTypes";
 
 export default async function Home({
@@ -267,6 +268,8 @@ export default async function Home({
             Error loading recipes: {error.message}
           </p>
         )}
+
+        <RecipeFilters />
 
         <FadeIn>
           <h2 className="mt-8 text-xl font-semibold text-berry">
