@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
 import Footer from "../../footer";
 import RecipeCard from "../../recipe-card";
+import LogoutButton from "../../logout-button";
 
 export default async function ProfilePage({
   params,
@@ -128,6 +129,7 @@ export default async function ProfilePage({
                 </svg>
                 {t("savedRecipes")}
               </Link>
+              <LogoutButton variant="pill" />
             </div>
           )}
         </div>

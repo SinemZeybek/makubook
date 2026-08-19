@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import LogoutButton from "./logout-button";
 
 const RIGHT_PAGE_OPEN =
   "M12 6 C12 4 14 3 16 3 L20 3 C20.6 3 21 3.4 21 4 L21 17 C21 17.6 20.6 18 20 18 L16 18 C14 18 12 19 12 21 Z";
@@ -266,7 +265,6 @@ export default function Navbar({
                   <span className="hidden text-sm sm:inline">{t("profile")}</span>
                 </Link>
               )}
-              <LogoutButton />
             </div>
           ) : (
             <div className="hidden items-center gap-3 sm:flex">
@@ -400,7 +398,6 @@ export default function Navbar({
                   </svg>
                 </Link>
               )}
-              <LogoutButton />
             </>
           ) : (
             <>
