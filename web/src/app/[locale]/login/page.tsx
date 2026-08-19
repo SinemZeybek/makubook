@@ -7,6 +7,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Navbar from "../navbar";
 import Footer from "../footer";
+import AvatarPicker from "../avatar-picker";
 
 export default function LoginPage() {
   const t = useTranslations("Login");
@@ -23,10 +24,16 @@ export default function LoginPage() {
   const [displayName, setDisplayName] = useState("");
   const [birthday, setBirthday] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [checkEmail, setCheckEmail] = useState(false);
   const router = useRouter();
+
+  function handleAvatarChange(file: File | null) {
+    setAvatar(file);
+    setAvatarPreview(file ? URL.createObjectURL(file) : null);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -166,14 +173,16 @@ export default function LoginPage() {
                   className="rounded-md border border-berry/20 px-3 py-2 text-berry"
                 />
               </label>
-              <label className="flex flex-col gap-1 text-sm text-berry/70">
-                {t("profilePictureOptional")}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setAvatar(e.target.files?.[0] ?? null)}
+              <div className="flex items-center gap-4">
+                <AvatarPicker
+                  preview={avatarPreview}
+                  onChange={handleAvatarChange}
+                  label={t("profilePictureOptional")}
                 />
-              </label>
+                <p className="text-sm text-berry/60">
+                  {t("profilePictureOptional")}
+                </p>
+              </div>
             </>
           )}
 

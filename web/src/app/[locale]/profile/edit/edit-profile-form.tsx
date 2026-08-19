@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
+import AvatarPicker from "../../avatar-picker";
 
 export default function EditProfileForm({
   userId,
@@ -76,22 +76,12 @@ export default function EditProfileForm({
   return (
     <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
       <div className="flex items-center gap-4">
-        <div className="relative h-20 w-20 overflow-hidden rounded-full bg-berry/10">
-          <Image
-            src={preview || "/default-avatar.png"}
-            alt=""
-            fill
-            className="object-cover"
-          />
-        </div>
-        <label className="flex flex-col gap-1 text-sm text-berry/70">
-          {t("profilePicture")}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleAvatarChange(e.target.files?.[0] ?? null)}
-          />
-        </label>
+        <AvatarPicker
+          preview={preview || "/default-avatar.png"}
+          onChange={handleAvatarChange}
+          label={t("profilePicture")}
+        />
+        <p className="text-sm text-berry/60">{t("profilePicture")}</p>
       </div>
 
       <label className="flex flex-col gap-1 text-sm text-berry/70">
