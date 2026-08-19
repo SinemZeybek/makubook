@@ -221,7 +221,32 @@
     "signUpError": "Could not create account. Please check your email address and try again.",
     "backToLogin": "Back to log in",
     "needAccount": "Need an account? Sign up",
-    "alreadyHaveAccount": "Already have an account? Log in"
+    "alreadyHaveAccount": "Already have an account? Log in",
+    "forgotPassword": "Forgot password?"
+  },
+  "ForgotPassword": {
+    "heading": "Reset your password",
+    "body": "Enter your email and we'll send you a link to reset your password.",
+    "emailPlaceholder": "Email",
+    "sendLink": "Send reset link",
+    "sending": "Sending...",
+    "checkEmailHeading": "Check your email",
+    "checkEmailBody": "If an account exists for {email}, we've sent a password reset link.",
+    "backToLogin": "Back to log in"
+  },
+  "ResetPassword": {
+    "heading": "Choose a new password",
+    "newPasswordPlaceholder": "New password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "passwordsDontMatch": "Passwords don't match.",
+    "save": "Save new password",
+    "saving": "Saving...",
+    "successHeading": "Password updated",
+    "successBody": "Your password has been changed. You're now logged in.",
+    "continueToSite": "Continue to Makubook",
+    "invalidLinkHeading": "This link isn't valid",
+    "invalidLinkBody": "Password reset links expire after a while. Request a new one.",
+    "requestNewLink": "Request a new link"
   },
   "Logout": {
     "logOut": "Log out"

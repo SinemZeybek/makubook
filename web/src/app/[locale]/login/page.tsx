@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Navbar from "../navbar";
 import Footer from "../footer";
@@ -136,6 +136,15 @@ export default function LoginPage() {
             minLength={6}
             className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
           />
+
+          {mode === "sign-in" && (
+            <Link
+              href="/forgot-password"
+              className="-mt-2 self-end text-xs text-berry underline"
+            >
+              {t("forgotPassword")}
+            </Link>
+          )}
 
           {mode === "sign-up" && (
             <>

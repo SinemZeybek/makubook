@@ -221,7 +221,32 @@
     "signUpError": "Tilin luominen epäonnistui. Tarkista sähköpostiosoitteesi ja yritä uudelleen.",
     "backToLogin": "Takaisin kirjautumiseen",
     "needAccount": "Eikö sinulla ole tiliä? Luo tili",
-    "alreadyHaveAccount": "Onko sinulla jo tili? Kirjaudu sisään"
+    "alreadyHaveAccount": "Onko sinulla jo tili? Kirjaudu sisään",
+    "forgotPassword": "Unohditko salasanasi?"
+  },
+  "ForgotPassword": {
+    "heading": "Nollaa salasanasi",
+    "body": "Anna sähköpostiosoitteesi, niin lähetämme sinulle linkin salasanan nollaamiseen.",
+    "emailPlaceholder": "Sähköposti",
+    "sendLink": "Lähetä nollauslinkki",
+    "sending": "Lähetetään...",
+    "checkEmailHeading": "Tarkista sähköpostisi",
+    "checkEmailBody": "Jos osoitteella {email} on tili, lähetimme sinulle salasanan nollauslinkin.",
+    "backToLogin": "Takaisin kirjautumiseen"
+  },
+  "ResetPassword": {
+    "heading": "Valitse uusi salasana",
+    "newPasswordPlaceholder": "Uusi salasana",
+    "confirmPasswordPlaceholder": "Vahvista uusi salasana",
+    "passwordsDontMatch": "Salasanat eivät täsmää.",
+    "save": "Tallenna uusi salasana",
+    "saving": "Tallennetaan...",
+    "successHeading": "Salasana päivitetty",
+    "successBody": "Salasanasi on vaihdettu. Olet nyt kirjautunut sisään.",
+    "continueToSite": "Jatka Makubookiin",
+    "invalidLinkHeading": "Linkki ei kelpaa",
+    "invalidLinkBody": "Salasanan nollauslinkit vanhenevat jonkin ajan kuluttua. Pyydä uusi.",
+    "requestNewLink": "Pyydä uusi linkki"
   },
   "Logout": {
     "logOut": "Kirjaudu ulos"
