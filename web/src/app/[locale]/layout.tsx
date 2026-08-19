@@ -48,7 +48,7 @@ export default async function RootLayout({
       lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} ${dynaPuff.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col pb-20 sm:pb-0">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>

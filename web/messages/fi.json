@@ -61,6 +61,7 @@
     "pageOf": "Sivu {current}/{total}",
     "noRecipesFiltered": "Suodattimillasi ei löytynyt reseptejä.",
     "backToAllRecipes": "Takaisin kaikkiin resepteihin",
+    "similarRecipesHeading": "Saatat pitää myös näistä",
     "noRecipesYet": "Reseptejä ei vielä ole — lisää ensimmäinen!",
     "ctaHeading": "Valmiina jakamaan ensimmäisen reseptisi?",
     "signUp": "Luo tili"
