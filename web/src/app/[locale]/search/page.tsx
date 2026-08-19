@@ -133,9 +133,16 @@ export default async function SearchPage({
 
           <div className="min-h-[50vh]">
             {!error && recipes && recipes.length === 0 && (
-              <p className="mt-8 text-berry/70">
-                {hasActiveFilters ? t("noRecipesFiltered") : t("noRecipesYet")}
-              </p>
+              <div className="mt-8">
+                <p className="text-berry/70">
+                  {hasActiveFilters ? t("noRecipesFiltered") : t("noRecipesYet")}
+                </p>
+                {hasActiveFilters && (
+                  <Link href="/" className="mt-2 inline-block text-sm text-berry underline">
+                    {t("backToAllRecipes")}
+                  </Link>
+                )}
+              </div>
             )}
 
             {!error && recipes && recipes.length > 0 && (

@@ -61,6 +61,7 @@
     "next": "Next",
     "pageOf": "Page {current} of {total}",
     "noRecipesFiltered": "No recipes match your filters.",
+    "backToAllRecipes": "Back to all recipes",
     "noRecipesYet": "No recipes yet — be the first to add one!",
     "ctaHeading": "Ready to share your first recipe?",
     "signUp": "Sign up"
