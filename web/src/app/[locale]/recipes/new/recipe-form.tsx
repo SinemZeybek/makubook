@@ -395,7 +395,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
         <div className="flex flex-col gap-4">
           {showSecondLanguage && (
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-berry/50">
+              <h2 className="text-base font-bold uppercase tracking-wide text-berry">
                 {languageLabel(language)}
               </h2>
               <button
@@ -418,7 +418,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
         {showSecondLanguage && (
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-berry/50">
+              <h2 className="text-base font-bold uppercase tracking-wide text-berry">
                 {languageLabel(secondaryLanguage)}
               </h2>
               <button
