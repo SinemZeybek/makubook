@@ -18,13 +18,17 @@ export default async function Home({
     mealType?: string;
     language?: string;
     servings?: string;
+    page?: string;
   }>;
 }) {
-  const { q, country, mealType, language, servings } = await searchParams;
+  const { q, country, mealType, language, servings, page } =
+    await searchParams;
   const countryArr = country ? country.split(",") : [];
   const mealTypeArr = mealType ? mealType.split(",") : [];
   const languageArr = language ? language.split(",") : [];
   const servingsArr = servings ? servings.split(",") : [];
+  const PAGE_SIZE = 12;
+  const currentPage = Math.max(1, Number(page) || 1);
   const t = await getTranslations("Home");
   const tMeal = await getTranslations("MealTypes");
   const tCountry = await getTranslations("Countries");
@@ -44,7 +48,8 @@ export default async function Home({
   let recipesQuery = supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, comments(rating), recipe_images(url), profiles(display_name, avatar_url)",
+      { count: "exact" }
     )
     .eq("status", "published")
     .order("created_at", { ascending: false });
@@ -58,7 +63,11 @@ export default async function Home({
   if (servingsArr.length > 0)
     recipesQuery = recipesQuery.or(servingsArr.map(servingsFilterExpr).join(","));
 
-  const { data: recipes, error } = await recipesQuery;
+  const from = (currentPage - 1) * PAGE_SIZE;
+  recipesQuery = recipesQuery.range(from, from + PAGE_SIZE - 1);
+
+  const { data: recipes, error, count } = await recipesQuery;
+  const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
   const hasActiveFilters = Boolean(
     q ||
       countryArr.length > 0 ||
@@ -105,6 +114,14 @@ export default async function Home({
       ? mealTypeArr.filter((m) => m !== type)
       : [...mealTypeArr, type];
     if (nextMealTypes.length) params.set("mealType", nextMealTypes.join(","));
+    const qs = params.toString();
+    return qs ? `/?${qs}` : "/";
+  }
+
+  function pageHref(targetPage: number) {
+    const params = baseParams();
+    if (mealTypeArr.length) params.set("mealType", mealTypeArr.join(","));
+    if (targetPage > 1) params.set("page", String(targetPage));
     const qs = params.toString();
     return qs ? `/?${qs}` : "/";
   }
@@ -307,6 +324,40 @@ export default async function Home({
                 </FadeIn>
               ))}
             </ul>
+          )}
+
+          {!error && totalPages > 1 && (
+            <div className="mt-10 flex items-center justify-center gap-4">
+              {currentPage > 1 ? (
+                <Link
+                  href={pageHref(currentPage - 1)}
+                  className="rounded-md border border-berry/20 px-4 py-2 text-sm text-berry hover:bg-berry/10"
+                >
+                  {t("previous")}
+                </Link>
+              ) : (
+                <span className="rounded-md border border-berry/10 px-4 py-2 text-sm text-berry/30">
+                  {t("previous")}
+                </span>
+              )}
+
+              <span className="text-sm text-berry/70">
+                {t("pageOf", { current: currentPage, total: totalPages })}
+              </span>
+
+              {currentPage < totalPages ? (
+                <Link
+                  href={pageHref(currentPage + 1)}
+                  className="rounded-md border border-berry/20 px-4 py-2 text-sm text-berry hover:bg-berry/10"
+                >
+                  {t("next")}
+                </Link>
+              ) : (
+                <span className="rounded-md border border-berry/10 px-4 py-2 text-sm text-berry/30">
+                  {t("next")}
+                </span>
+              )}
+            </div>
           )}
         </div>
 

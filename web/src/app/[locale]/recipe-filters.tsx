@@ -50,6 +50,7 @@ export default function RecipeFilters() {
     } else {
       params.delete(key);
     }
+    params.delete("page");
     router.push(params.toString() ? `${pathname}?${params.toString()}` : pathname, {
       scroll: false,
     });
@@ -63,6 +64,7 @@ export default function RecipeFilters() {
     } else {
       params.delete("q");
     }
+    params.delete("page");
     router.push(params.toString() ? `${pathname}?${params.toString()}` : pathname, {
       scroll: false,
     });
