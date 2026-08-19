@@ -101,7 +101,8 @@ export default function RecipeFilters() {
         </button>
       </form>
 
-      <div className="flex flex-wrap items-center gap-2 sm:-ml-[61px]">
+      <div className="w-full sm:max-w-xl">
+      <div className="flex flex-wrap items-center gap-2">
         <MultiSelect
           placeholder={t("allCountries")}
           options={availableCountries.map((c) => ({
@@ -149,11 +150,12 @@ export default function RecipeFilters() {
               setSearch("");
               router.push(pathname, { scroll: false });
             }}
-            className="text-sm text-berry/70 underline"
+            className="ml-auto text-sm text-berry/70 underline"
           >
             {t("clearFilters")}
           </button>
         )}
+      </div>
       </div>
     </div>
   );
