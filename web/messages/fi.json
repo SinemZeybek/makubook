@@ -19,6 +19,7 @@
     "copyright": "© {year} Makubook"
   },
   "Search": {
+    "pageHeading": "Etsi reseptejä",
     "placeholder": "Hae reseptejä...",
     "search": "Hae",
     "allCountries": "Maat",

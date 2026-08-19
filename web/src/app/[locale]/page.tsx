@@ -7,27 +7,18 @@ import Footer from "./footer";
 import RecipeCard from "./recipe-card";
 import SaveToggleButton from "./save-toggle-button";
 import FadeIn from "./fade-in";
-import RecipeFilters from "./recipe-filters";
 import { MEAL_TYPES } from "@/lib/mealTypes";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: Promise<{
-    q?: string;
-    country?: string;
     mealType?: string;
-    language?: string;
-    servings?: string;
     page?: string;
   }>;
 }) {
-  const { q, country, mealType, language, servings, page } =
-    await searchParams;
-  const countryArr = country ? country.split(",") : [];
+  const { mealType, page } = await searchParams;
   const mealTypeArr = mealType ? mealType.split(",") : [];
-  const languageArr = language ? language.split(",") : [];
-  const servingsArr = servings ? servings.split(",") : [];
   const PAGE_SIZE = 12;
   const currentPage = Math.max(1, Number(page) || 1);
   const t = await getTranslations("Home");
@@ -40,12 +31,6 @@ export default async function Home({
     data: { user },
   } = await supabase.auth.getUser();
 
-  function servingsFilterExpr(bucket: string) {
-    if (bucket === "7+") return "servings.gte.7";
-    const [min, max] = bucket.split("-").map(Number);
-    return `and(servings.gte.${min},servings.lte.${max})`;
-  }
-
   let recipesQuery = supabase
     .from("recipes")
     .select(
@@ -55,27 +40,15 @@ export default async function Home({
     .eq("status", "published")
     .order("created_at", { ascending: false });
 
-  if (q) recipesQuery = recipesQuery.ilike("title", `%${q}%`);
-  if (countryArr.length > 0) recipesQuery = recipesQuery.in("country", countryArr);
   if (mealTypeArr.length > 0)
     recipesQuery = recipesQuery.overlaps("meal_type", mealTypeArr);
-  if (languageArr.length > 0)
-    recipesQuery = recipesQuery.in("language", languageArr);
-  if (servingsArr.length > 0)
-    recipesQuery = recipesQuery.or(servingsArr.map(servingsFilterExpr).join(","));
 
   const from = (currentPage - 1) * PAGE_SIZE;
   recipesQuery = recipesQuery.range(from, from + PAGE_SIZE - 1);
 
   const { data: recipes, error, count } = await recipesQuery;
   const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
-  const hasActiveFilters = Boolean(
-    q ||
-      countryArr.length > 0 ||
-      mealTypeArr.length > 0 ||
-      languageArr.length > 0 ||
-      servingsArr.length > 0
-  );
+  const hasActiveFilters = mealTypeArr.length > 0;
 
   let savedRecipeIds = new Set<string>();
   let isEditor = false;
@@ -94,33 +67,22 @@ export default async function Home({
     isEditor = profile?.role === "editor";
   }
 
-  function baseParams() {
-    const params = new URLSearchParams();
-    if (q) params.set("q", q);
-    if (countryArr.length) params.set("country", countryArr.join(","));
-    if (languageArr.length) params.set("language", languageArr.join(","));
-    if (servingsArr.length) params.set("servings", servingsArr.join(","));
-    return params;
-  }
-
   function clearMealTypesHref() {
-    const params = baseParams();
-    const qs = params.toString();
-    return qs ? `/?${qs}` : "/";
+    return "/";
   }
 
   function toggleMealTypeHref(type: string) {
-    const params = baseParams();
     const nextMealTypes = mealTypeArr.includes(type)
       ? mealTypeArr.filter((m) => m !== type)
       : [...mealTypeArr, type];
-    if (nextMealTypes.length) params.set("mealType", nextMealTypes.join(","));
-    const qs = params.toString();
-    return qs ? `/?${qs}` : "/";
+    if (nextMealTypes.length === 0) return "/";
+    const params = new URLSearchParams();
+    params.set("mealType", nextMealTypes.join(","));
+    return `/?${params.toString()}`;
   }
 
   function pageHref(targetPage: number) {
-    const params = baseParams();
+    const params = new URLSearchParams();
     if (mealTypeArr.length) params.set("mealType", mealTypeArr.join(","));
     if (targetPage > 1) params.set("page", String(targetPage));
     const qs = params.toString();
@@ -172,10 +134,6 @@ export default async function Home({
             </p>
           </FadeIn>
         </div>
-      </div>
-
-      <div className="mx-auto max-w-6xl px-6 pt-6">
-        <RecipeFilters />
       </div>
 
       {featuredRecipes && featuredRecipes.length > 0 && (
