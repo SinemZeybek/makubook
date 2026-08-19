@@ -48,6 +48,13 @@ export default function Navbar({
   const pathname = usePathname();
   const router = useRouter();
 
+  const isAboutPage = pathname === "/about";
+  const isAddRecipePage = pathname === "/recipes/new";
+  const isSavedPage = pathname === "/saved";
+  const isEditorPage = pathname === "/editor";
+  const isProfilePage =
+    pathname === `/profile/${userId}` || pathname === "/profile/edit";
+
   function pulseSearchInput() {
     const input = document.getElementById(
       "recipe-search-input"
@@ -293,7 +300,7 @@ export default function Navbar({
           <Link
             href="/about"
             aria-label={t("about")}
-            className="flex items-center rounded-full p-2 text-berry hover:bg-berry/10"
+            className="relative flex items-center rounded-full p-2 text-berry hover:bg-berry/10"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -310,6 +317,9 @@ export default function Navbar({
               <line x1="12" y1="16" x2="12" y2="12" />
               <line x1="12" y1="8" x2="12.01" y2="8" />
             </svg>
+            {isAboutPage && (
+              <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-berry" />
+            )}
           </Link>
 
           {userEmail ? (
@@ -317,7 +327,7 @@ export default function Navbar({
               <Link
                 href="/recipes/new"
                 aria-label={t("addRecipe")}
-                className="flex items-center rounded-full p-2 text-berry hover:bg-berry/10"
+                className="relative flex items-center rounded-full p-2 text-berry hover:bg-berry/10"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -334,11 +344,14 @@ export default function Navbar({
                   <line x1="12" y1="8" x2="12" y2="16" />
                   <line x1="8" y1="12" x2="16" y2="12" />
                 </svg>
+                {isAddRecipePage && (
+                  <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-berry" />
+                )}
               </Link>
               <Link
                 href="/saved"
                 aria-label={t("savedFull")}
-                className="flex items-center rounded-full p-2 text-berry hover:bg-berry/10"
+                className="relative flex items-center rounded-full p-2 text-berry hover:bg-berry/10"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -353,12 +366,15 @@ export default function Navbar({
                 >
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" />
                 </svg>
+                {isSavedPage && (
+                  <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-berry" />
+                )}
               </Link>
               {isEditor && (
                 <Link
                   href="/editor"
                   aria-label={t("editorQueue")}
-                  className="flex items-center rounded-full bg-berry p-2 text-cream hover:bg-berry-dark"
+                  className="relative flex items-center rounded-full bg-berry p-2 text-cream hover:bg-berry-dark"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -374,13 +390,16 @@ export default function Navbar({
                     <path d="M12 3 3 7v5c0 4.5 3.4 8.2 9 10 5.6-1.8 9-5.5 9-10V7l-9-4Z" />
                     <path d="m9 12 2 2 4-4" />
                   </svg>
+                  {isEditorPage && (
+                    <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-cream" />
+                  )}
                 </Link>
               )}
               {userId && (
                 <Link
                   href={`/profile/${userId}`}
                   aria-label={t("yourProfile")}
-                  className="flex items-center rounded-full p-2 text-berry hover:bg-berry/10"
+                  className="relative flex items-center rounded-full p-2 text-berry hover:bg-berry/10"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -396,6 +415,9 @@ export default function Navbar({
                     <circle cx="12" cy="8" r="4" />
                     <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
                   </svg>
+                  {isProfilePage && (
+                    <span className="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-berry" />
+                  )}
                 </Link>
               )}
             </>
