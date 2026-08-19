@@ -10,6 +10,7 @@ import RecipeContentFields, {
   type RecipeContentHandle,
   type RecipeContentValues,
 } from "./recipe-content-fields";
+import PhotoCropper from "./photo-cropper";
 
 export default function RecipeForm({ userId }: { userId: string }) {
   const t = useTranslations("RecipeForm");
@@ -26,6 +27,14 @@ export default function RecipeForm({ userId }: { userId: string }) {
   const [showSecondLanguage, setShowSecondLanguage] = useState(false);
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [originalPhoto, setOriginalPhoto] = useState<{
+    src: string;
+    fileName: string;
+  } | null>(null);
+  const [cropSource, setCropSource] = useState<{
+    src: string;
+    fileName: string;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [submittedRecipeId, setSubmittedRecipeId] = useState<string | null>(
@@ -68,13 +77,44 @@ export default function RecipeForm({ userId }: { userId: string }) {
     };
   }, [photoPreview]);
 
+  useEffect(() => {
+    return () => {
+      if (originalPhoto) URL.revokeObjectURL(originalPhoto.src);
+    };
+  }, [originalPhoto]);
+
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null;
-    setPhoto(file);
+    e.target.value = "";
+    if (!file) return;
+
+    const src = URL.createObjectURL(file);
+    setOriginalPhoto((prev) => {
+      if (prev) URL.revokeObjectURL(prev.src);
+      return { src, fileName: file.name };
+    });
+    setCropSource({ src, fileName: file.name });
+  }
+
+  function handleEditCrop() {
+    if (originalPhoto) setCropSource(originalPhoto);
+  }
+
+  function handleCropCancel() {
+    if (!photo && cropSource) {
+      URL.revokeObjectURL(cropSource.src);
+      setOriginalPhoto(null);
+    }
+    setCropSource(null);
+  }
+
+  function handleCropSave(croppedFile: File) {
+    setPhoto(croppedFile);
     setPhotoPreview((prev) => {
       if (prev) URL.revokeObjectURL(prev);
-      return file ? URL.createObjectURL(file) : null;
+      return URL.createObjectURL(croppedFile);
     });
+    setCropSource(null);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -234,7 +274,17 @@ export default function RecipeForm({ userId }: { userId: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+    <>
+      {cropSource && (
+        <PhotoCropper
+          imageSrc={cropSource.src}
+          fileName={cropSource.fileName}
+          onCancel={handleCropCancel}
+          onSave={handleCropSave}
+        />
+      )}
+
+      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
       <div className="mx-auto flex w-full max-w-xl flex-col gap-4">
         <div>
           <input
@@ -329,6 +379,16 @@ export default function RecipeForm({ userId }: { userId: string }) {
               {photoPreview ? t("chooseDifferentPhoto") : t("chooseFromLibrary")}
             </label>
           </div>
+
+          {photoPreview && (
+            <button
+              type="button"
+              onClick={handleEditCrop}
+              className="mt-2 w-full text-center text-sm text-berry underline"
+            >
+              {t("editCrop")}
+            </button>
+          )}
         </div>
 
         <select
@@ -494,6 +554,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
           {loading ? t("submitting") : t("submitForReview")}
         </button>
       </div>
-    </form>
+      </form>
+    </>
   );
 }
