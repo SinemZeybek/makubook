@@ -10,7 +10,7 @@ import RecipeContentFields, {
   type RecipeContentHandle,
   type RecipeContentValues,
 } from "./recipe-content-fields";
-import PhotoCropper from "./photo-cropper";
+import PhotoCropper from "../../photo-cropper";
 
 export default function RecipeForm({ userId }: { userId: string }) {
   const t = useTranslations("RecipeForm");

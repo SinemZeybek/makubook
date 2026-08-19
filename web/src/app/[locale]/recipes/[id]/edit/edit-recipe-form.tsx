@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -8,6 +8,7 @@ import { COUNTRIES } from "@/lib/countries";
 import { UNITS } from "@/lib/units";
 import { MEAL_TYPES } from "@/lib/mealTypes";
 import DeleteRecipeButton from "../delete-recipe-button";
+import PhotoCropper from "../../../photo-cropper";
 
 type Ingredient = { quantity: string; unit: string; name: string };
 
@@ -22,6 +23,7 @@ type Recipe = {
   ingredients: unknown;
   instructions: unknown;
   tips: string | null;
+  recipe_images?: { url: string }[] | null;
 };
 
 export default function EditRecipeForm({
@@ -59,9 +61,67 @@ export default function EditRecipeForm({
   const [tips, setTips] = useState(recipe.tips ?? "");
   const [language, setLanguage] = useState<"fi" | "en">(recipe.language);
   const [photo, setPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(
+    recipe.recipe_images?.[0]?.url ?? null
+  );
+  const [originalPhoto, setOriginalPhoto] = useState<{
+    src: string;
+    fileName: string;
+  } | null>(null);
+  const [cropSource, setCropSource] = useState<{
+    src: string;
+    fileName: string;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    return () => {
+      if (photo && photoPreview) URL.revokeObjectURL(photoPreview);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [photoPreview]);
+
+  useEffect(() => {
+    return () => {
+      if (originalPhoto) URL.revokeObjectURL(originalPhoto.src);
+    };
+  }, [originalPhoto]);
+
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] ?? null;
+    e.target.value = "";
+    if (!file) return;
+
+    const src = URL.createObjectURL(file);
+    setOriginalPhoto((prev) => {
+      if (prev) URL.revokeObjectURL(prev.src);
+      return { src, fileName: file.name };
+    });
+    setCropSource({ src, fileName: file.name });
+  }
+
+  function handleEditCrop() {
+    if (originalPhoto) setCropSource(originalPhoto);
+  }
+
+  function handleCropCancel() {
+    if (!photo && cropSource) {
+      URL.revokeObjectURL(cropSource.src);
+      setOriginalPhoto(null);
+    }
+    setCropSource(null);
+  }
+
+  function handleCropSave(croppedFile: File) {
+    setPhoto(croppedFile);
+    setPhotoPreview((prev) => {
+      if (prev && photo) URL.revokeObjectURL(prev);
+      return URL.createObjectURL(croppedFile);
+    });
+    setCropSource(null);
+  }
 
   function updateIngredient(
     index: number,
@@ -172,7 +232,17 @@ export default function EditRecipeForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+    <>
+      {cropSource && (
+        <PhotoCropper
+          imageSrc={cropSource.src}
+          fileName={cropSource.fileName}
+          onCancel={handleCropCancel}
+          onSave={handleCropSave}
+        />
+      )}
+
+      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
       <input
         type="text"
         placeholder={t("titlePlaceholder")}
@@ -360,14 +430,109 @@ export default function EditRecipeForm({
         <option value="en">{t("english")}</option>
       </select>
 
-      <label className="flex flex-col gap-1 text-sm text-berry/70">
-        {t("replacePhotoOptional")}
+      <div>
         <input
+          id="recipe-photo-camera-input"
           type="file"
           accept="image/*"
-          onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
+          capture="environment"
+          onChange={handlePhotoChange}
+          className="sr-only"
         />
-      </label>
+        <input
+          id="recipe-photo-library-input"
+          type="file"
+          accept="image/*"
+          onChange={handlePhotoChange}
+          className="sr-only"
+        />
+
+        <label
+          htmlFor="recipe-photo-library-input"
+          className="flex h-56 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-berry/25 bg-berry/5 transition-colors hover:border-berry/40 hover:bg-berry/10"
+        >
+          {photoPreview ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={photoPreview}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-2 text-berry/45">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h9l1 1.5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+              <span className="text-sm font-medium">{t("addPhoto")}</span>
+            </div>
+          )}
+        </label>
+
+        <div className="mt-2 flex gap-2">
+          <label
+            htmlFor="recipe-photo-camera-input"
+            className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-berry/20 px-3 py-2 text-sm font-medium text-berry transition-colors hover:bg-berry/10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h9l1 1.5H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+            {t("retakePhoto")}
+          </label>
+          <label
+            htmlFor="recipe-photo-library-input"
+            className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-berry/20 px-3 py-2 text-sm font-medium text-berry transition-colors hover:bg-berry/10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="m21 15-5-5L5 21" />
+            </svg>
+            {t("chooseDifferentPhoto")}
+          </label>
+        </div>
+
+        {photo && (
+          <button
+            type="button"
+            onClick={handleEditCrop}
+            className="mt-2 w-full text-center text-sm text-berry underline"
+          >
+            {t("editCrop")}
+          </button>
+        )}
+      </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
@@ -382,6 +547,7 @@ export default function EditRecipeForm({
       <div className="mt-4 border-t border-berry/15 pt-4">
         <DeleteRecipeButton recipeId={recipe.id} />
       </div>
-    </form>
+      </form>
+    </>
   );
 }

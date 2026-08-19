@@ -84,7 +84,7 @@ export default function RecipeFilters() {
 
   return (
     <div className="mt-6 flex flex-col items-center gap-3">
-      <form onSubmit={handleSearchSubmit} className="flex w-full max-w-lg gap-2">
+      <form onSubmit={handleSearchSubmit} className="flex w-full max-w-xl gap-2">
         <input
           id="recipe-search-input"
           type="text"

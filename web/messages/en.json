@@ -125,7 +125,6 @@
     "saveCrop": "Save crop",
     "cancel": "Cancel",
     "zoom": "Zoom",
-    "replacePhotoOptional": "Replace photo (optional)",
     "photoRequiredError": "Please add a photo of your dish.",
     "mealTypeRequiredError": "Please choose at least one meal type.",
     "editorNote": "New recipes are reviewed by an editor before they're published and visible to everyone.",
