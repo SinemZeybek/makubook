@@ -67,8 +67,8 @@ export default function Navbar({
   }
 
   function handleSearchClick() {
-    if (pathname !== "/") {
-      router.push("/");
+    if (pathname !== "/" && pathname !== "/search") {
+      router.push("/search");
       return;
     }
     pulseSearchInput();
@@ -155,8 +155,8 @@ export default function Navbar({
               FI
             </Link>
           </div>
-          <Link
-            href="/search"
+          <button
+            onClick={handleSearchClick}
             aria-label={t("search")}
             className="rounded-full p-1.5 text-berry hover:bg-berry/10 sm:p-2"
           >
@@ -174,7 +174,7 @@ export default function Navbar({
               <circle cx="11" cy="11" r="7" />
               <path d="m21 21-4.3-4.3" />
             </svg>
-          </Link>
+          </button>
 
           {userEmail ? (
             <div className="flex items-center gap-1 sm:gap-3">
