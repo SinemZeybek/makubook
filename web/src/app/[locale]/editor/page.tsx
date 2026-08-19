@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
@@ -7,13 +7,14 @@ import EditorQueueItem from "./editor-queue-item";
 
 export default async function EditorQueuePage() {
   const t = await getTranslations("Editor");
+  const locale = await getLocale();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect({ href: "/login", locale });
   }
 
   const { data: profile } = await supabase
@@ -23,7 +24,7 @@ export default async function EditorQueuePage() {
     .single();
 
   if (profile?.role !== "editor") {
-    redirect("/");
+    redirect({ href: "/", locale });
   }
 
   const { data: pendingRecipes } = await supabase

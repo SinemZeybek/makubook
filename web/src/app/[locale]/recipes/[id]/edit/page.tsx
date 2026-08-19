@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../../navbar";
@@ -13,6 +13,7 @@ export default async function EditRecipePage({
 }) {
   const { id } = await params;
   const t = await getTranslations("RecipeForm");
+  const locale = await getLocale();
   const supabase = await createClient();
 
   const {
@@ -32,7 +33,7 @@ export default async function EditRecipePage({
   }
 
   if (!user || user.id !== recipe.author_id) {
-    redirect(`/recipes/${id}`);
+    redirect({ href: `/recipes/${id}`, locale });
   }
 
   const { data: profile } = await supabase

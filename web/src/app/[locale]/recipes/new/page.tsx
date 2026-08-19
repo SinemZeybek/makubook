@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
@@ -7,13 +7,14 @@ import RecipeForm from "./recipe-form";
 
 export default async function NewRecipePage() {
   const t = await getTranslations("RecipeForm");
+  const locale = await getLocale();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect({ href: "/login", locale });
   }
 
   const { data: profile } = await supabase
