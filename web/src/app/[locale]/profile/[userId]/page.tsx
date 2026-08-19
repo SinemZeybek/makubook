@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../../navbar";
 import Footer from "../../footer";
-import RecipeCard from "../../recipe-card";
+import RecipeCard, { type Recipe } from "../../recipe-card";
 import LogoutButton from "../../logout-button";
 
 export default async function ProfilePage({
@@ -32,13 +32,14 @@ export default async function ProfilePage({
     notFound();
   }
 
-  const { data: recipes } = await supabase
+  const { data: recipesRaw } = await supabase
     .from("recipes")
     .select(
       "id, title, description, country, meal_type, language, author_id, status, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
     )
     .eq("author_id", userId)
     .order("created_at", { ascending: false });
+  const recipes = recipesRaw as unknown as Recipe[] | null;
 
   const isOwnProfile = user?.id === userId;
 

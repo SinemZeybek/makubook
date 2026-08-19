@@ -4,7 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "./navbar";
 import Footer from "./footer";
-import RecipeCard from "./recipe-card";
+import RecipeCard, { type Recipe } from "./recipe-card";
 import SaveToggleButton from "./save-toggle-button";
 import FadeIn from "./fade-in";
 import RecipeFilters from "./recipe-filters";
@@ -47,7 +47,8 @@ export default async function Home({
   const from = (currentPage - 1) * PAGE_SIZE;
   recipesQuery = recipesQuery.range(from, from + PAGE_SIZE - 1);
 
-  const { data: recipes, error, count } = await recipesQuery;
+  const { data: recipesRaw, error, count } = await recipesQuery;
+  const recipes = recipesRaw as unknown as Recipe[] | null;
   const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
   const hasActiveFilters = mealTypeArr.length > 0;
 
@@ -90,7 +91,7 @@ export default async function Home({
     return qs ? `/?${qs}` : "/";
   }
 
-  const { data: featuredRecipes } = await supabase
+  const { data: featuredRecipesRaw } = await supabase
     .from("recipes")
     .select(
       "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
@@ -98,6 +99,7 @@ export default async function Home({
     .eq("status", "published")
     .order("created_at", { ascending: false })
     .limit(5);
+  const featuredRecipes = featuredRecipesRaw as unknown as Recipe[] | null;
 
   const fallbackPhotos = [
     "/dish-breakfast.jpg",

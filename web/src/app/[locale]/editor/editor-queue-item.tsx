@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-type Recipe = {
+export type Recipe = {
   id: string;
   title: string;
   description: string | null;

@@ -3,7 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import SaveToggleButton from "./save-toggle-button";
 
-type Recipe = {
+export type Recipe = {
   id: string;
   title: string;
   description: string | null;

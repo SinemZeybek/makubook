@@ -3,7 +3,7 @@ import { Link, redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
 import Footer from "../footer";
-import RecipeCard from "../recipe-card";
+import RecipeCard, { type Recipe } from "../recipe-card";
 
 export default async function SavedRecipesPage() {
   const t = await getTranslations("Saved");
@@ -15,6 +15,7 @@ export default async function SavedRecipesPage() {
 
   if (!user) {
     redirect({ href: "/login", locale });
+    return;
   }
 
   const { data: profile } = await supabase
@@ -32,8 +33,8 @@ export default async function SavedRecipesPage() {
     .order("created_at", { ascending: false });
 
   const recipes = (favorites ?? [])
-    .map((favorite) => favorite.recipes)
-    .filter((recipe): recipe is NonNullable<typeof recipe> => Boolean(recipe));
+    .map((favorite) => favorite.recipes as unknown as Recipe | null)
+    .filter((recipe): recipe is Recipe => Boolean(recipe));
 
   return (
     <main className="flex min-h-screen flex-col bg-cream">

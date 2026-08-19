@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 
@@ -13,12 +13,12 @@ const LEFT_PAGE_OPEN =
 const LEFT_PAGE_TURN =
   "M12 6 C12 4 11 3 10 3 L9 3 C8.7 3 8.5 3.4 8.5 4 L8.5 17 C8.5 17.6 8.7 18 9 18 L10 18 C11 18 12 19 12 21 Z";
 
-const bookIconVariants = {
+const bookIconVariants: Variants = {
   rest: { scale: 1 },
   hover: { scale: 1.08, transition: { type: "spring", stiffness: 400, damping: 12 } },
 };
 
-const rightPageVariants = {
+const rightPageVariants: Variants = {
   rest: { d: RIGHT_PAGE_OPEN },
   hover: {
     d: [RIGHT_PAGE_OPEN, RIGHT_PAGE_TURN, RIGHT_PAGE_OPEN],
@@ -26,7 +26,7 @@ const rightPageVariants = {
   },
 };
 
-const leftPageVariants = {
+const leftPageVariants: Variants = {
   rest: { d: LEFT_PAGE_OPEN },
   hover: {
     d: [LEFT_PAGE_OPEN, LEFT_PAGE_TURN, LEFT_PAGE_OPEN],

@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
 import Footer from "../footer";
-import RecipeCard from "../recipe-card";
+import RecipeCard, { type Recipe } from "../recipe-card";
 import RecipeFilters from "../recipe-filters";
 import FadeIn from "../fade-in";
 
@@ -61,7 +61,8 @@ export default async function SearchPage({
   const from = (currentPage - 1) * PAGE_SIZE;
   recipesQuery = recipesQuery.range(from, from + PAGE_SIZE - 1);
 
-  const { data: recipes, error, count } = await recipesQuery;
+  const { data: recipesRaw, error, count } = await recipesQuery;
+  const recipes = recipesRaw as unknown as Recipe[] | null;
   const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
   const hasActiveFilters = Boolean(
     q ||
@@ -106,7 +107,7 @@ export default async function SearchPage({
         .or(orConditions.join(","))
         .order("created_at", { ascending: false })
         .limit(6);
-      similarRecipes = similar;
+      similarRecipes = similar as unknown as Recipe[] | null;
     }
   }
 

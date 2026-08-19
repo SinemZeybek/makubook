@@ -34,6 +34,7 @@ export default async function EditRecipePage({
 
   if (!user || user.id !== recipe.author_id) {
     redirect({ href: `/recipes/${id}`, locale });
+    return;
   }
 
   const { data: profile } = await supabase

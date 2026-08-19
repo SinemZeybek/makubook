@@ -3,7 +3,7 @@ import { redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
 import Footer from "../footer";
-import EditorQueueItem from "./editor-queue-item";
+import EditorQueueItem, { type Recipe } from "./editor-queue-item";
 
 export default async function EditorQueuePage() {
   const t = await getTranslations("Editor");
@@ -15,6 +15,7 @@ export default async function EditorQueuePage() {
 
   if (!user) {
     redirect({ href: "/login", locale });
+    return;
   }
 
   const { data: profile } = await supabase
@@ -25,15 +26,17 @@ export default async function EditorQueuePage() {
 
   if (profile?.role !== "editor") {
     redirect({ href: "/", locale });
+    return;
   }
 
-  const { data: pendingRecipes } = await supabase
+  const { data: pendingRecipesRaw } = await supabase
     .from("recipes")
     .select(
       "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
     )
     .eq("status", "pending")
     .order("created_at", { ascending: true });
+  const pendingRecipes = pendingRecipesRaw as unknown as Recipe[] | null;
 
   return (
     <main className="flex min-h-screen flex-col bg-cream">

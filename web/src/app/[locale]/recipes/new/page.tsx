@@ -15,6 +15,7 @@ export default async function NewRecipePage() {
 
   if (!user) {
     redirect({ href: "/login", locale });
+    return;
   }
 
   const { data: profile } = await supabase
