@@ -76,6 +76,7 @@ export default function RecipeFilters({
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!canSubmit) return;
 
     if (deferred) {
       const params = new URLSearchParams();
@@ -142,6 +143,14 @@ export default function RecipeFilters({
           selectedServings.length > 0
       );
 
+  const canSubmit = Boolean(
+    search.trim() ||
+      selectedCountries.length > 0 ||
+      selectedMealTypes.length > 0 ||
+      selectedLanguages.length > 0 ||
+      selectedServings.length > 0
+  );
+
   return (
     <div className="mt-6 flex flex-col items-center gap-3">
       <form onSubmit={handleSearchSubmit} className="flex w-full max-w-xl gap-2">
@@ -155,7 +164,8 @@ export default function RecipeFilters({
         />
         <button
           type="submit"
-          className="rounded-md border border-berry/20 px-3 py-2 text-sm text-berry hover:bg-berry/10"
+          disabled={!canSubmit}
+          className="rounded-md border border-berry/20 px-3 py-2 text-sm text-berry hover:bg-berry/10 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
         >
           {t("search")}
         </button>
