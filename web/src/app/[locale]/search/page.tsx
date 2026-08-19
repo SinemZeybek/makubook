@@ -28,7 +28,6 @@ export default async function SearchPage({
   const PAGE_SIZE = 12;
   const currentPage = Math.max(1, Number(page) || 1);
   const t = await getTranslations("Home");
-  const tSearch = await getTranslations("Search");
   const supabase = await createClient();
 
   const {
@@ -111,10 +110,6 @@ export default async function SearchPage({
 
       <div className="flex-1">
         <div className="mx-auto max-w-6xl px-6 py-10">
-          <h1 className="text-2xl font-semibold text-berry">
-            {tSearch("pageHeading")}
-          </h1>
-
           <RecipeFilters />
 
           {error && (
