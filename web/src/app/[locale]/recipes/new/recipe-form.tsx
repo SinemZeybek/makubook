@@ -253,7 +253,10 @@ export default function RecipeForm({ userId }: { userId: string }) {
             className="sr-only"
           />
 
-          <div className="flex h-56 w-full items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-berry/25 bg-berry/5">
+          <label
+            htmlFor="recipe-photo-library-input"
+            className="flex h-56 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-berry/25 bg-berry/5 transition-colors hover:border-berry/40 hover:bg-berry/10"
+          >
             {photoPreview ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -281,7 +284,7 @@ export default function RecipeForm({ userId }: { userId: string }) {
                 <span className="text-xs text-berry/40">{t("required")}</span>
               </div>
             )}
-          </div>
+          </label>
 
           <div className="mt-2 flex gap-2">
             <label
