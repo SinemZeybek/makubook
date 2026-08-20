@@ -47,9 +47,9 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} ${dynaPuff.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${dynaPuff.variable} h-full bg-cream antialiased`}
     >
-      <body className="min-h-full flex flex-col pb-20 sm:pb-0">
+      <body className="min-h-full flex flex-col bg-cream pb-20 sm:pb-0">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
         <Analytics />
       </body>
