@@ -70,3 +70,55 @@ export async function getOrCreateRecipeTranslation({
 
   return result;
 }
+
+/**
+ * Translates the title/description of a list of recipe cards for display
+ * in the current locale, reusing the same per-recipe translation cache as
+ * the detail page (so opening a card afterward is already warm).
+ * Recipes already in the target locale pass through untouched.
+ */
+export async function translateCardList<
+  T extends {
+    id: string;
+    title: string;
+    description: string | null;
+    tips: string | null;
+    language: string;
+    ingredients: unknown;
+    instructions: unknown;
+    translations: unknown;
+  },
+>(recipes: T[], locale: string): Promise<T[]> {
+  return Promise.all(
+    recipes.map(async (recipe) => {
+      if (recipe.language === locale) return recipe;
+
+      const ingredients = Array.isArray(recipe.ingredients)
+        ? (recipe.ingredients as Ingredient[])
+        : [];
+      const instructions = Array.isArray(recipe.instructions)
+        ? (recipe.instructions as string[])
+        : [];
+
+      const translation = await getOrCreateRecipeTranslation({
+        recipeId: recipe.id,
+        targetLocale: locale,
+        existingTranslations: recipe.translations as Record<
+          string,
+          RecipeTranslation
+        > | null,
+        title: recipe.title,
+        description: recipe.description,
+        tips: recipe.tips,
+        ingredients,
+        instructions,
+      });
+
+      return {
+        ...recipe,
+        title: translation.title,
+        description: translation.description,
+      };
+    })
+  );
+}

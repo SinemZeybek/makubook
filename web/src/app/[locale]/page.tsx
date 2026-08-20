@@ -1,13 +1,15 @@
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { translateCardList } from "@/lib/translateRecipe";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import RecipeCard, { type Recipe } from "./recipe-card";
 import SaveToggleButton from "./save-toggle-button";
 import FadeIn from "./fade-in";
 import RecipeFilters from "./recipe-filters";
+import FeaturedCarousel from "./featured-carousel";
 import { MEAL_TYPES } from "@/lib/mealTypes";
 
 export default async function Home({
@@ -22,6 +24,7 @@ export default async function Home({
   const mealTypeArr = mealType ? mealType.split(",") : [];
   const PAGE_SIZE = 12;
   const currentPage = Math.max(1, Number(page) || 1);
+  const locale = await getLocale();
   const t = await getTranslations("Home");
   const tMeal = await getTranslations("MealTypes");
   const tCountry = await getTranslations("Countries");
@@ -35,7 +38,7 @@ export default async function Home({
   let recipesQuery = supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, comments(rating), recipe_images(url), profiles(display_name, avatar_url)",
+      "id, title, description, country, meal_type, language, author_id, ingredients, instructions, tips, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url)",
       { count: "exact" }
     )
     .eq("status", "published")
@@ -48,7 +51,17 @@ export default async function Home({
   recipesQuery = recipesQuery.range(from, from + PAGE_SIZE - 1);
 
   const { data: recipesRaw, error, count } = await recipesQuery;
-  const recipes = recipesRaw as unknown as Recipe[] | null;
+  const recipes = recipesRaw
+    ? ((await translateCardList(
+        recipesRaw as unknown as (Recipe & {
+          ingredients: unknown;
+          instructions: unknown;
+          tips: string | null;
+          translations: unknown;
+        })[],
+        locale
+      )) as unknown as Recipe[])
+    : null;
   const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
   const hasActiveFilters = mealTypeArr.length > 0;
 
@@ -94,12 +107,22 @@ export default async function Home({
   const { data: featuredRecipesRaw } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, ingredients, instructions, tips, translations, recipe_images(url), profiles(display_name, avatar_url)"
     )
     .eq("status", "published")
     .order("created_at", { ascending: false })
-    .limit(5);
-  const featuredRecipes = featuredRecipesRaw as unknown as Recipe[] | null;
+    .limit(10);
+  const featuredRecipes = featuredRecipesRaw
+    ? ((await translateCardList(
+        featuredRecipesRaw as unknown as (Recipe & {
+          ingredients: unknown;
+          instructions: unknown;
+          tips: string | null;
+          translations: unknown;
+        })[],
+        locale
+      )) as unknown as Recipe[])
+    : null;
 
   const fallbackPhotos = [
     "/dish-breakfast.jpg",
@@ -150,7 +173,8 @@ export default async function Home({
               {t("featuredHeading")}
             </h2>
           </FadeIn>
-          <div className="mt-4 flex gap-5 overflow-x-auto overflow-y-hidden pb-2">
+          <div className="mt-4">
+          <FeaturedCarousel>
             {featuredRecipes.map((recipe, i) => (
               <FadeIn
                 key={recipe.id}
@@ -227,6 +251,7 @@ export default async function Home({
                 </div>
               </FadeIn>
             ))}
+          </FeaturedCarousel>
           </div>
         </div>
       )}
