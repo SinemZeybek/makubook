@@ -8,6 +8,18 @@ const handleI18nRouting = createMiddleware(routing);
 export default async function middleware(request: NextRequest) {
   const response = handleI18nRouting(request);
 
+  // Skip the Supabase round-trip entirely when there's no session cookie —
+  // this is nearly all traffic on a public recipe site (anonymous visitors,
+  // crawlers). Only requests that already carry a Supabase auth cookie need
+  // their token refreshed.
+  const hasSupabaseCookie = request.cookies
+    .getAll()
+    .some((cookie) => cookie.name.startsWith("sb-"));
+
+  if (!hasSupabaseCookie) {
+    return response;
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
