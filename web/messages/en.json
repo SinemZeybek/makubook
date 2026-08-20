@@ -157,7 +157,12 @@
     "logIn": "Log in",
     "toComment": "to leave a comment or rating.",
     "viewInEnglish": "Also available in English",
-    "viewInFinnish": "Also available in Finnish"
+    "viewInFinnish": "Also available in Finnish",
+    "autoTranslatedNotice": "This recipe was automatically translated. There may be small inconsistencies.",
+    "viewOriginal": "View original",
+    "translationUnavailableNotice": "Automatic translation is currently unavailable, showing the original text.",
+    "viewingOriginalNotice": "You're viewing the original text.",
+    "viewTranslated": "View translated version"
   },
   "Comment": {
     "noComments": "No comments yet.",

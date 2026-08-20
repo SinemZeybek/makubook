@@ -157,7 +157,12 @@
     "logIn": "Kirjaudu sisään",
     "toComment": "jättääksesi kommentin tai arvion.",
     "viewInEnglish": "Saatavilla myös englanniksi",
-    "viewInFinnish": "Saatavilla myös suomeksi"
+    "viewInFinnish": "Saatavilla myös suomeksi",
+    "autoTranslatedNotice": "Tämä resepti on käännetty automaattisesti. Käännöksessä voi olla pieniä epätarkkuuksia.",
+    "viewOriginal": "Näytä alkuperäinen",
+    "translationUnavailableNotice": "Automaattinen käännös ei ole juuri nyt käytettävissä, näytetään alkuperäinen teksti.",
+    "viewingOriginalNotice": "Katselet alkuperäistä tekstiä.",
+    "viewTranslated": "Näytä käännetty versio"
   },
   "Comment": {
     "noComments": "Ei vielä kommentteja.",

@@ -1,9 +1,10 @@
 import type { ComponentProps } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getOrCreateRecipeTranslation } from "@/lib/translateRecipe";
 import Navbar from "../../navbar";
 import Footer from "../../footer";
 import CommentForm from "./comment-form";
@@ -14,10 +15,15 @@ type Ingredient = { quantity: string; unit: string; name: string };
 
 export default async function RecipePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ original?: string }>;
 }) {
   const { id } = await params;
+  const { original } = await searchParams;
+  const showOriginal = original === "1";
+  const locale = await getLocale();
   const t = await getTranslations("RecipeDetail");
   const tMeal = await getTranslations("MealTypes");
   const tCountry = await getTranslations("Countries");
@@ -32,7 +38,7 @@ export default async function RecipePage({
   const { data: recipe, error } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, servings, language, ingredients, instructions, tips, author_id, status, like_count, translation_of, recipe_images(url)"
+      "id, title, description, country, meal_type, servings, language, ingredients, instructions, tips, author_id, status, like_count, translation_of, translations, recipe_images(url)"
     )
     .eq("id", id)
     .single();
@@ -100,6 +106,40 @@ export default async function RecipePage({
     ? (recipe.instructions as string[])
     : [];
 
+  const needsTranslation =
+    !showOriginal && locale !== recipe.language && !siblingRecipe;
+
+  const translation = needsTranslation
+    ? await getOrCreateRecipeTranslation({
+        recipeId: recipe.id,
+        targetLocale: locale,
+        existingTranslations: recipe.translations as Record<
+          string,
+          import("@/lib/translateRecipe").RecipeTranslation
+        > | null,
+        title: recipe.title,
+        description: recipe.description,
+        tips: recipe.tips,
+        ingredients,
+        instructions,
+      })
+    : null;
+
+  const displayTitle = translation?.title ?? recipe.title;
+  const displayDescription = translation
+    ? translation.description
+    : recipe.description;
+  const displayTips = translation ? translation.tips : recipe.tips;
+  const displayIngredients = translation
+    ? ingredients.map((ing, i) => ({
+        ...ing,
+        name: translation.ingredientNames[i] ?? ing.name,
+      }))
+    : ingredients;
+  const displayInstructions = translation
+    ? translation.instructions
+    : instructions;
+
   return (
     <main className="flex min-h-screen flex-col bg-cream">
       <Navbar
@@ -155,7 +195,7 @@ export default async function RecipePage({
         {recipe.recipe_images?.[0]?.url && (
           <Image
             src={recipe.recipe_images[0].url}
-            alt={recipe.title}
+            alt={displayTitle}
             width={768}
             height={432}
             className="mt-4 h-72 w-full rounded-lg object-cover"
@@ -164,7 +204,7 @@ export default async function RecipePage({
 
         <div className="mt-4">
           <h1 className="text-3xl font-semibold text-berry">
-            {recipe.title}
+            {displayTitle}
           </h1>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             {recipe.country && (
@@ -196,9 +236,33 @@ export default async function RecipePage({
           )}
         </div>
 
-        {recipe.description && (
+        {translation && (
+          <div className="mt-4 rounded-md bg-gold/15 px-4 py-2.5 text-sm text-berry">
+            {translation.machineTranslated ? (
+              <>
+                {t("autoTranslatedNotice")}{" "}
+                <Link href={`/recipes/${recipe.id}?original=1`} className="underline">
+                  {t("viewOriginal")}
+                </Link>
+              </>
+            ) : (
+              t("translationUnavailableNotice")
+            )}
+          </div>
+        )}
+
+        {showOriginal && locale !== recipe.language && (
+          <div className="mt-4 rounded-md bg-berry/10 px-4 py-2.5 text-sm text-berry">
+            {t("viewingOriginalNotice")}{" "}
+            <Link href={`/recipes/${recipe.id}`} className="underline">
+              {t("viewTranslated")}
+            </Link>
+          </div>
+        )}
+
+        {displayDescription && (
           <p className="mt-2 whitespace-pre-line text-berry/70">
-            {recipe.description}
+            {displayDescription}
           </p>
         )}
 
@@ -227,7 +291,7 @@ export default async function RecipePage({
         <section className="mt-8">
           <h2 className="text-lg font-medium text-berry">{t("ingredients")}</h2>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-berry/80">
-            {ingredients.map((ingredient, i) => (
+            {displayIngredients.map((ingredient, i) => (
               <li key={i}>
                 {ingredient.quantity} {ingredient.unit && tUnit(ingredient.unit)}{" "}
                 {ingredient.name}
@@ -239,17 +303,17 @@ export default async function RecipePage({
         <section className="mt-8">
           <h2 className="text-lg font-medium text-berry">{t("steps")}</h2>
           <ol className="mt-2 list-decimal space-y-2 pl-5 text-berry/80">
-            {instructions.map((step, i) => (
+            {displayInstructions.map((step, i) => (
               <li key={i}>{step}</li>
             ))}
           </ol>
         </section>
 
-        {recipe.tips && (
+        {displayTips && (
           <section className="mt-8 rounded-lg bg-gold/15 p-4">
             <h2 className="text-lg font-medium text-berry">{t("tips")}</h2>
             <p className="mt-2 whitespace-pre-line text-berry/80">
-              {recipe.tips}
+              {displayTips}
             </p>
           </section>
         )}
