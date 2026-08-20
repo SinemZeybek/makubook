@@ -1,6 +1,7 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import { Link, redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { translateCardList } from "@/lib/translateRecipe";
 import Navbar from "../navbar";
 import Footer from "../footer";
 import RecipeCard, { type Recipe } from "../recipe-card";
@@ -27,14 +28,37 @@ export default async function SavedRecipesPage() {
   const { data: favorites } = await supabase
     .from("favorites")
     .select(
-      "recipe_id, recipes(id, title, description, country, meal_type, language, author_id, comments(rating), recipe_images(url), profiles(display_name, avatar_url))"
+      "recipe_id, recipes(id, title, description, country, meal_type, language, author_id, ingredients, instructions, tips, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url))"
     )
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
-  const recipes = (favorites ?? [])
-    .map((favorite) => favorite.recipes as unknown as Recipe | null)
-    .filter((recipe): recipe is Recipe => Boolean(recipe));
+  const favoriteRecipes = (favorites ?? [])
+    .map(
+      (favorite) =>
+        favorite.recipes as unknown as
+          | (Recipe & {
+              ingredients: unknown;
+              instructions: unknown;
+              tips: string | null;
+              translations: unknown;
+            })
+          | null
+    )
+    .filter(
+      (
+        recipe
+      ): recipe is Recipe & {
+        ingredients: unknown;
+        instructions: unknown;
+        tips: string | null;
+        translations: unknown;
+      } => Boolean(recipe)
+    );
+  const recipes = (await translateCardList(
+    favoriteRecipes,
+    locale
+  )) as unknown as Recipe[];
 
   return (
     <main className="flex min-h-screen flex-col bg-cream">

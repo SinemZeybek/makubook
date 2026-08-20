@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { translateCardList } from "@/lib/translateRecipe";
 import Navbar from "../../navbar";
 import Footer from "../../footer";
 import RecipeCard, { type Recipe } from "../../recipe-card";
@@ -14,6 +15,7 @@ export default async function ProfilePage({
   params: Promise<{ userId: string }>;
 }) {
   const { userId } = await params;
+  const locale = await getLocale();
   const t = await getTranslations("Profile");
   const tCommon = await getTranslations("Common");
   const supabase = await createClient();
@@ -35,11 +37,21 @@ export default async function ProfilePage({
   const { data: recipesRaw } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, status, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, status, ingredients, instructions, tips, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
     )
     .eq("author_id", userId)
     .order("created_at", { ascending: false });
-  const recipes = recipesRaw as unknown as Recipe[] | null;
+  const recipes = recipesRaw
+    ? ((await translateCardList(
+        recipesRaw as unknown as (Recipe & {
+          ingredients: unknown;
+          instructions: unknown;
+          tips: string | null;
+          translations: unknown;
+        })[],
+        locale
+      )) as unknown as Recipe[])
+    : null;
 
   const isOwnProfile = user?.id === userId;
 

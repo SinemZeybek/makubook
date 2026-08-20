@@ -1,6 +1,7 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { translateCardList } from "@/lib/translateRecipe";
 import Navbar from "../navbar";
 import Footer from "../footer";
 import RecipeCard, { type Recipe } from "../recipe-card";
@@ -27,6 +28,7 @@ export default async function SearchPage({
   const servingsArr = servings ? servings.split(",") : [];
   const PAGE_SIZE = 12;
   const currentPage = Math.max(1, Number(page) || 1);
+  const locale = await getLocale();
   const t = await getTranslations("Home");
   const supabase = await createClient();
 
@@ -43,7 +45,7 @@ export default async function SearchPage({
   let recipesQuery = supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, comments(rating), recipe_images(url), profiles(display_name, avatar_url)",
+      "id, title, description, country, meal_type, language, author_id, ingredients, instructions, tips, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url)",
       { count: "exact" }
     )
     .eq("status", "published")
@@ -62,7 +64,17 @@ export default async function SearchPage({
   recipesQuery = recipesQuery.range(from, from + PAGE_SIZE - 1);
 
   const { data: recipesRaw, error, count } = await recipesQuery;
-  const recipes = recipesRaw as unknown as Recipe[] | null;
+  const recipes = recipesRaw
+    ? ((await translateCardList(
+        recipesRaw as unknown as (Recipe & {
+          ingredients: unknown;
+          instructions: unknown;
+          tips: string | null;
+          translations: unknown;
+        })[],
+        locale
+      )) as unknown as Recipe[])
+    : null;
   const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
   const hasActiveFilters = Boolean(
     q ||
@@ -101,13 +113,23 @@ export default async function SearchPage({
       const { data: similar } = await supabase
         .from("recipes")
         .select(
-          "id, title, description, country, meal_type, language, author_id, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
+          "id, title, description, country, meal_type, language, author_id, ingredients, instructions, tips, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
         )
         .eq("status", "published")
         .or(orConditions.join(","))
         .order("created_at", { ascending: false })
         .limit(6);
-      similarRecipes = similar as unknown as Recipe[] | null;
+      similarRecipes = similar
+        ? ((await translateCardList(
+            similar as unknown as (Recipe & {
+              ingredients: unknown;
+              instructions: unknown;
+              tips: string | null;
+              translations: unknown;
+            })[],
+            locale
+          )) as unknown as Recipe[])
+        : null;
     }
   }
 
