@@ -198,7 +198,7 @@ export default async function Home({
                     ))}
                   </div>
                   {recipe.description && (
-                    <p className="pointer-events-none mt-2 text-sm text-berry/70">
+                    <p className="pointer-events-none mt-2 whitespace-pre-line text-sm text-berry/70">
                       {recipe.description}
                     </p>
                   )}

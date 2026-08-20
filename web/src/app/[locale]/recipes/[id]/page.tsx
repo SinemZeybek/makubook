@@ -197,7 +197,9 @@ export default async function RecipePage({
         </div>
 
         {recipe.description && (
-          <p className="mt-2 text-berry/70">{recipe.description}</p>
+          <p className="mt-2 whitespace-pre-line text-berry/70">
+            {recipe.description}
+          </p>
         )}
 
         {recipe.servings && (
@@ -246,7 +248,9 @@ export default async function RecipePage({
         {recipe.tips && (
           <section className="mt-8 rounded-lg bg-gold/15 p-4">
             <h2 className="text-lg font-medium text-berry">{t("tips")}</h2>
-            <p className="mt-2 text-berry/80">{recipe.tips}</p>
+            <p className="mt-2 whitespace-pre-line text-berry/80">
+              {recipe.tips}
+            </p>
           </section>
         )}
 

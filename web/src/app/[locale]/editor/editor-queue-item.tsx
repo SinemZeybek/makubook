@@ -107,7 +107,9 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
         />
 
         {recipe.description && (
-          <p className="text-sm text-berry/70">{recipe.description}</p>
+          <p className="whitespace-pre-line text-sm text-berry/70">
+            {recipe.description}
+          </p>
         )}
 
         <Link

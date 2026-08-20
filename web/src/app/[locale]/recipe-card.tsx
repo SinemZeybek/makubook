@@ -95,7 +95,7 @@ export default function RecipeCard({
           </span>
         </div>
         {recipe.description && (
-          <p className="pointer-events-none mt-2 line-clamp-2 text-base text-berry/70">
+          <p className="pointer-events-none mt-2 line-clamp-2 whitespace-pre-line text-base text-berry/70">
             {recipe.description}
           </p>
         )}

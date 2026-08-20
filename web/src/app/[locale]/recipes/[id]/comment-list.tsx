@@ -74,7 +74,9 @@ export default function CommentList({
                   <DeleteCommentButton commentId={comment.id} />
                 )}
             </div>
-            <p className="mt-1 text-berry/80">{comment.body}</p>
+            <p className="mt-1 whitespace-pre-line text-berry/80">
+              {comment.body}
+            </p>
             <div className="mt-2">
               {currentUserId ? (
                 <CommentHelpfulButton
