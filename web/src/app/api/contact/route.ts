@@ -1,9 +1,18 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { renderEmail } from "@/lib/emailTemplate";
 
 const RATE_LIMIT_MAX = 3;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
 
 export async function POST(request: Request) {
   const { name, email, message, company } = await request.json();
@@ -65,11 +74,15 @@ export async function POST(request: Request) {
   const resend = new Resend(apiKey);
 
   const { error } = await resend.emails.send({
-    from: "Makubook Contact Form <onboarding@resend.dev>",
+    from: "Makubook Contact Form <noreply@makubook.com>",
     to: contactEmail,
     replyTo: email,
     subject: `New message from ${name} via Makubook`,
     text: `From: ${name} <${email}>\n\n${message}`,
+    html: renderEmail({
+      heading: "New contact form message",
+      bodyHtml: `<p style="margin:0 0 12px;"><strong>From:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;</p><p style="margin:0;white-space:pre-line;">${escapeHtml(message)}</p>`,
+    }),
   });
 
   if (error) {

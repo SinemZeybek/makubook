@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { renderEmail } from "@/lib/emailTemplate";
 
 export async function POST(
   request: Request,
@@ -60,12 +61,19 @@ export async function POST(
       if (authorEmail) {
         const siteUrl =
           process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+        const recipeUrl = `${siteUrl}/recipes/${recipe.id}`;
         const resend = new Resend(apiKey);
         await resend.emails.send({
-          from: "Makubook <onboarding@resend.dev>",
+          from: "Makubook <noreply@makubook.com>",
           to: authorEmail,
           subject: "Your recipe is live on Makubook!",
-          text: `Good news — "${recipe.title}" has been reviewed and is now live on Makubook.\n\nView it here: ${siteUrl}/recipes/${recipe.id}\n\nThanks for sharing your recipe with the community!`,
+          text: `Good news — "${recipe.title}" has been reviewed and is now live on Makubook.\n\nView it here: ${recipeUrl}\n\nThanks for sharing your recipe with the community!`,
+          html: renderEmail({
+            heading: "Your recipe is live! 🎉",
+            bodyHtml: `<p style="margin:0 0 12px;">Good news — <strong>"${recipe.title}"</strong> has been reviewed and is now live on Makubook.</p><p style="margin:0;">Thanks for sharing your recipe with the community!</p>`,
+            ctaLabel: "View your recipe",
+            ctaUrl: recipeUrl,
+          }),
         });
       }
     } catch (emailError) {
