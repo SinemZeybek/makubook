@@ -133,11 +133,11 @@ export default async function RecipePage({
   const displayIngredients = translation
     ? ingredients.map((ing, i) => ({
         ...ing,
-        name: translation.ingredientNames[i] ?? ing.name,
+        name: translation.ingredientNames?.[i] ?? ing.name,
       }))
     : ingredients;
   const displayInstructions = translation
-    ? translation.instructions
+    ? (translation.instructions ?? instructions)
     : instructions;
 
   return (

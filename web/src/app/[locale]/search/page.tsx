@@ -45,7 +45,7 @@ export default async function SearchPage({
   let recipesQuery = supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, ingredients, instructions, tips, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url)",
+      "id, title, description, country, meal_type, language, author_id, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url)",
       { count: "exact" }
     )
     .eq("status", "published")
@@ -113,7 +113,7 @@ export default async function SearchPage({
       const { data: similar } = await supabase
         .from("recipes")
         .select(
-          "id, title, description, country, meal_type, language, author_id, ingredients, instructions, tips, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
+          "id, title, description, country, meal_type, language, author_id, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
         )
         .eq("status", "published")
         .or(orConditions.join(","))
