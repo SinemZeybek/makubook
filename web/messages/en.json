@@ -243,7 +243,12 @@
     "backToLogin": "Back to log in",
     "needAccount": "Need an account? Sign up",
     "alreadyHaveAccount": "Already have an account? Log in",
-    "forgotPassword": "Forgot password?"
+    "forgotPassword": "Forgot password?",
+    "agreeToTerms": "I agree to the",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy",
+    "agreeToTermsRequired": "Please agree to the Terms of Service and Privacy Policy to continue."
   },
   "ForgotPassword": {
     "heading": "Reset your password",

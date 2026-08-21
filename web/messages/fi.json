@@ -243,7 +243,12 @@
     "backToLogin": "Takaisin kirjautumiseen",
     "needAccount": "Eikö sinulla ole tiliä? Luo tili",
     "alreadyHaveAccount": "Onko sinulla jo tili? Kirjaudu sisään",
-    "forgotPassword": "Unohditko salasanasi?"
+    "forgotPassword": "Unohditko salasanasi?",
+    "agreeToTerms": "Hyväksyn",
+    "termsOfService": "käyttöehdot",
+    "and": "ja",
+    "privacyPolicy": "tietosuojaselosteen",
+    "agreeToTermsRequired": "Hyväksy käyttöehdot ja tietosuojaseloste jatkaaksesi."
   },
   "ForgotPassword": {
     "heading": "Nollaa salasanasi",

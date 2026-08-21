@@ -25,6 +25,7 @@ export default function LoginPage() {
   const [birthday, setBirthday] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [checkEmail, setCheckEmail] = useState(false);
@@ -54,6 +55,12 @@ export default function LoginPage() {
       }
       router.push("/");
       router.refresh();
+      return;
+    }
+
+    if (!agreedToTerms) {
+      setError(t("agreeToTermsRequired"));
+      setLoading(false);
       return;
     }
 
@@ -183,6 +190,25 @@ export default function LoginPage() {
                   {t("profilePictureOptional")}
                 </p>
               </div>
+              <label className="flex items-start gap-2 text-sm text-berry/70">
+                <input
+                  type="checkbox"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  required
+                  className="mt-1"
+                />
+                <span>
+                  {t("agreeToTerms")}{" "}
+                  <Link href="/terms" target="_blank" className="text-berry underline">
+                    {t("termsOfService")}
+                  </Link>{" "}
+                  {t("and")}{" "}
+                  <Link href="/privacy" target="_blank" className="text-berry underline">
+                    {t("privacyPolicy")}
+                  </Link>
+                </span>
+              </label>
             </>
           )}
 
