@@ -22,7 +22,10 @@ export default function MultiSelect({
   const [alignRight, setAlignRight] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const selectedRef = useRef(selected);
-  selectedRef.current = selected;
+
+  useEffect(() => {
+    selectedRef.current = selected;
+  }, [selected]);
 
   function handleToggle() {
     if (!open && containerRef.current) {
@@ -30,6 +33,7 @@ export default function MultiSelect({
       setAlignRight(rect.left + 224 > window.innerWidth - 16);
     }
     setOpen((v) => !v);
+    if (open) setSearch("");
   }
 
   useEffect(() => {
@@ -40,14 +44,11 @@ export default function MultiSelect({
         !containerRef.current.contains(e.target as Node)
       ) {
         setOpen(false);
+        setSearch("");
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) setSearch("");
   }, [open]);
 
   function toggle(value: string) {

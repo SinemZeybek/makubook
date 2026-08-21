@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -12,13 +12,17 @@ import AvatarPicker from "../avatar-picker";
 export default function LoginPage() {
   const t = useTranslations("Login");
   const searchParams = useSearchParams();
-  const [mode, setMode] = useState<"sign-in" | "sign-up">(
-    searchParams.get("mode") === "sign-up" ? "sign-up" : "sign-in"
-  );
-
-  useEffect(() => {
-    setMode(searchParams.get("mode") === "sign-up" ? "sign-up" : "sign-in");
-  }, [searchParams]);
+  const urlMode = searchParams.get("mode") === "sign-up" ? "sign-up" : "sign-in";
+  const [mode, setMode] = useState<"sign-in" | "sign-up">(urlMode);
+  // Tracks the URL-derived mode we last synced to, so a change in the URL
+  // (e.g. clicking the navbar's "Sign up" link while already on this page)
+  // is picked up without an effect — adjusting state during render is the
+  // React-sanctioned way to do this, unlike calling setState in an effect.
+  const [lastUrlMode, setLastUrlMode] = useState(urlMode);
+  if (urlMode !== lastUrlMode) {
+    setLastUrlMode(urlMode);
+    setMode(urlMode);
+  }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
