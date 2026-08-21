@@ -1,22 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useCurrentUser } from "@/lib/useCurrentUser";
 
 export default function SaveToggleButton({
   recipeId,
-  userId,
+  userId: userIdProp,
   initialSaved,
 }: {
   recipeId: string;
-  userId: string | null;
-  initialSaved: boolean;
+  userId?: string | null;
+  initialSaved?: boolean;
 }) {
   const t = useTranslations("Save");
-  const [saved, setSaved] = useState(initialSaved);
+  // Prop is an optional SSR hint; pages that don't compute auth server-side
+  // (to stay cacheable) leave both undefined, and this self-fetches instead.
+  const { user } = useCurrentUser();
+  const userId = user ? user.id : (userIdProp ?? null);
+  const [saved, setSaved] = useState(initialSaved ?? false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (initialSaved !== undefined || !userId) return;
+    let active = true;
+    const supabase = createClient();
+    supabase
+      .from("favorites")
+      .select("recipe_id")
+      .eq("user_id", userId)
+      .eq("recipe_id", recipeId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (active) setSaved(!!data);
+      });
+    return () => {
+      active = false;
+    };
+  }, [initialSaved, userId, recipeId]);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [toastVisible, setToastVisible] = useState(false);

@@ -1,27 +1,17 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { createClient } from "@/lib/supabase/server";
 import Navbar from "../navbar";
 import Footer from "../footer";
 import FadeIn from "../fade-in";
+import AboutGuestCta from "./about-guest-cta";
+
+// No auth check during render (personalization moved to client components),
+// so this can be statically cached.
+export const revalidate = 300;
 
 export default async function AboutPage() {
   const t = await getTranslations("About");
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let isEditor = false;
-  if (user) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-    isEditor = profile?.role === "editor";
-  }
 
   const steps = [
     { step: "1", title: t("step1Title"), body: t("step1Body") },
@@ -38,11 +28,7 @@ export default async function AboutPage() {
 
   return (
     <main className="flex min-h-screen flex-col bg-cream">
-      <Navbar
-        userEmail={user?.email ?? null}
-        userId={user?.id ?? null}
-        isEditor={isEditor}
-      />
+      <Navbar />
 
       <div className="flex-1">
         <div className="relative h-[60vh] min-h-[420px] w-full overflow-hidden">
@@ -143,22 +129,7 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {!user && (
-          <section className="bg-berry py-20">
-            <FadeIn className="mx-auto max-w-2xl px-6 text-center">
-              <h2 className="font-logo text-3xl text-cream md:text-4xl">
-                {t("ctaHeading")}
-              </h2>
-              <p className="mt-3 text-cream/80">{t("ctaBody")}</p>
-              <Link
-                href="/login?mode=sign-up"
-                className="mt-6 inline-block rounded-md bg-gold px-6 py-3 font-medium text-berry transition-transform duration-200 hover:-translate-y-0.5"
-              >
-                {t("signUp")}
-              </Link>
-            </FadeIn>
-          </section>
-        )}
+        <AboutGuestCta />
 
         <section className="bg-cream py-20">
           <FadeIn className="mx-auto max-w-xl px-6 text-center">

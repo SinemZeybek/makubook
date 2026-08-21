@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { useCurrentUser } from "@/lib/useCurrentUser";
+import { createClient } from "@/lib/supabase/client";
 
 const RIGHT_PAGE_OPEN =
   "M12 6 C12 4 14 3 16 3 L20 3 C20.6 3 21 3.4 21 4 L21 17 C21 17.6 20.6 18 20 18 L16 18 C14 18 12 19 12 21 Z";
@@ -35,11 +38,11 @@ const leftPageVariants: Variants = {
 };
 
 export default function Navbar({
-  userEmail,
-  userId,
-  isEditor,
+  userEmail: userEmailProp,
+  userId: userIdProp,
+  isEditor: isEditorProp,
 }: {
-  userEmail: string | null;
+  userEmail?: string | null;
   userId?: string | null;
   isEditor?: boolean;
 }) {
@@ -47,6 +50,33 @@ export default function Navbar({
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+
+  // Props are an optional SSR hint (for pages that already computed auth
+  // server-side); the live hook is the source of truth once it resolves,
+  // so pages that don't compute auth server-side (to stay cacheable) still
+  // get correct personalization after mount.
+  const { user } = useCurrentUser();
+  const userEmail = user ? user.email ?? null : userEmailProp ?? null;
+  const userId = user ? user.id : (userIdProp ?? null);
+  const [fetchedIsEditor, setFetchedIsEditor] = useState<boolean | null>(null);
+  const isEditor = fetchedIsEditor ?? isEditorProp ?? false;
+
+  useEffect(() => {
+    if (!user) return;
+    let active = true;
+    const supabase = createClient();
+    supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single()
+      .then(({ data }) => {
+        if (active) setFetchedIsEditor(data?.role === "editor");
+      });
+    return () => {
+      active = false;
+    };
+  }, [user]);
 
   const isAboutPage = pathname === "/about";
   const isAddRecipePage = pathname === "/recipes/new";

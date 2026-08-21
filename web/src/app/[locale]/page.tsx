@@ -1,16 +1,23 @@
 import Image from "next/image";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { translateCardList } from "@/lib/translateRecipe";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import RecipeCard, { type Recipe } from "./recipe-card";
 import SaveToggleButton from "./save-toggle-button";
+import GuestCta from "./guest-cta";
 import FadeIn from "./fade-in";
 import RecipeFilters from "./recipe-filters";
 import FeaturedCarousel from "./featured-carousel";
 import { MEAL_TYPES } from "@/lib/mealTypes";
+
+// No longer reads cookies/auth during render (personalization moved to
+// client components — see navbar.tsx, save-toggle-button.tsx, guest-cta.tsx),
+// so this page can be statically cached instead of hitting Supabase on
+// every single request, bot or human.
+export const revalidate = 300;
 
 export default async function Home({
   searchParams,
@@ -29,11 +36,7 @@ export default async function Home({
   const tMeal = await getTranslations("MealTypes");
   const tCountry = await getTranslations("Countries");
   const tCommon = await getTranslations("Common");
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const supabase = createPublicClient();
 
   let recipesQuery = supabase
     .from("recipes")
@@ -64,23 +67,6 @@ export default async function Home({
     : null;
   const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
   const hasActiveFilters = mealTypeArr.length > 0;
-
-  let savedRecipeIds = new Set<string>();
-  let isEditor = false;
-  if (user) {
-    const { data: favorites } = await supabase
-      .from("favorites")
-      .select("recipe_id")
-      .eq("user_id", user.id);
-    savedRecipeIds = new Set(favorites?.map((f) => f.recipe_id));
-
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-    isEditor = profile?.role === "editor";
-  }
 
   function clearMealTypesHref() {
     return "/";
@@ -134,11 +120,7 @@ export default async function Home({
 
   return (
     <main className="flex min-h-screen flex-col bg-cream">
-      <Navbar
-        userEmail={user?.email ?? null}
-        userId={user?.id ?? null}
-        isEditor={isEditor}
-      />
+      <Navbar />
 
       <div className="flex-1">
       <div className="relative h-72 w-full overflow-hidden md:h-[420px]">
@@ -196,11 +178,7 @@ export default async function Home({
                     fill
                     className="object-cover"
                   />
-                  <SaveToggleButton
-                    recipeId={recipe.id}
-                    userId={user?.id ?? null}
-                    initialSaved={savedRecipeIds.has(recipe.id)}
-                  />
+                  <SaveToggleButton recipeId={recipe.id} />
                 </div>
                 <div className="flex flex-col p-4">
                   <h3 className="pointer-events-none text-lg font-medium text-berry">
@@ -319,11 +297,7 @@ export default async function Home({
             <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {recipes.map((recipe, i) => (
                 <FadeIn as="li" key={recipe.id} delay={Math.min(i, 8) * 0.06}>
-                  <RecipeCard
-                    recipe={recipe}
-                    currentUserId={user?.id ?? null}
-                    initialSaved={savedRecipeIds.has(recipe.id)}
-                  />
+                  <RecipeCard recipe={recipe} />
                 </FadeIn>
               ))}
             </ul>
@@ -364,19 +338,7 @@ export default async function Home({
           )}
         </div>
 
-        {!user && (
-          <FadeIn className="mt-16 rounded-lg bg-berry px-6 py-10 text-center">
-            <h2 className="font-logo text-2xl text-cream">
-              {t("ctaHeading")}
-            </h2>
-            <Link
-              href="/login?mode=sign-up"
-              className="mt-5 inline-block rounded-md bg-gold px-5 py-2.5 font-medium text-berry"
-            >
-              {t("signUp")}
-            </Link>
-          </FadeIn>
-        )}
+        <GuestCta />
       </div>
       </div>
 
