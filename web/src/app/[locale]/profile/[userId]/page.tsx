@@ -100,28 +100,29 @@ export default async function ProfilePage({
             </div>
           </div>
 
-          <div
-            className="flex items-center gap-1.5 text-berry/70"
-            aria-label={t("totalLikes", { count: totalLikes })}
-            title={t("totalLikes", { count: totalLikes })}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <div className="flex items-center gap-4">
+            <div
+              className="flex items-center gap-1.5 text-berry/70"
+              aria-label={t("totalLikes", { count: totalLikes })}
+              title={t("totalLikes", { count: totalLikes })}
             >
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" />
-            </svg>
-            <span className="text-sm font-medium">{totalLikes}</span>
-          </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" />
+              </svg>
+              <span className="text-sm font-medium">{totalLikes}</span>
+            </div>
 
-          {isOwnProfile && (
+            {isOwnProfile && (
             <div className="flex gap-2">
               <Link
                 href="/profile/edit"
@@ -163,7 +164,8 @@ export default async function ProfilePage({
                 {t("savedRecipes")}
               </Link>
             </div>
-          )}
+            )}
+          </div>
         </div>
 
         <div className="mt-10">
