@@ -248,7 +248,9 @@
     "termsOfService": "Terms of Service",
     "and": "and",
     "privacyPolicy": "Privacy Policy",
-    "agreeToTermsRequired": "Please agree to the Terms of Service and Privacy Policy to continue."
+    "agreeToTermsRequired": "Please agree to the Terms of Service and Privacy Policy to continue.",
+    "or": "or",
+    "continueWithGoogle": "Continue with Google"
   },
   "ForgotPassword": {
     "heading": "Reset your password",

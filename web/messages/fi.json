@@ -248,7 +248,9 @@
     "termsOfService": "käyttöehdot",
     "and": "ja",
     "privacyPolicy": "tietosuojaselosteen",
-    "agreeToTermsRequired": "Hyväksy käyttöehdot ja tietosuojaseloste jatkaaksesi."
+    "agreeToTermsRequired": "Hyväksy käyttöehdot ja tietosuojaseloste jatkaaksesi.",
+    "or": "tai",
+    "continueWithGoogle": "Jatka Googlella"
   },
   "ForgotPassword": {
     "heading": "Nollaa salasanasi",
