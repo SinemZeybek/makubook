@@ -12,6 +12,7 @@ import FadeIn from "./fade-in";
 import RecipeFilters from "./recipe-filters";
 import FeaturedCarousel from "./featured-carousel";
 import { MEAL_TYPES } from "@/lib/mealTypes";
+import AvatarImage from "./avatar-image";
 
 // No longer reads cookies/auth during render (personalization moved to
 // client components — see navbar.tsx, save-toggle-button.tsx, guest-cta.tsx),
@@ -211,12 +212,8 @@ export default async function Home({
                       className="relative z-10 flex shrink-0 items-center gap-1.5 hover:underline"
                     >
                       <div className="relative h-5 w-5 overflow-hidden rounded-full">
-                        <Image
-                          src={
-                            recipe.profiles?.avatar_url ||
-                            "/default-avatar.png"
-                          }
-                          alt=""
+                        <AvatarImage
+                          src={recipe.profiles?.avatar_url}
                           fill
                           className="object-cover"
                         />

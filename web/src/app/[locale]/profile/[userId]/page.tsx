@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -8,6 +7,7 @@ import Navbar from "../../navbar";
 import Footer from "../../footer";
 import RecipeCard, { type Recipe } from "../../recipe-card";
 import LogoutButton from "../../logout-button";
+import AvatarImage from "../../avatar-image";
 
 export default async function ProfilePage({
   params,
@@ -37,10 +37,14 @@ export default async function ProfilePage({
   const { data: recipesRaw } = await supabase
     .from("recipes")
     .select(
-      "id, title, description, country, meal_type, language, author_id, status, translations, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
+      "id, title, description, country, meal_type, language, author_id, status, translations, like_count, comments(rating), recipe_images(url), profiles(display_name, avatar_url)"
     )
     .eq("author_id", userId)
     .order("created_at", { ascending: false });
+  const totalLikes = (recipesRaw ?? []).reduce(
+    (sum, recipe) => sum + (recipe.like_count ?? 0),
+    0
+  );
   const recipes = recipesRaw
     ? ((await translateCardList(
         recipesRaw as unknown as (Recipe & {
@@ -84,12 +88,7 @@ export default async function ProfilePage({
         <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-berry/10 bg-white p-6 shadow-sm">
           <div className="flex items-center gap-4">
             <div className="relative h-20 w-20 overflow-hidden rounded-full bg-berry/10 ring-2 ring-gold ring-offset-2 ring-offset-white">
-              <Image
-                src={profile.avatar_url || "/default-avatar.png"}
-                alt=""
-                fill
-                className="object-cover"
-              />
+              <AvatarImage src={profile.avatar_url} fill className="object-cover" />
             </div>
             <div>
               <h1 className="text-2xl font-semibold text-berry">
@@ -99,6 +98,27 @@ export default async function ProfilePage({
                 {t("recipesSharedCount", { count: recipes?.length ?? 0 })}
               </p>
             </div>
+          </div>
+
+          <div
+            className="flex items-center gap-1.5 text-berry/70"
+            aria-label={t("totalLikes", { count: totalLikes })}
+            title={t("totalLikes", { count: totalLikes })}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" />
+            </svg>
+            <span className="text-sm font-medium">{totalLikes}</span>
           </div>
 
           {isOwnProfile && (

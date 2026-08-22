@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
+import AvatarImage from "../avatar-image";
 
 export type Recipe = {
   id: string;
@@ -85,9 +86,8 @@ export default function EditorQueueItem({ recipe }: { recipe: Recipe }) {
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex items-center gap-1.5 text-xs text-berry/60">
           <div className="relative h-4 w-4 overflow-hidden rounded-full">
-            <Image
-              src={recipe.profiles?.avatar_url || "/default-avatar.png"}
-              alt=""
+            <AvatarImage
+              src={recipe.profiles?.avatar_url}
               fill
               className="object-cover"
             />

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import CommentHelpfulButton from "./comment-helpful-button";
 import DeleteCommentButton from "./delete-comment-button";
+import AvatarImage from "../../avatar-image";
 
 type Comment = {
   id: string;
@@ -49,9 +49,8 @@ export default function CommentList({
           >
             <div className="flex items-center gap-2 text-sm">
               <div className="h-6 w-6 overflow-hidden rounded-full">
-                <Image
-                  src={comment.profiles?.avatar_url || "/default-avatar.png"}
-                  alt=""
+                <AvatarImage
+                  src={comment.profiles?.avatar_url}
                   width={24}
                   height={24}
                   className="h-full w-full object-cover"

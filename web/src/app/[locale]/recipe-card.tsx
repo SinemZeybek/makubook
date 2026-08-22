@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import SaveToggleButton from "./save-toggle-button";
+import AvatarImage from "./avatar-image";
 
 export type Recipe = {
   id: string;
@@ -115,9 +116,8 @@ export default function RecipeCard({
             className="relative z-10 ml-auto flex shrink-0 items-center gap-1.5 hover:underline"
           >
             <div className="relative h-5 w-5 overflow-hidden rounded-full">
-              <Image
-                src={recipe.profiles?.avatar_url || "/default-avatar.png"}
-                alt=""
+              <AvatarImage
+                src={recipe.profiles?.avatar_url}
                 fill
                 className="object-cover"
               />

@@ -204,6 +204,7 @@
     "savedRecipes": "Tykätyt reseptit",
     "myRecipes": "Omat reseptini",
     "recipesSharedCount": "{count, plural, one {# resepti jaettu} other {# reseptiä jaettu}}",
+    "totalLikes": "{count, plural, one {# tykkäys kaikissa resepteissä} other {# tykkäystä kaikissa resepteissä}}",
     "theirRecipes": "Käyttäjän {name} reseptit",
     "noRecipesOwn": "Et ole vielä jakanut yhtään reseptiä.",
     "noRecipesOther": "Tämä käyttäjä ei ole vielä jakanut reseptejä."
@@ -211,6 +212,8 @@
   "EditProfile": {
     "profilePicture": "Profiilikuva",
     "displayName": "Näyttönimi",
+    "birthday": "Syntymäpäivä",
+    "birthdayNotPublic": "Tätä ei näytetä profiilissasi.",
     "saving": "Tallennetaan...",
     "saveChanges": "Tallenna muutokset"
   },

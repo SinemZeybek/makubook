@@ -204,6 +204,7 @@
     "savedRecipes": "Liked recipes",
     "myRecipes": "My recipes",
     "recipesSharedCount": "{count, plural, one {# recipe shared} other {# recipes shared}}",
+    "totalLikes": "{count, plural, one {# like across all recipes} other {# likes across all recipes}}",
     "theirRecipes": "{name}'s recipes",
     "noRecipesOwn": "You haven't shared any recipes yet.",
     "noRecipesOther": "This user hasn't shared any recipes yet."
@@ -211,6 +212,8 @@
   "EditProfile": {
     "profilePicture": "Profile picture",
     "displayName": "Display name",
+    "birthday": "Birthday",
+    "birthdayNotPublic": "This won't be shown on your profile.",
     "saving": "Saving...",
     "saveChanges": "Save changes"
   },
