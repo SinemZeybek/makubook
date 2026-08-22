@@ -110,6 +110,33 @@ export default function Navbar({
     pulseSearchInput();
   }
 
+  // makubook.com and makubook.fi are separate domains, so a plain link
+  // switch can't carry the login session across (cookies don't cross
+  // domains). When logged in, hand the session off via a short-lived,
+  // single-use token instead of just navigating.
+  async function handleLocaleSwitch(
+    e: React.MouseEvent,
+    target: "en" | "fi"
+  ) {
+    if (!user || target === locale) return;
+    e.preventDefault();
+
+    const targetDomain =
+      target === "en" ? "https://makubook.com" : "https://makubook.fi";
+
+    try {
+      const res = await fetch("/api/auth/handoff/create", { method: "POST" });
+      if (res.ok) {
+        const { token } = await res.json();
+        window.location.href = `${targetDomain}/auth/handoff?token=${encodeURIComponent(token)}&next=${encodeURIComponent(pathname)}`;
+        return;
+      }
+    } catch {
+      // fall through to a plain (logged-out) switch below
+    }
+    window.location.href = `${targetDomain}${pathname}`;
+  }
+
   return (
     <>
       <div className="sticky top-0 z-30 bg-cream/95 shadow-sm backdrop-blur">
@@ -171,6 +198,7 @@ export default function Navbar({
             <Link
               href={pathname}
               locale="en"
+              onClick={(e) => handleLocaleSwitch(e, "en")}
               className={
                 locale === "en"
                   ? "bg-berry px-2 py-1 text-cream"
@@ -182,6 +210,7 @@ export default function Navbar({
             <Link
               href={pathname}
               locale="fi"
+              onClick={(e) => handleLocaleSwitch(e, "fi")}
               className={
                 locale === "fi"
                   ? "bg-berry px-2 py-1 text-cream"
