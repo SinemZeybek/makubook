@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { createPublicClient } from "@/lib/supabase/public";
+import { createClient } from "@/lib/supabase/server";
 import { translateCardList } from "@/lib/translateRecipe";
 import Navbar from "./navbar";
 import Footer from "./footer";
@@ -13,12 +14,6 @@ import RecipeFilters from "./recipe-filters";
 import FeaturedCarousel from "./featured-carousel";
 import { MEAL_TYPES } from "@/lib/mealTypes";
 import AvatarImage from "./avatar-image";
-
-// No longer reads cookies/auth during render (personalization moved to
-// client components — see navbar.tsx, save-toggle-button.tsx, guest-cta.tsx),
-// so this page can be statically cached instead of hitting Supabase on
-// every single request, bot or human.
-export const revalidate = 300;
 
 export default async function Home({
   searchParams,
@@ -111,6 +106,20 @@ export default async function Home({
       )) as unknown as Recipe[])
     : null;
 
+  const supabaseAuth = await createClient();
+  const {
+    data: { user },
+  } = await supabaseAuth.auth.getUser();
+
+  let savedRecipeIds = new Set<string>();
+  if (user) {
+    const { data: favorites } = await supabaseAuth
+      .from("favorites")
+      .select("recipe_id")
+      .eq("user_id", user.id);
+    savedRecipeIds = new Set(favorites?.map((f) => f.recipe_id));
+  }
+
   const fallbackPhotos = [
     "/dish-breakfast.jpg",
     "/dish-dumplings-raw.jpg",
@@ -179,7 +188,11 @@ export default async function Home({
                     fill
                     className="object-cover"
                   />
-                  <SaveToggleButton recipeId={recipe.id} />
+                  <SaveToggleButton
+                    recipeId={recipe.id}
+                    userId={user?.id ?? null}
+                    initialSaved={savedRecipeIds.has(recipe.id)}
+                  />
                 </div>
                 <div className="flex flex-col p-4">
                   <h3 className="pointer-events-none text-lg font-medium text-berry">
@@ -294,7 +307,11 @@ export default async function Home({
             <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {recipes.map((recipe, i) => (
                 <FadeIn as="li" key={recipe.id} delay={Math.min(i, 8) * 0.06}>
-                  <RecipeCard recipe={recipe} />
+                  <RecipeCard
+                    recipe={recipe}
+                    currentUserId={user?.id ?? null}
+                    initialSaved={savedRecipeIds.has(recipe.id)}
+                  />
                 </FadeIn>
               ))}
             </ul>
