@@ -168,6 +168,7 @@
     "noComments": "Ei vielä kommentteja.",
     "placeholder": "Mitä pidit? Teitkö muutoksia?",
     "mustBeLoggedIn": "Sinun täytyy kirjautua sisään kommentoidaksesi.",
+    "profanityError": "Poista sopimaton kieli ennen julkaisua.",
     "posting": "Lähetetään...",
     "postComment": "Lähetä kommentti",
     "delete": "Poista",

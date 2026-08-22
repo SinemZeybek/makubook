@@ -168,6 +168,7 @@
     "noComments": "No comments yet.",
     "placeholder": "What did you think? Any changes you made?",
     "mustBeLoggedIn": "You must be logged in to comment.",
+    "profanityError": "Please remove inappropriate language before posting.",
     "posting": "Posting...",
     "postComment": "Post comment",
     "delete": "Delete",

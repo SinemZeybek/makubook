@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { containsProfanity } from "@/lib/profanityFilter";
+
+const MAX_COMMENT_LENGTH = 200;
 
 export default function CommentForm({ recipeId }: { recipeId: string }) {
   const t = useTranslations("Comment");
@@ -25,6 +28,12 @@ export default function CommentForm({ recipeId }: { recipeId: string }) {
 
     if (!user) {
       setError(t("mustBeLoggedIn"));
+      setLoading(false);
+      return;
+    }
+
+    if (containsProfanity(body)) {
+      setError(t("profanityError"));
       setLoading(false);
       return;
     }
@@ -65,11 +74,15 @@ export default function CommentForm({ recipeId }: { recipeId: string }) {
       <textarea
         placeholder={t("placeholder")}
         value={body}
-        onChange={(e) => setBody(e.target.value)}
+        onChange={(e) => setBody(e.target.value.slice(0, MAX_COMMENT_LENGTH))}
         required
+        maxLength={MAX_COMMENT_LENGTH}
         rows={3}
         className="rounded-md border border-berry/20 px-3 py-2 text-berry placeholder:text-berry/40"
       />
+      <p className="-mt-2 self-end text-xs text-berry/40">
+        {body.length}/{MAX_COMMENT_LENGTH}
+      </p>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
